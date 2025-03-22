@@ -1,0 +1,21 @@
+{
+  "name": "php-game",
+  "version": "1.0.0",
+  "description": "Gra przeglądarkowa strategiczna",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./public/assets/css/styles.css -o ./public/assets/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.15",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.15"
+  }
+}
