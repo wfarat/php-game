@@ -4,6 +4,7 @@ namespace App\repositories;
 
 use App\mappers\TokenMapper;
 use App\models\Token;
+use DateMalformedStringException;
 use PDO;
 
 class TokenRepository extends BaseRepository
@@ -18,6 +19,9 @@ class TokenRepository extends BaseRepository
         return $stmt->execute();
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     public function getToken(string $token): ?Token
     {
         $stmt = $this->pdo->prepare("SELECT * FROM user_tokens WHERE token = :token");

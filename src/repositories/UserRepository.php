@@ -35,7 +35,7 @@ class UserRepository extends BaseRepository
         $stmt = $this->pdo->query("SELECT * FROM users");
 
         // Fetch all results as an associative array
-        $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $usersData = $stmt->fetchAll();
 
         // Map each row of data to a User object using the UserMapper
         return array_map([UserMapper::class, 'mapToUser'], $usersData);
@@ -47,7 +47,7 @@ class UserRepository extends BaseRepository
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userData = $stmt->fetch();
 
         if (!$userData) {
             return null;
@@ -64,7 +64,7 @@ class UserRepository extends BaseRepository
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE login = :login");
         $stmt->bindParam(':login', $login);
         $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userData = $stmt->fetch();
 
         if (!$userData) {
             throw new UserNotFoundException();
