@@ -1,13 +1,13 @@
 <?php
 
-namespace models;
+namespace App\models;
 
 class User
 {
-private $id;
-private $login;
-private $password;
-private $email;
+private int $id;
+private string $login;
+private string $password;
+private string $email;
 
 function __construct($login, $password, $email) {
     $this->login = $login;
@@ -16,65 +16,65 @@ function __construct($login, $password, $email) {
 }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getLogin()
+    public function getLogin(): string
     {
         return $this->login;
     }
 
     /**
-     * @param mixed $login
+     * @param string $login
      */
-    public function setLogin($login)
+    public function setLogin(string $login): void
     {
         $this->login = $login;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

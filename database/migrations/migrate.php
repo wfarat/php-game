@@ -1,6 +1,6 @@
 <?php
 
-use core\Database;
+use App\core\Database;
 
 require_once "../../src/core/Database.php";
 
@@ -20,10 +20,9 @@ foreach ($sqlStatements as $query) {
     $trimmedQuery = trim($query);
     if (!empty($trimmedQuery)) {
         if ($conn->query($trimmedQuery) === false) {
-            echo "Error executing query: " . $conn->error . "\n";
+            echo "Error executing query \n";
         }
     }
 }
 
 echo "SQL file executed successfully!";
-$db->closeConnection();
