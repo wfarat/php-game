@@ -2,10 +2,11 @@
 
 namespace App\controllers;
 
+use App\exceptions\UserNotFoundException;
 use App\services\UserService;
 use PDOException;use Random\RandomException;
 
-class RegisterController {
+class UserController {
     private UserService $userService;
 
     public function __construct(UserService $userService) {
@@ -46,6 +47,29 @@ class RegisterController {
             }
         }
     }
+
+    public function login(): void
+    {
+         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+             $login = $_POST['login'] ?? '';
+             $password = $_POST['password'] ?? '';
+         if (!empty($login) && !empty($password)) {
+             try {
+                $auth = $this->userService->login($login, $password);
+                if (!$auth->isAuthenticated) {
+                    echo "Invalid login or password!";
+                } else {
+                    $_SESSION['user'] = $auth->user;
+                    $_SESSION['auth'] = true;
+                    session_write_close();
+                    header("Location: game/index.php");
+                }
+             } catch (UserNotFoundException $e) {
+                 echo "Invalid login or password!";
+             }
+         }
+         }
+    }
     public function verify(): void
     {
         if (isset($_GET['token'])) {
@@ -70,4 +94,4 @@ class RegisterController {
         mail($email, $subject, $message, $headers);
     }
 }
-?>
+

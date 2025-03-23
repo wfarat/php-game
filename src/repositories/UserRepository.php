@@ -3,6 +3,7 @@
 namespace App\repositories;
 
 use App\core\Database;
+use App\exceptions\UserNotFoundException;
 use App\mappers\UserMapper;
 use App\models\User;
 use PDO;
@@ -48,15 +49,29 @@ class UserRepository extends BaseRepository
         $stmt->execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // If no user is found, return null
         if (!$userData) {
             return null;
         }
 
-        // Use the UserMapper to map the data to a User object
         return UserMapper::mapToUser($userData);
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
+    public function getUserByLogin(string $login): ?User
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE login = :login");
+        $stmt->bindParam(':login', $login);
+        $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$userData) {
+            throw new UserNotFoundException();
+        }
+
+        return UserMapper::mapToUser($userData);
+    }
     function updateVerified(int $userId): bool
     {
         $stmt = $this->pdo->prepare("UPDATE users SET verified = 1 WHERE id = :id");

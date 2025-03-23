@@ -8,6 +8,6 @@ use App\Context;
 
 include './includes/header.php';
 
-Context::getInstance()->registerController->verify();
+Context::getInstance()->userController->verify();
 
 include './includes/footer.php';

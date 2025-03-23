@@ -2,7 +2,7 @@
 
 namespace Test\controllers;
 
-use App\controllers\RegisterController;
+use App\controllers\UserController;
 use App\services\UserService;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
@@ -21,8 +21,8 @@ class RegisterControllerTest extends TestCase {
         $_POST['repeat'] = "securepass";
         $mockService = $this->createMock(UserService::class);;
         $mockService->method('createUser')->willReturn(true);
-        // Create a partial mock of RegisterController (mock sendVerificationEmail)
-        $mockController = $this->getMockBuilder(RegisterController::class)
+        // Create a partial mock of UserController (mock sendVerificationEmail)
+        $mockController = $this->getMockBuilder(UserController::class)
             ->setConstructorArgs([$mockService])
             ->onlyMethods(['sendVerificationEmail']) // This method will be mocked
             ->getMock();

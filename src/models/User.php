@@ -23,7 +23,7 @@ class User
     public string $password {
         set {
             $info = password_get_info($value);
-            if ($info['algo'] === 0) {
+            if (!$info['algo']) {
                 $this->hashedPassword = password_hash($value, PASSWORD_DEFAULT);
             } else {
                 $this->hashedPassword = $value;

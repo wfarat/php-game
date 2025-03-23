@@ -2,6 +2,8 @@
 
 namespace App\services;
 
+use App\exceptions\UserNotFoundException;
+use App\models\Authentication;
 use App\models\User;
 use App\repositories\TokenRepository;
 use App\repositories\UserRepository;
@@ -75,4 +77,13 @@ class UserService
         return false;
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
+    public function login(string $login, string $password): Authentication
+    {
+        $user = $this->userRepository->getUserByLogin($login);
+        $isAuthenticated = password_verify($password, $user->hashedPassword);
+        return new Authentication($user, $isAuthenticated);
+    }
 }
