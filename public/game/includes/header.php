@@ -1,5 +1,9 @@
 <?php
+require_once '../../vendor/autoload.php';
 session_start();
+use App\Context;
+$user = $_SESSION['user'];
+$resources = Context::getInstance()->resourcesService->getResources($user->id);
 if (!isset($_SESSION['auth'])) {
     header("Location: ../login.php");
 }
@@ -9,14 +13,20 @@ if (!isset($_SESSION['auth'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
+    <title>My PHP Site</title>
     <link href="/php-game/public/assets/css/output.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
-<nav class="bg-blue-500 text-white p-4">
-    <div class="container mx-auto">
-        <a href="index.php" class="mr-4">Game</a>
-        <a href="logout.php">Logout</a>
+<body class="bg-gray-900 text-white">
+<div class="bg-gray-800 p-4 flex justify-between">
+    <div>
+        <span class="text-xl font-bold"><?= htmlspecialchars($user->login) ?></span>
     </div>
-</nav>
-<div class="container mx-auto p-4">
+    <div class="flex gap-4">
+        <span>🌲 Wood: <?= $resources->wood ?></span>
+        <span>⛏ Stone: <?= $resources->stone ?></span>
+        <span>💰 Gold: <?= $resources->gold ?></span>
+        <span>🍞 Food: <?= $resources->food ?></span>
+    </div>
+    <a href="./logout.php" class="text-red-400">Logout</a>
+</div>
+
