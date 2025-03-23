@@ -17,4 +17,15 @@ class Cost
         $this->time = $time;
     }
 
+    public function canBePaidWith(Resources $other): bool
+    {
+       $current = $this->resources;
+       if ($current->wood <= $other->wood
+           && $current->stone <= $other->stone
+           && $current->food <= $other->food
+           && $current->gold <= $other->gold) {
+           return true;
+       }
+       return false;
+    }
 }

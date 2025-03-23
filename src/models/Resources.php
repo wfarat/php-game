@@ -2,6 +2,8 @@
 
 namespace App\models;
 
+use App\Context;
+
 class Resources
 {
     public int $wood;
@@ -23,5 +25,13 @@ class Resources
         $this->gold = $gold;
     }
 
+    public function update($userId): void
+    {
+        $newResources = Context::getInstance()->resourcesService->getResources($userId);
+        $this->wood = $newResources->wood;
+        $this->stone = $newResources->stone;
+        $this->food = $newResources->food;
+        $this->gold = $newResources->gold;
+    }
 
 }

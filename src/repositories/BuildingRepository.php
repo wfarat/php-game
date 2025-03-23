@@ -20,4 +20,13 @@ class BuildingRepository extends BaseRepository
         $buildingsData = $stmt->fetchAll();
         return array_map([BuildingMapper::class, 'mapToBuilding'], $buildingsData);
     }
+
+    public function upgradeBuilding(int $userId, int $buildingId, int $time) {
+        $stmt = $this->pdo->prepare("UPDATE user_buildings SET current_level = current_level + 1, end_time = :time WHERE user_id = :userId AND building_id = :buildingId");
+        $end_time = time() + $time;
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':buildingId', $buildingId);
+        $stmt->bindParam(':time', $end_time);
+        $stmt->execute();
+    }
 }

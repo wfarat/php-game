@@ -2,8 +2,9 @@
 
 namespace App\services;
 
+use App\models\Cost;
 use App\repositories\BuildingRepository;
-use App\repositories\ResourcesRepository;
+use Exception;
 
 class BuildingService
 {
@@ -19,7 +20,22 @@ class BuildingService
         return $this->buildingRepository->getBuildings($userId);
     }
 
-    public function upgradeBuilding(int $userId, int $buildingId)
+    public function upgradeBuilding(int $userId, int $buildingId, Cost $cost): bool
     {
+       $resources = $this->resourcesService->getResources($userId);
+       if ($cost->canBePaidWith($resources)) {
+           $costRes = $cost->resources;
+           $this->buildingRepository->beginTransaction();
+           try {
+               $this->resourcesService->deductResources($userId, $costRes->wood, $costRes->stone, $costRes->food, $costRes->gold);
+               $this->buildingRepository->upgradeBuilding($userId, $buildingId, $cost->time);
+               $this->buildingRepository->commit();
+               return true;
+           }
+           catch (Exception $e) {
+               $this->buildingRepository->rollback();
+           }
+       }
+       return false;
     }
 }

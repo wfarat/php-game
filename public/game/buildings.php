@@ -67,7 +67,16 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
             document.getElementById('popupGold').innerText = gold;
             document.getElementById('popupProduction').innerText = production;
 
-            document.getElementById('confirmUpgrade').setAttribute('onclick', `confirmUpgrade(${id})`);
+            const cost = {
+                resources: {
+                    wood,
+                    stone,
+                    food,
+                    gold
+                },
+                time
+            }
+            document.getElementById('confirmUpgrade').onclick = () => confirmUpgrade(id, cost);
 
             document.getElementById('upgradePopup').classList.remove('hidden');
         }
@@ -76,8 +85,14 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
             document.getElementById('upgradePopup').classList.add('hidden');
         }
 
-        function confirmUpgrade(id) {
-            fetch('upgrade.php?id=' + id, { method: 'POST' })
+        function confirmUpgrade(id, cost) {
+            fetch('upgrade.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }, // Set JSON headers
+                body: JSON.stringify({
+                    building_id: id,
+                    cost              })
+            })
                 .then(response => response.text())
                 .then(data => {
                     alert(data);

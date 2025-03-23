@@ -8,11 +8,10 @@ class ResourcesMapper
 {
 public static function mapToResources(array $resourcesData): Resources {
     return new Resources(
-        $resourcesData['user_id'],
-        $resourcesData['wood'],
-        $resourcesData['stone'],
-        $resourcesData['food'],
-        $resourcesData['gold']
+        $resourcesData['wood'] ?? 0,
+        $resourcesData['stone'] ?? 0,
+        $resourcesData['food'] ?? 0,
+        $resourcesData['gold'] ?? 0
     );
 }
 }
