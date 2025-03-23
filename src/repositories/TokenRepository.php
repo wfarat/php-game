@@ -2,22 +2,12 @@
 
 namespace App\repositories;
 
-use App\core\Database;
 use App\mappers\TokenMapper;
 use App\models\Token;
-use Dotenv\Util\Str;
 use PDO;
 
-class TokenRepository
+class TokenRepository extends BaseRepository
 {
-
-    private PDO $pdo;
-
-    public function __construct(Database $db)
-    {
-        // Inject the DatabaseConnection object
-        $this->pdo = $db->getConnection();
-    }
 
     public function saveToken(string $type, string $token, int $userId): bool
     {
@@ -45,5 +35,11 @@ class TokenRepository
         $stmt = $this->pdo->prepare("DELETE FROM user_tokens WHERE token = :token");
         $stmt->bindParam(':token', $token);
         return $stmt->execute();
+    }
+    public function count(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM user_tokens");
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

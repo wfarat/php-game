@@ -3,7 +3,7 @@
 namespace App\controllers;
 
 use App\services\UserService;
-use Random\RandomException;
+use PDOException;use Random\RandomException;
 
 class RegisterController {
     private UserService $userService;
@@ -21,16 +21,22 @@ class RegisterController {
             $login = $_POST['login'] ?? '';
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+            $repeat = $_POST['repeat'] ?? '';
             $token = bin2hex(random_bytes(32)); // Generate a secure token
 
+            if ($password !== $repeat) {
+                echo "Passwords don't match!";
+                return;
+            }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 echo "Invalid email format!";
                 return;
             }
             if (!empty($login) && !empty($email) && !empty($password)) {
-                $res = $this->userService->createUser($login, $email, $password, $token);
-                if (!$res) {
-                    echo "User already exists!";
+                try {
+                    $this->userService->createUser($login, $email, $password, $token);
+                } catch (PDOException $e) {
+                    echo $e->getMessage();
                     return;
                 }
                 $this->sendVerificationEmail($email, $token);

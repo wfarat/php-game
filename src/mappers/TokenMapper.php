@@ -3,7 +3,6 @@
 namespace App\mappers;
 
 use App\models\Token;
-use DateTime;
 
 class TokenMapper
 {
@@ -16,8 +15,8 @@ class TokenMapper
             $tokenData['token'],
             $tokenData['type'],
             $tokenData['user_id'],
-            new DateTime($tokenData['created_at']),
-            new DateTime($tokenData['expires_at'])
+            DateTimeMapper::map($tokenData['created_at']),
+            DateTimeMapper::map($tokenData['expires_at'])
         );
     }
 }

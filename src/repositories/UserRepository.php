@@ -7,15 +7,8 @@ use App\mappers\UserMapper;
 use App\models\User;
 use PDO;
 
-class UserRepository
+class UserRepository extends BaseRepository
 {
-    private PDO $pdo;
-
-    public function __construct(Database $db)
-    {
-        // Inject the DatabaseConnection object
-        $this->pdo = $db->getConnection();
-    }
 
     // Create a new user
     public function createUser(User $user): int
@@ -71,4 +64,10 @@ class UserRepository
         return $stmt->execute();
     }
 
+    public function count(): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM users");
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }

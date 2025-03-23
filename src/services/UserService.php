@@ -2,47 +2,77 @@
 
 namespace App\services;
 
-use App\config\DbConfig;
-use App\core\Database;
 use App\models\User;
 use App\repositories\TokenRepository;
 use App\repositories\UserRepository;
+use PDOException;
 
 class UserService
 {
-private UserRepository $userRepository;
-private TokenRepository $tokenRepository;
-function __construct(Database $db) {
-    $this->userRepository = new UserRepository($db);
-    $this->tokenRepository = new TokenRepository($db);
-}
+    private UserRepository $userRepository;
+    private TokenRepository $tokenRepository;
 
-public function createUser(String $login, String $email, String $password, String $token): bool {
-    $user = new User($login, $password, $email);
-    $id = $this->userRepository->createUser($user);
-    if ($id === 0) {
-        return false;
-    } else {
-        return $this->tokenRepository->saveToken("verify", $token, $id);
+    function __construct(UserRepository $userRepository, TokenRepository $tokenRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->tokenRepository = $tokenRepository;
     }
-}
 
-public function verifyUser(String $token): bool
-{
-    $tokenInDb = $this->tokenRepository->getToken($token);
-    if ($tokenInDb) {
-        if ($tokenInDb->type !== "verify") {
-            return false;
-        }
-        $updated = $this->userRepository->updateVerified($tokenInDb->userId);
-        if ($updated) {
-            $this->tokenRepository->deleteToken($token);
+    public function createUser(string $login, string $email, string $password, string $token): bool
+    {
+        $user = new User($login, $password, $email);
+        $this->userRepository->beginTransaction();
+
+        try {
+            $userId = $this->saveUser($user);
+            $this->saveTokenForUser($token, $userId);
+            $this->userRepository->commit();
             return true;
-        } else {
-            return false;
+        } catch (PDOException $e) {
+            $this->userRepository->rollback();
+
+            if ($this->isUniqueConstraintViolation($e)) {
+                throw new PDOException("User already exists!");
+            }
+
+            throw $e;
         }
     }
-    return false;
-}
+
+    private function saveUser(User $user): int
+    {
+        return $this->userRepository->createUser($user);
+    }
+
+    private function saveTokenForUser(string $token, int $userId): void
+    {
+        $isTokenSaved = $this->tokenRepository->saveToken("verify", $token, $userId);
+        if (!$isTokenSaved) {
+            throw new PDOException("Failed to save token!");
+        }
+    }
+
+    private function isUniqueConstraintViolation(PDOException $e): bool
+    {
+        return $e->getCode() === '23000';
+    }
+
+    public function verifyUser(string $token): bool
+    {
+        $tokenInDb = $this->tokenRepository->getToken($token);
+        if ($tokenInDb) {
+            if ($tokenInDb->type !== "verify") {
+                return false;
+            }
+            $updated = $this->userRepository->updateVerified($tokenInDb->userId);
+            if ($updated) {
+                $this->tokenRepository->deleteToken($token);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 
 }
