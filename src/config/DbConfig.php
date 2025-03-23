@@ -7,7 +7,7 @@ class DbConfig {
     private $user;
     private $pass;
     public function __construct() {
-        $dotenv = Dotenv::createImmutable("../../");
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
         $dotenv->load();
 
         // Get DB config from .env

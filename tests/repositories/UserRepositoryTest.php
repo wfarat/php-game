@@ -1,30 +1,14 @@
 <?php
 
-namespace repositories;
+namespace Test\repositories;
 
 
-use App\config\DbConfig;
 use App\core\Database;
 use App\models\User;
 use App\repositories\UserRepository;
 use PHPUnit\Framework\TestCase;
-class TestDbConfig extends DbConfig
-{
-    public function getDsn(): string
-    {
-        return 'sqlite::memory:'; // Use an in-memory SQLite database for tests
-    }
+use Test\TestDbConfig;
 
-    public function getUsername(): string
-    {
-        return ''; // No username required for SQLite
-    }
-
-    public function getPassword(): string
-    {
-        return ''; // No password required for SQLite
-    }
-}
 class UserRepositoryTest extends TestCase
 {
 private UserRepository $userRepository;
@@ -36,26 +20,27 @@ private Database $db;
         $this->userRepository = new UserRepository($this->db);
 
         // Set up the database schema
-        $this->db->getConnection()->exec("CREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT, email TEXT, password TEXT)");
+        $this->db->getConnection()->exec("CREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT UNIQUE, email TEXT UNIQUE, password TEXT)");
     }
     public function testCreateUser()
     {
-        $user = new User('John Doe', 'johndoe@gmail.com', 'password');
+        $user = new User('john', 'password' , 'doe@gmail.com');
         $this->userRepository->createUser($user);
 
         // Fetch the user and assert that it exists
         $userInDb = $this->userRepository->getUserById(1);
-        $this->assertEquals($user->getEmail(), $userInDb->getEmail());
+        $this->assertEquals($user->email, $userInDb->email);
+        $this->assertEquals($user->hashedPassword, $userInDb->hashedPassword);
     }
 
     public function testGetAllUsers()
     {
-        $this->userRepository->createUser(new User('John Doe', 'johndoe@gmail.com', 'password'));
-        $this->userRepository->createUser(new User('John Doe', 'johndoe@gmail.com', 'password'));
+        $this->userRepository->createUser(new User('john', 'password' , 'doe@gmail.com'));
+        $this->userRepository->createUser(new User('doe', 'password', 'john@gmail.com'));
 
         $users = $this->userRepository->getAllUsers();
         $this->assertCount(2, $users);
-        $this->assertEquals('John Doe', $users[0]->getLogin());
+        $this->assertEquals('john', $users[0]->login);
     }
 
     protected function tearDown(): void

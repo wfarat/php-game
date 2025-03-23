@@ -11,6 +11,7 @@
     <div class="container mx-auto">
         <a href="index.php" class="mr-4">Home</a>
         <a href="about.php" class="mr-4">About</a>
+        <a href="register.php" class="mr-4">Register</a>
         <a href="contact.php">Contact</a>
     </div>
 </nav>

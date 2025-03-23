@@ -2,16 +2,14 @@
 
 namespace App\core;
 
-require_once '../../vendor/autoload.php';
-
 use App\config\DbConfig;
 use PDO;
 use PDOException;
 
 class Database {
-    private static $instance = null;
+    private static ?Database $instance = null;
 
-    private $pdo;
+    private PDO $pdo;
 
     private function __construct(DbConfig $dbConfig)
     {
@@ -26,11 +24,12 @@ class Database {
         }
     }
 
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->pdo;
     }
-    public static function getInstance(DbConfig $config) {
+    public static function getInstance(DbConfig $config): ?Database
+    {
         if (self::$instance === null) {
             self::$instance = new self($config);
         }

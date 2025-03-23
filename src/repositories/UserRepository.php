@@ -20,13 +20,15 @@ class UserRepository
     // Create a new user
     public function createUser(User $user): bool
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (login, password, email) VALUES (:login, :password, :email)");
-        $login = $user->getLogin();
-        $email = $user->getEmail();
-        $password = $user->getPassword();
+        $stmt = $this->pdo->prepare("INSERT INTO users (login, password, email, token) VALUES (:login, :password, :email, :token)");
+        $login = $user->login;
+        $email = $user->email;
+        $password = $user->hashedPassword;
+        $token = $user->token;
         $stmt->bindParam(':login', $login);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':token', $token);
         return $stmt->execute();
     }
 

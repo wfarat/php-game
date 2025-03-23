@@ -1,10 +1,10 @@
 <?php
+require_once '../../vendor/autoload.php';
 
-use App\core\Database;
+use App\Context;
 
-require_once "../../src/core/Database.php";
 
-$db = Database::getInstance();
+$db = Context::getInstance()->db;
 $conn = $db->getConnection();
 
 $sqlFile = '../database.sql';

@@ -12,11 +12,11 @@ class UserMapper
         $user = new User(
             $userData['login'],   // login
             $userData['password'],// password
-            $userData['email']    // email
+            $userData['email']// email
         );
 
-        $user->setId($userData['id']);  // Set the user ID
-
+        $user->id = $userData['id'];  // Set the user ID
+        $user->verified = $userData['verified'];
         return $user;
     }
 }
