@@ -40,7 +40,6 @@ class User
     }
     public string $hashedPassword;
     public string $role;
-    public string $token;
     public bool $verified;
     function __construct($login, $password, $email)
     {

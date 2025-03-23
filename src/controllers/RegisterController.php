@@ -40,6 +40,18 @@ class RegisterController {
             }
         }
     }
+    public function verify(): void
+    {
+        if (isset($_GET['token'])) {
+            $token = $_GET['token'];
+            $res = $this->userService->verifyUser($token);
+            if ($res) {
+                echo "Email verified successfully!";
+            } else {
+                echo "Invalid token!";
+            }
+        }
+    }
     function sendVerificationEmail($email, $token): void
     {
         $verifyLink = "https://yourwebsite.com/verify.php?token=" . $token;

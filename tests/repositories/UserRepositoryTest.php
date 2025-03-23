@@ -20,7 +20,7 @@ private Database $db;
         $this->userRepository = new UserRepository($this->db);
 
         // Set up the database schema
-        $this->db->getConnection()->exec("CREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT UNIQUE, email TEXT UNIQUE, password TEXT)");
+        $this->db->getConnection()->exec("CREATE TABLE users (id INTEGER PRIMARY KEY AUTO_INCREMENT, login TEXT UNIQUE, email TEXT UNIQUE, password TEXT, verified BOOLEAN DEFAULT false)");
     }
     public function testCreateUser()
     {

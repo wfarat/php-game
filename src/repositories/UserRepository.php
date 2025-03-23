@@ -9,7 +9,7 @@ use PDO;
 
 class UserRepository
 {
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct(Database $db)
     {
@@ -18,18 +18,20 @@ class UserRepository
     }
 
     // Create a new user
-    public function createUser(User $user): bool
+    public function createUser(User $user): int
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (login, password, email, token) VALUES (:login, :password, :email, :token)");
+        $stmt = $this->pdo->prepare("INSERT INTO users (login, password, email) VALUES (:login, :password, :email)");
         $login = $user->login;
         $email = $user->email;
         $password = $user->hashedPassword;
-        $token = $user->token;
         $stmt->bindParam(':login', $login);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':token', $token);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return $this->pdo->lastInsertId();
+        } else {
+            return 0;
+        }
     }
 
     // Get all users
@@ -61,4 +63,12 @@ class UserRepository
         // Use the UserMapper to map the data to a User object
         return UserMapper::mapToUser($userData);
     }
+
+    function updateVerified(int $userId): bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET verified = 1 WHERE id = :id");
+        $stmt->bindParam(':id', $userId);
+        return $stmt->execute();
+    }
+
 }

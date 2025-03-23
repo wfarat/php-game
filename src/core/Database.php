@@ -13,9 +13,9 @@ class Database {
 
     private function __construct(DbConfig $dbConfig)
     {
-        $dsn = $dbConfig->getDsn();
-        $username = $dbConfig->getUser();
-        $password = $dbConfig->getPass();
+        $dsn = $dbConfig->dsn;
+        $username = $dbConfig->user;
+        $password = $dbConfig->pass;
         try {
             $this->pdo = new PDO($dsn, $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -3,9 +3,22 @@
 namespace App\config;
 use Dotenv\Dotenv;
 class DbConfig {
-    private $dsn;
-    private $user;
-    private $pass;
+    public string $dsn {
+        get {
+            return $this->dsn;
+        }
+    }
+    public string $user {
+        get {
+            return $this->user;
+        }
+    }
+    public string $pass {
+        get {
+            return $this->pass;
+        }
+    }
+
     public function __construct() {
         $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
         $dotenv->load();
@@ -17,30 +30,6 @@ class DbConfig {
         $dbname = $_ENV['DB_NAME'];
         $dbport = $_ENV['DB_PORT'];
         $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDsn()
-    {
-        return $this->dsn;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPass()
-    {
-        return $this->pass;
     }
 
 }
