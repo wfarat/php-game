@@ -2,7 +2,7 @@
 
 namespace App\observers;
 
-class ResourceObserver
+class BuildingObserver
 {
     private array $listeners = [];
 
@@ -11,11 +11,11 @@ class ResourceObserver
         $this->listeners[] = $listener;
     }
 
-    public function notify($userId): void
+    public function notify(): void
     {
         foreach ($this->listeners as $listener) {
             if (is_callable($listener)) {
-                $listener($userId);
+                $listener();
             }
         }
     }

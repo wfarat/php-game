@@ -2,6 +2,9 @@
 
 namespace App\models;
 
+use App\Context;
+use DateTime;
+
 class Building
 {
     public int $user_id;
@@ -13,7 +16,7 @@ class Building
     public Production $production;
     public Cost $nextLevelCost;
     public int $nextLevelProduction;
-
+    public DateTime $endsBuildingAt;
     /**
      * @param int $user_id
      * @param int $building_id
@@ -32,5 +35,22 @@ class Building
         $this->image = $image;
     }
 
+    public function update(): void
+    {
+        $end_time = time() + $this->nextLevelCost->time;
+        $this->endsBuildingAt = new DateTime("@$end_time");
+        $this->level++;
+        $data = Context::getInstance()->buildingRepository->getNextLevel($this->building_id, $this->level + 1);
+        $resources = new Resources($data['wood'], $data['stone'], $data['food'], $data['gold']);
+        $this->nextLevelCost = new Cost($resources, $data['time']);
+        $this->nextLevelProduction = $data['production'];
+    }
 
+    public function isBuildingFinished(): bool
+    {
+        if (!isset($this->endsBuildingAt)) {
+            return true;
+        }
+        return $this->endsBuildingAt < new DateTime();
+    }
 }

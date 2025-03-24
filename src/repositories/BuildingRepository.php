@@ -21,12 +21,24 @@ class BuildingRepository extends BaseRepository
         return array_map([BuildingMapper::class, 'mapToBuilding'], $buildingsData);
     }
 
-    public function upgradeBuilding(int $userId, int $buildingId, int $time) {
-        $stmt = $this->pdo->prepare("UPDATE user_buildings SET current_level = current_level + 1, end_time = :time WHERE user_id = :userId AND building_id = :buildingId");
+    public function upgradeBuilding(int $userId, int $buildingId, int $level, int $time): bool {
+        if ($level > 0) {
+            $stmt = $this->pdo->prepare("UPDATE user_buildings SET current_level = current_level + 1, end_time = :time WHERE user_id = :userId AND building_id = :buildingId");
+        } else {
+            $stmt = $this->pdo->prepare("INSERT INTO user_buildings (user_id, building_id, current_level, end_time) VALUES (:userId, :buildingId, 1, :time)");
+        }
         $end_time = time() + $time;
         $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':buildingId', $buildingId);
         $stmt->bindParam(':time', $end_time);
+        return $stmt->execute();
+    }
+
+    public function getNextLevel(int $buildingId, int $level) {
+        $stmt = $this->pdo->prepare("SELECT * FROM building_levels WHERE building_id = :buildingId AND level = :level");
+        $stmt->bindParam(':buildingId', $buildingId);
+        $stmt->bindParam(':level', $level);
         $stmt->execute();
+        return $stmt->fetch();
     }
 }

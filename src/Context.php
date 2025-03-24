@@ -3,6 +3,7 @@ namespace App;
 use App\config\DbConfig;
 use App\controllers\BuildingController;
 use App\core\Database;
+use App\observers\BuildingObserver;
 use App\observers\ResourceObserver;
 use App\repositories\BuildingRepository;
 use App\repositories\ResourcesRepository;
@@ -27,6 +28,7 @@ public BuildingController $buildingController;
 public UserService $userService;
 public ResourcesService $resourcesService;
 public ResourceObserver $resourceObserver;
+public BuildingObserver $buildingObserver;
 public UserController $userController;
 public static ?Context $instance = null;
 private function __construct() {
@@ -38,9 +40,10 @@ private function __construct() {
     $this->unitRepository = new UnitRepository($this->db);
     $this->resourcesRepository = new ResourcesRepository($this->db);
     $this->resourceObserver = new ResourceObserver();
+    $this->buildingObserver = new BuildingObserver();
     $this->resourcesService = new ResourcesService($this->resourcesRepository, $this->resourceObserver);
     $this->buildingRepository = new BuildingRepository($this->db);
-    $this->buildingService = new BuildingService($this->buildingRepository, $this->resourcesService);
+    $this->buildingService = new BuildingService($this->buildingRepository, $this->resourcesService, $this->buildingObserver);
     $this->buildingController = new BuildingController($this->buildingService);
 }
 

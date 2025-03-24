@@ -1,7 +1,8 @@
 <?php
 $user = $_SESSION['user'];
 use App\Context;
-$buildings = Context::getInstance()->buildingController->getBuildings($user->id);
+Context::getInstance()->buildingController->getBuildings($user->id);
+$buildings = $_SESSION['buildings'];
 ?>
   <!-- ✅ Buildings Section -->
     <div class="bg-gray-800 p-4 rounded-lg">
@@ -9,10 +10,11 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
         <?php foreach ($buildings as $building): ?>
             <div class="mt-2 flex justify-between">
                 <span><?= $building->name ?> (Lvl <?= $building->level ?? '0' ?>)</span>
-                <a href="#"
+               <?php if($building->isBuildingFinished()): ?> <a href="#"
                    class="text-green-400"
                    onclick="openUpgradePopup(
                         <?= $building->building_id ?>,
+                        <?= $building->level ?>,
                         '<?= $building->name ?>',
                         '<?= $building->description ?>',
                         '<?= $building->image ?>',
@@ -25,6 +27,11 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                     )">
                     Upgrade
                 </a>
+               <?php else: ?>
+                   <span class="text-red-400 countdown-timer" data-endtime="<?= $building->endsBuildingAt->getTimestamp(); ?>">
+    --
+</span>
+               <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </div>
@@ -38,7 +45,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
             <p id="popupDescription" class="text-sm text-gray-400"></p>
 
             <div class="mt-4">
-                <h3 class="font-bold">🔧 Upgrade Cost</h3>
+                <h3 class="font-bold">🔧 Upgrade Cost to Level <span id="popupLevel"></span></h3>
                 <p>⏳ Time: <span id="popupTime"></span>s</p>
                 <p>🌲 Wood: <span id="popupWood"></span></p>
                 <p>⛏ Stone: <span id="popupStone"></span></p>
@@ -56,8 +63,9 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
     </div>
 
     <script>
-        function openUpgradePopup(id, name, description, image, wood, stone, food, gold, time, production) {
+        function openUpgradePopup(id, level, name, description, image, wood, stone, food, gold, time, production) {
             document.getElementById('popupName').innerText = name;
+            document.getElementById('popupLevel').innerText = level+1;
             document.getElementById('popupDescription').innerText = description;
             document.getElementById('popupImage').src = image;
             document.getElementById('popupTime').innerText = time;
@@ -76,7 +84,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                 },
                 time
             }
-            document.getElementById('confirmUpgrade').onclick = () => confirmUpgrade(id, cost);
+            document.getElementById('confirmUpgrade').onclick = () => confirmUpgrade(id, level, cost);
 
             document.getElementById('upgradePopup').classList.remove('hidden');
         }
@@ -85,19 +93,48 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
             document.getElementById('upgradePopup').classList.add('hidden');
         }
 
-        function confirmUpgrade(id, cost) {
+        function confirmUpgrade(id, level, cost) {
             fetch('upgrade.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }, // Set JSON headers
                 body: JSON.stringify({
                     building_id: id,
+                    level,
                     cost              })
             })
-                .then(response => response.text())
-                .then(data => {
-                    alert(data);
+                .then(() => {
                     closePopup();
                     location.reload(); // Refresh the page to update the building level
                 });
         }
+        function startCountdown() {
+            const timers = document.querySelectorAll('.countdown-timer');
+
+            timers.forEach(timer => {
+                const endTime = parseInt(timer.getAttribute('data-endtime')) * 1000; // Convert to milliseconds
+
+                function updateTimer() {
+                    const now = new Date().getTime();
+                    const timeLeft = endTime - now;
+
+                    if (timeLeft <= 0) {
+                        timer.innerText = "00:00";
+                        location.reload();
+                        return;
+                    }
+
+                    const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
+                    const seconds = Math.floor((timeLeft / 1000) % 60);
+
+                    timer.innerText =
+                        (minutes < 10 ? "0" : "") + minutes + ":" +
+                        (seconds < 10 ? "0" : "") + seconds;
+                }
+
+                updateTimer(); // Run immediately
+                setInterval(updateTimer, 1000); // Update every second
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", startCountdown);
     </script>

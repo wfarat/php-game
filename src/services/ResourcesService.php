@@ -22,13 +22,9 @@ class ResourcesService
         return $this->resourcesRepository->getResources($userId);
     }
 
-    public function deductResources($userId, $wood, $stone, $food, $gold)
+    public function deductResources(int $userId, Resources $resources): void
     {
-        // Deduct resources from the database
-        $stmt = Context::getInstance()->db->getConnection()->prepare("UPDATE resources SET 
-            wood = wood - ?, stone = stone - ?, food = food - ?, gold = gold - ? 
-            WHERE user_id = ?");
-        $stmt->execute([$wood, $stone, $food, $gold, $userId]);
+        $this->resourcesRepository->deductResources($userId, $resources);
 
         // Notify observers (e.g., UI updates)
         $this->observer->notify($userId);

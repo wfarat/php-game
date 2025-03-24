@@ -14,19 +14,20 @@ class BuildingController
         $this->buildingService = $buildingService;
     }
 
-    public function getBuildings(int $userId): array
+    public function getBuildings(int $userId): void
     {
+        if (!isset($_SESSION['buildings'])) {
         $buildings = $this->buildingService->getBuildings($userId);
         $_SESSION['buildings'] = $buildings;
-        return $buildings;
+        }
     }
-    public function upgradeBuilding(): bool
+    public function upgradeBuilding(): int
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $userId = $_SESSION['user']->id;
         $buildingId = $data['building_id'] ?? null;
         $cost = $data['cost'] ?? null;
-
+        $level = $data['level'] ?? 0;
         if (!$buildingId || !$cost) {
             echo json_encode(["error" => "Invalid request!"]);
             exit;
@@ -36,6 +37,6 @@ class BuildingController
         $upgradeTime = $cost['time'] ?? 0;
 
         $mappedCost = new Cost($mappedResource, $upgradeTime);
-        return $this->buildingService->upgradeBuilding($userId, $buildingId, $mappedCost);
+        return $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost);
     }
 }
