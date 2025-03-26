@@ -46,25 +46,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create Azure Container App (if not exists)
-        run: |
-          EXISTS=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --query "name" -o tsv || echo "notfound")
-          if [ "$EXISTS" == "notfound" ]; then
-            echo "Creating Azure Container App..."
-            az containerapp create \
-              --name ${{ env.CONTAINER_APP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --environment ${{ env.CONTAINER_ENV_NAME }} \
-              --image ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \
-              --target-port 80 \
-              --ingress external \
-              --registry-server ${{ env.IMAGE_REGISTRY_URL }} \
-              --registry-username wfarat \
-              --registry-password ${{ secrets.CR_PAT }}
-          else
-            echo "Container App already exists."
-          fi
-
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
