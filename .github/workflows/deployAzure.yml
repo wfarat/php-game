@@ -8,7 +8,6 @@ on:
 env:
   IMAGE_REGISTRY_URL: ghcr.io  # Change to ACR if needed
   DOCKER_IMAGE_NAME: php-game
-  CONTAINER_APP_NAME: php-game  # Your Azure Container App name
   RESOURCE_GROUP: php-game-group  # Your Azure Resource Group
   ACR_NAME: phpgame.azurecr.io  # Your Azure Container Registry (if using ACR)
 
@@ -44,6 +43,25 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create Azure Container App (if not exists)
+        run: |
+          EXISTS=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --query "name" -o tsv || echo "notfound")
+          if [ "$EXISTS" == "notfound" ]; then
+            echo "Creating Azure Container App..."
+            az containerapp create \
+              --name ${{ env.CONTAINER_APP_NAME }} \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --environment ${{ env.CONTAINER_ENV_NAME }} \
+              --image ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:latest \
+              --target-port 80 \
+              --ingress external \
+              --registry-server ${{ env.IMAGE_REGISTRY_URL }} \
+              --registry-username wfarat \
+              --registry-password ${{ secrets.CR_PAT }}
+          else
+            echo "Container App already exists."
+          fi
 
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
