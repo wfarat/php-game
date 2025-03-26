@@ -10,28 +10,23 @@ $buildings = $_SESSION['buildings'];
         <?php foreach ($buildings as $building): ?>
             <div class="mt-2 flex justify-between">
                 <span><?= $building->name ?> (Lvl <?= $building->level ?? '0' ?>)</span>
-               <?php if($building->isBuildingFinished()): ?> <a href="#"
-                   class="text-green-400"
-                   onclick="openUpgradePopup(
-                        <?= $building->building_id ?>,
-                        <?= $building->level ?>,
-                        '<?= $building->name ?>',
-                        '<?= $building->description ?>',
-                        '<?= $building->image ?>',
-                        <?= $building->nextLevelCost->resources->wood ?>,
-                        <?= $building->nextLevelCost->resources->stone ?>,
-                        <?= $building->nextLevelCost->resources->food ?>,
-                        <?= $building->nextLevelCost->resources->gold ?>,
-                        <?= $building->nextLevelCost->time ?>,
-                        <?= $building->nextLevelProduction ?>
-                    )">
-                    Upgrade
-                </a>
-               <?php else: ?>
-                   <span class="text-red-400 countdown-timer" data-endtime="<?= $building->endsBuildingAt->getTimestamp(); ?>">
-    --
-</span>
-               <?php endif; ?>
+                <span
+                        class="text-red-400 countdown-timer"
+                        data-endtime="<?= $building->endsBuildingAt->getTimestamp(); ?>"
+                        data-building-id="<?= $building->building_id ?>"
+                        data-level="<?= $building->level ?>"
+                        data-name="<?= $building->name ?>"
+                        data-description="<?= $building->description ?>"
+                        data-image="<?= $building->image ?>"
+                        data-wood="<?= $building->nextLevelCost->resources->wood ?>"
+                        data-stone="<?= $building->nextLevelCost->resources->stone ?>"
+                        data-food="<?= $building->nextLevelCost->resources->food ?>"
+                        data-gold="<?= $building->nextLevelCost->resources->gold ?>"
+                        data-time="<?= $building->nextLevelCost->time ?>"
+                        data-production="<?= $building->nextLevelProduction ?>"
+                >
+        --
+    </span>
             </div>
         <?php endforeach; ?>
     </div>
@@ -112,17 +107,42 @@ $buildings = $_SESSION['buildings'];
 
             timers.forEach(timer => {
                 const endTime = parseInt(timer.getAttribute('data-endtime')) * 1000; // Convert to milliseconds
+                const parentDiv = timer.parentElement; // The div that contains the timer & upgrade button
+                const buildingId = timer.getAttribute('data-building-id'); // Get the building ID
 
                 function updateTimer() {
                     const now = new Date().getTime();
                     const timeLeft = endTime - now;
 
                     if (timeLeft <= 0) {
-                        timer.innerText = "00:00";
-                        location.reload();
+                        timer.remove(); // Remove countdown timer
+
+                        // ✅ Create "Upgrade" button dynamically
+                        const upgradeButton = document.createElement("a");
+                        upgradeButton.href = "#";
+                        upgradeButton.classList.add("text-green-400");
+                        upgradeButton.innerText = "Upgrade";
+                        upgradeButton.onclick = function () {
+                            openUpgradePopup(
+                                buildingId,
+                                parseInt(timer.getAttribute('data-level')),
+                                timer.getAttribute('data-name'),
+                                timer.getAttribute('data-description'),
+                                timer.getAttribute('data-image'),
+                                parseInt(timer.getAttribute('data-wood')),
+                                parseInt(timer.getAttribute('data-stone')),
+                                parseInt(timer.getAttribute('data-food')),
+                                parseInt(timer.getAttribute('data-gold')),
+                                parseInt(timer.getAttribute('data-time')),
+                                parseInt(timer.getAttribute('data-production'))
+                            );
+                        };
+
+                        parentDiv.appendChild(upgradeButton); // Add "Upgrade" button
                         return;
                     }
 
+                    // ⏳ Convert timeLeft into MM:SS format
                     const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
                     const seconds = Math.floor((timeLeft / 1000) % 60);
 
@@ -137,4 +157,5 @@ $buildings = $_SESSION['buildings'];
         }
 
         document.addEventListener("DOMContentLoaded", startCountdown);
+
     </script>
