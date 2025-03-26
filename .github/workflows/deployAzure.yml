@@ -45,18 +45,15 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/docker-login@v1
-        with:
-          login-server: ${{env.IMAGE_REGISTRY_URL}}
-          username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }}
-
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.CONTAINER_APP_NAME }}
           imageToDeploy: ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+          registryUrl: ${{ env.IMAGE_REGISTRY_URL }}
+          registryPassword: ${{ secrets.CR_PAT }}
+          registryUsername: wfarat
 
       - name: Logout from Azure
         run: az logout
