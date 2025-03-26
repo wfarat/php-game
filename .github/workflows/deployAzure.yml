@@ -8,6 +8,7 @@ on:
 env:
   IMAGE_REGISTRY_URL: ghcr.io  # Change to ACR if needed
   DOCKER_IMAGE_NAME: php-game
+  CONTAINER_APP_NAME: php-game-container
   RESOURCE_GROUP: php-game-group  # Your Azure Resource Group
   ACR_NAME: phpgame.azurecr.io  # Your Azure Container Registry (if using ACR)
 
