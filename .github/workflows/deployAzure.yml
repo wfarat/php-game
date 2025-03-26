@@ -55,7 +55,7 @@ jobs:
               --name ${{ env.CONTAINER_APP_NAME }} \
               --resource-group ${{ env.RESOURCE_GROUP }} \
               --environment ${{ env.CONTAINER_ENV_NAME }} \
-              --image ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:latest \
+              --image ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }} \
               --target-port 80 \
               --ingress external \
               --registry-server ${{ env.IMAGE_REGISTRY_URL }} \
