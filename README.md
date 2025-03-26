@@ -1,3 +1,4 @@
+[![Deploy PHP App to Azure](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml/badge.svg)](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml)
 ### Gra przeglądarkowa strategiczna
 
 Gracze mogą zakładać konta i zarządzać swoją osadą, rozwijając infrastrukturę poprzez budowę różnych budynków. Każdy gracz ma możliwość rekrutowania armii, którą może wykorzystywać do obrony oraz atakowania innych graczy lub NPC. W grze dostępna jest funkcja tworzenia klanów, co pozwala na współpracę między graczami, wspólne planowanie strategii oraz udział w wojnach klanowych.
