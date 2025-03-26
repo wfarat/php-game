@@ -20,12 +20,12 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t myregistry.azurecr.io/php-app:${{ github.sha }} .
-          docker push myregistry.azurecr.io/php-app:${{ github.sha }}
+          docker build -t phpgame.azurecr.io/php-game:${{ github.sha }} .
+          docker push phpgame.azurecr.io/php-game:${{ github.sha }}
 
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          resourceGroup: "my-resource-group"
-          containerAppName: "my-php-app"
-          imageToDeploy: "myregistry.azurecr.io/php-app:${{ github.sha }}"
+          resourceGroup: "php-game-group"
+          containerAppName: "php-game"
+          imageToDeploy: "phpgame.azurecr.io/php-game:${{ github.sha }}"
