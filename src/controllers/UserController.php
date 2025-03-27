@@ -5,6 +5,8 @@ namespace App\controllers;
 use App\exceptions\UserNotFoundException;
 use App\services\UserService;
 use PDOException;use Random\RandomException;
+use SendGrid;
+use SendGrid\Mail\Mail;
 
 class UserController {
     private UserService $userService;
@@ -82,16 +84,25 @@ class UserController {
             }
         }
     }
-    function sendVerificationEmail($email, $token): void
+    function sendVerificationEmail($target, $login, $token): void
     {
-        $verifyLink = "https://yourwebsite.com/verify.php?token=" . $token;
-        $subject = "Email Verification";
-        $message = "Click this link to verify your email: <a href='$verifyLink'>$verifyLink</a>";
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: no-reply@yourwebsite.com" . "\r\n";
-
-        mail($email, $subject, $message, $headers);
+        $verifyLink = "https://php-game-container.icygrass-03b1dca3.polandcentral.azurecontainerapps.io/public/verify.php?token=" . $token;
+        $email = new Mail();
+        $email->setFrom("wfarat@gmail.com", "Admin");
+        $email->setSubject("Email Verification");
+        $email->addTo($target, $login);
+        $email->addContent(
+            "text/html", "Click this link to verify your email: <a href='$verifyLink'>$verifyLink</a>"
+        );
+        $sendgrid = new SendGrid(getenv('SENDGRID_API_KEY'));
+        try {
+            $response = $sendgrid->send($email);
+            print $response->statusCode() . "\n";
+            print_r($response->headers());
+            print $response->body() . "\n";
+        } catch (Exception $e) {
+            echo 'Caught exception: '. $e->getMessage() ."\n";
+        }
     }
 }
 
