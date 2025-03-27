@@ -29,7 +29,7 @@ class DbConfig {
         $this->pass = $_ENV['DB_PASS'];
         $dbname = $_ENV['DB_NAME'];
         $dbport = $_ENV['DB_PORT'];
-        $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport;
+        $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport . ';ssl-mode=require';
     }
 
 }

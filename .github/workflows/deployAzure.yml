@@ -55,6 +55,12 @@ jobs:
           registryUrl: ${{ env.IMAGE_REGISTRY_URL }}
           registryPassword: ${{ secrets.CR_PAT }}
           registryUsername: wfarat
+          environmentVariables: |
+            DB_HOST=php-game-mysql.mysql.database.azure.com
+            DB_USER=wfarat
+            DB_PASS=${{ secrets.DB_PASSWORD }}
+            DB_NAME=game
+            DB_PORT=3306
 
       - name: Logout from Azure
         run: az logout

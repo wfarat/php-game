@@ -1,4 +1,6 @@
-[![Deploy PHP App to Azure](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml/badge.svg)](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml)
+[![Deploy PHP App to Azure](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml/badge.svg)](https://github.com/wfarat/php-game/actions/workflows/deployAzure.yml)  
+### link do gry
+https://php-game-container.icygrass-03b1dca3.polandcentral.azurecontainerapps.io/public/
 ### Gra przeglądarkowa strategiczna
 
 Gracze mogą zakładać konta i zarządzać swoją osadą, rozwijając infrastrukturę poprzez budowę różnych budynków. Każdy gracz ma możliwość rekrutowania armii, którą może wykorzystywać do obrony oraz atakowania innych graczy lub NPC. W grze dostępna jest funkcja tworzenia klanów, co pozwala na współpracę między graczami, wspólne planowanie strategii oraz udział w wojnach klanowych.
