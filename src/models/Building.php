@@ -25,7 +25,7 @@ class Building
      * @param string $description
      * @param string $image
      */
-    public function __construct(int $user_id, int $building_id, int $level, string $name, string $description, string $image)
+    public function __construct(int $user_id, int $building_id, int $level, string $name, string $description, string $image, DateTime $endsBuildingAt)
     {
         $this->user_id = $user_id;
         $this->building_id = $building_id;
@@ -33,6 +33,7 @@ class Building
         $this->name = $name;
         $this->description = $description;
         $this->image = $image;
+        $this->endsBuildingAt = $endsBuildingAt;
     }
 
     public function update(): void

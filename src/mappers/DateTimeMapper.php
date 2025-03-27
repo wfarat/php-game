@@ -16,7 +16,7 @@ class DateTimeMapper
      */
     public static function map(?string $date): ?DateTime
     {
-        return $date ? new DateTime($date) : null;
+        return $date ? new DateTime($date) : new DateTime('now');
     }
 
 }

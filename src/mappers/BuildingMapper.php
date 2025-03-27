@@ -11,7 +11,10 @@ use App\models\Resources;
 
 class BuildingMapper
 {
-public static function mapToBuilding(array $buildingData): Building {
+    /**
+     * @throws \DateMalformedStringException
+     */
+    public static function mapToBuilding(array $buildingData): Building {
     $result  = new Building(
         $buildingData['user_id'] ?? $_SESSION['user']->id,
         $buildingData['building_id'],
@@ -19,6 +22,7 @@ public static function mapToBuilding(array $buildingData): Building {
         $buildingData['name'],
         $buildingData['description'],
         $buildingData['img'],
+        DateTimeMapper::map($buildingData['end_time'])
     );
     $productionKind = ProductionKind::tryFrom($buildingData['production_kind']);
     $productionType = ProductionType::tryFrom($buildingData['production_type']);
