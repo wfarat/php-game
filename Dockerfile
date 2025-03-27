@@ -17,5 +17,5 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 COPY . .
 
-CMD php /var/www/html/database/seeders/migrate.php && php /var/www/html/database/seeders/seed.php && apache2-foreground
+CMD apache2-foreground
 
