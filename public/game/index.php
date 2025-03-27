@@ -1,4 +1,5 @@
 <?php ob_start();
+require_once 'vendor/autoload.php';
 session_start();
 include './includes/header.php';
 $user = $_SESSION['user'];
