@@ -97,11 +97,11 @@ class UserController {
         $sendgrid = new SendGrid(getenv('SENDGRID_API_KEY'));
         try {
             $response = $sendgrid->send($email);
-            print $response->statusCode() . "\n";
-            print_r($response->headers());
-            print $response->body() . "\n";
+            if ($response->statusCode() === 202) {
+                echo 'Verification email sent to: ' . $target;
+            }
         } catch (Exception $e) {
-            echo 'Caught exception: '. $e->getMessage() ."\n";
+            echo 'There was a problem with sending verification email';
         }
     }
 }
