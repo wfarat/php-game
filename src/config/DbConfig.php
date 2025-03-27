@@ -25,10 +25,10 @@ class DbConfig {
 
         // Get DB config from .env
         $host = getenv('DB_HOST') ?: $_ENV['DB_HOST'];
-        $this->user = getenv('DB_HOST') ?: $_ENV['DB_USER'];
-        $this->pass = getenv('DB_HOST') ?: $_ENV['DB_PASS'];
-        $dbname = getenv('DB_HOST') ?: $_ENV['DB_NAME'];
-        $dbport = getenv('DB_HOST') ?: ['DB_PORT'];
+        $this->user = getenv('DB_USER') ?: $_ENV['DB_USER'];
+        $this->pass = getenv('DB_PASS') ?: $_ENV['DB_PASS'];
+        $dbname = getenv('DB_NAME') ?: $_ENV['DB_NAME'];
+        $dbport = getenv('DB_PORT') ?: ['DB_PORT'];
         $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport . ';ssl-mode=require';
     }
 
