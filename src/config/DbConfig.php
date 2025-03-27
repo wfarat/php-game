@@ -30,7 +30,7 @@ class DbConfig {
         $dbname = getenv('DB_NAME') ?: $_ENV['DB_NAME'];
         $dbport = getenv('DB_PORT') ?: $_ENV['DB_PORT'];
 
-        $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport . ';ssl-mode=require';
+        $this->dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $dbport;
     }
 
 }
