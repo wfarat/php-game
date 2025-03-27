@@ -1,3 +1,8 @@
+FROM composer as builder
+WORKDIR /app/
+COPY composer.* ./
+RUN composer install
+
 # Use an official PHP image with Apache
 FROM php:8.4-apache
 
@@ -8,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install pdo pdo_mysql mysqli zip
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=builder /app/vendor /var/www/html/vendor
 
 # Copy the application files
 COPY . /var/www/html/
@@ -16,5 +21,5 @@ COPY . /var/www/html/
 # Set the working directory to the web root
 WORKDIR /var/www/html/
 
-CMD bash -c "composer install php --no-dev --optimize-autoloader" && php ./database/seeders/migrate.php && php ./database/seeders/seed.php && apache2-foreground
+CMD php ./database/seeders/migrate.php && php ./database/seeders/seed.php && apache2-foreground
 
