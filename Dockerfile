@@ -16,8 +16,5 @@ COPY . /var/www/html/
 # Set the working directory to the web root
 WORKDIR /var/www/html/
 
-# Install PHP dependencies using Composer
-RUN composer install --no-dev --optimize-autoloader
-
-CMD php ./database/seeders/migrate.php && php ./database/seeders/seed.php && apache2-foreground
+CMD bash -c "composer install php --no-dev --optimize-autoloader" && php ./database/seeders/migrate.php && php ./database/seeders/seed.php && apache2-foreground
 
