@@ -5,9 +5,6 @@ $user = $_SESSION['user'];
 $resources = Context::getInstance()->resourcesService->getResources($user->id);
 $observer = Context::getInstance()->resourceObserver;
 $observer->attach([$resources, 'update']);
-if (!isset($_SESSION['auth'])) {
-    header("Location: ../login.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">

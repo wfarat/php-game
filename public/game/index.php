@@ -2,6 +2,9 @@
 require_once '../../vendor/autoload.php';
 session_start();
 include './includes/header.php';
+if (!isset($_SESSION['auth'])) {
+    header("Location: ../login.php");
+}
 $user = $_SESSION['user'];
 use App\Context;
 $units = Context::getInstance()->unitRepository->getUnits($user->id);
