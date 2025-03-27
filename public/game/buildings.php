@@ -160,8 +160,6 @@ $buildings = $_SESSION['buildings'];
             });
         }
 
-        }
-
         document.addEventListener("DOMContentLoaded", startCountdown);
 
     </script>
