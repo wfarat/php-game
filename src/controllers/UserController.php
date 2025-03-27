@@ -42,7 +42,7 @@ class UserController {
                     echo $e->getMessage();
                     return;
                 }
-                $this->sendVerificationEmail($email, $token);
+                $this->sendVerificationEmail($email, $login, $token);
                 echo "User registered successfully!";
             } else {
                 echo "Please fill in all fields.";
