@@ -1,5 +1,7 @@
 
 <?php
+ob_start();
+session_start();
 include './includes/header.php';
 $user = $_SESSION['user'];
 use App\Context;
