@@ -116,7 +116,9 @@ $buildings = $_SESSION['buildings'];
                     const timeLeft = endTime - now;
 
                     if (timeLeft <= 0) {
-                        clearInterval(intervalId); // ✅ Stop the interval when countdown ends
+                        if (intervalId) {
+                            clearInterval(intervalId);
+                        }// ✅ Stop the interval when countdown ends
                         timer.remove(); // Remove countdown timer
 
                         // ✅ Ensure only one "Upgrade" button is added
