@@ -21,7 +21,7 @@ class DbConfig {
 
     public function __construct() {
         $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
-        $dotenv->load();
+        $dotenv->safeLoad();
 
         // Get DB config from .env
         $host = getenv('DB_HOST') ?: $_ENV['DB_HOST'];
