@@ -102,6 +102,7 @@ $buildings = $_SESSION['buildings'];
                     location.reload(); // Refresh the page to update the building level
                 });
         }
+
         function startCountdown() {
             const timers = document.querySelectorAll('.countdown-timer');
 
@@ -115,30 +116,33 @@ $buildings = $_SESSION['buildings'];
                     const timeLeft = endTime - now;
 
                     if (timeLeft <= 0) {
+                        clearInterval(intervalId); // ✅ Stop the interval when countdown ends
                         timer.remove(); // Remove countdown timer
 
-                        // ✅ Create "Upgrade" button dynamically
-                        const upgradeButton = document.createElement("a");
-                        upgradeButton.href = "#";
-                        upgradeButton.classList.add("text-green-400");
-                        upgradeButton.innerText = "Upgrade";
-                        upgradeButton.onclick = function () {
-                            openUpgradePopup(
-                                buildingId,
-                                parseInt(timer.getAttribute('data-level')),
-                                timer.getAttribute('data-name'),
-                                timer.getAttribute('data-description'),
-                                timer.getAttribute('data-image'),
-                                parseInt(timer.getAttribute('data-wood')),
-                                parseInt(timer.getAttribute('data-stone')),
-                                parseInt(timer.getAttribute('data-food')),
-                                parseInt(timer.getAttribute('data-gold')),
-                                parseInt(timer.getAttribute('data-time')),
-                                parseInt(timer.getAttribute('data-production'))
-                            );
-                        };
+                        // ✅ Ensure only one "Upgrade" button is added
+                        if (!parentDiv.querySelector('.upgrade-button')) {
+                            const upgradeButton = document.createElement("a");
+                            upgradeButton.href = "#";
+                            upgradeButton.classList.add("text-green-400", "upgrade-button"); // Add a class to prevent duplicates
+                            upgradeButton.innerText = "Upgrade";
+                            upgradeButton.onclick = function () {
+                                openUpgradePopup(
+                                    buildingId,
+                                    parseInt(timer.getAttribute('data-level')),
+                                    timer.getAttribute('data-name'),
+                                    timer.getAttribute('data-description'),
+                                    timer.getAttribute('data-image'),
+                                    parseInt(timer.getAttribute('data-wood')),
+                                    parseInt(timer.getAttribute('data-stone')),
+                                    parseInt(timer.getAttribute('data-food')),
+                                    parseInt(timer.getAttribute('data-gold')),
+                                    parseInt(timer.getAttribute('data-time')),
+                                    parseInt(timer.getAttribute('data-production'))
+                                );
+                            };
 
-                        parentDiv.appendChild(upgradeButton); // Add "Upgrade" button
+                            parentDiv.appendChild(upgradeButton); // Add "Upgrade" button
+                        }
                         return;
                     }
 
@@ -152,8 +156,10 @@ $buildings = $_SESSION['buildings'];
                 }
 
                 updateTimer(); // Run immediately
-                setInterval(updateTimer, 1000); // Update every second
+                const intervalId = setInterval(updateTimer, 1000); // ✅ Store interval ID
             });
+        }
+
         }
 
         document.addEventListener("DOMContentLoaded", startCountdown);
