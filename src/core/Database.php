@@ -17,10 +17,15 @@ class Database {
         $username = $dbConfig->user;
         $password = $dbConfig->pass;
         try {
-            $this->pdo = new PDO($dsn, $username, $password);
+            $options = array(
+                PDO::MYSQL_ATTR_SSL_CA => '/var/www/html/DigiCertGlobalRootCA.crt.pem'
+            );
+            $this->pdo = new PDO($dsn, $username, $password, $options);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            error_log("Database Connection Failed: . $dsn");
+            error_log("Database Connection Failed: " . $e->getMessage()); // Log the error
+            die("Database connection failed. Check logs for details.");
         }
     }
 
