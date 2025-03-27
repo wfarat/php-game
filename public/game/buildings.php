@@ -79,7 +79,7 @@ $buildings = $_SESSION['buildings'];
                 },
                 time
             }
-            document.getElementById('confirmUpgrade').onclick = () => confirmUpgrade(id, level, cost);
+            document.getElementById('confirmUpgrade').onclick = () => confirmUpgrade(id, level, cost, production);
 
             document.getElementById('upgradePopup').classList.remove('hidden');
         }
@@ -88,14 +88,15 @@ $buildings = $_SESSION['buildings'];
             document.getElementById('upgradePopup').classList.add('hidden');
         }
 
-        function confirmUpgrade(id, level, cost) {
+        function confirmUpgrade(id, level, cost, production) {
             fetch('upgrade.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }, // Set JSON headers
                 body: JSON.stringify({
                     building_id: id,
                     level,
-                    cost              })
+                    cost,
+                    production})
             })
                 .then(() => {
                     closePopup();

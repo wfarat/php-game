@@ -14,4 +14,5 @@ if ($id > 0) {
     $_SESSION['buildings'] = $buildings;
 }
 
+ob_end_flush();
 session_write_close();

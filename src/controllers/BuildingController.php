@@ -24,8 +24,10 @@ class BuildingController
     public function upgradeBuilding(): int
     {
         $data = json_decode(file_get_contents('php://input'), true);
+
         $userId = $_SESSION['user']->id;
         $buildingId = $data['building_id'] ?? null;
+        $production = $data['production'] ?? 0;
         $cost = $data['cost'] ?? null;
         $level = $data['level'] ?? 0;
         if (!$buildingId || !$cost) {
@@ -37,6 +39,8 @@ class BuildingController
         $upgradeTime = $cost['time'] ?? 0;
 
         $mappedCost = new Cost($mappedResource, $upgradeTime);
-        return $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost);
+        $result = $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost, $production);
+        error_log("Upgrade result: " . print_r($result, true));
+        return $result;
     }
 }
