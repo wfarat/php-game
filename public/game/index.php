@@ -2,7 +2,7 @@
 require_once '../../vendor/autoload.php';
 session_start();
 include './includes/header.php';
-if (!isset($_SESSION['auth'])) {
+if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
     header("Location: ../login.php");
 }
 $user = $_SESSION['user'];
