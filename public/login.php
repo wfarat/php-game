@@ -16,7 +16,7 @@ include './includes/header.php';
         <label class="block mb-2" for="password">Password:</label>
         <input type="password" id="password" name="password" class="border p-2 w-full mb-4" required>
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2">Register</button>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2">Login</button>
 
 <?php echo "<p class=" . "text-lg mt-4" . ">";
     Context::getInstance()->userController->login();

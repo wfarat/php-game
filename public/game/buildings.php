@@ -105,7 +105,7 @@ $buildings = $_SESSION['buildings'];
 
         function startCountdown() {
             const timers = document.querySelectorAll('.countdown-timer');
-
+            const intervalId = setInterval(updateTimer, 1000); // ✅ Store interval ID
             timers.forEach(timer => {
                 const endTime = parseInt(timer.getAttribute('data-endtime')) * 1000; // Convert to milliseconds
                 const parentDiv = timer.parentElement; // The div that contains the timer & upgrade button
@@ -116,9 +116,7 @@ $buildings = $_SESSION['buildings'];
                     const timeLeft = endTime - now;
 
                     if (timeLeft <= 0) {
-                        if (intervalId) {
-                            clearInterval(intervalId);
-                        }// ✅ Stop the interval when countdown ends
+                        clearInterval(intervalId);
                         timer.remove(); // Remove countdown timer
 
                         // ✅ Ensure only one "Upgrade" button is added
@@ -156,9 +154,7 @@ $buildings = $_SESSION['buildings'];
                         (minutes < 10 ? "0" : "") + minutes + ":" +
                         (seconds < 10 ? "0" : "") + seconds;
                 }
-
                 updateTimer(); // Run immediately
-                const intervalId = setInterval(updateTimer, 1000); // ✅ Store interval ID
             });
         }
 
