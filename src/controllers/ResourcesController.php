@@ -34,7 +34,7 @@ class ResourcesController
         $_SESSION['resources']->add($this->countProduction($buildings));
     }
 
-    private function countProduction(array $buildings): Resources
+    public function countProduction(array $buildings): Resources
     {
         $wood = 0;
         $food = 0;
