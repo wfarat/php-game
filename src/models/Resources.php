@@ -32,6 +32,7 @@ class Resources
         $this->stone = $newResources->stone;
         $this->food = $newResources->food;
         $this->gold = $newResources->gold;
+        $_SESSION['resources'] = $this;
     }
 
 }
