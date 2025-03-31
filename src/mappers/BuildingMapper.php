@@ -17,7 +17,7 @@ class BuildingMapper
     public static function mapToBuilding(array $buildingData): Building {
     $result  = new Building(
         $buildingData['user_id'] ?? $_SESSION['user']->id,
-        $buildingData['building_id'],
+        $buildingData['building_id'] ?? $buildingData['id'],
         $buildingData['current_level'] ?? 0,
         $buildingData['name'],
         $buildingData['description'],
