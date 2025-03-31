@@ -1,9 +1,11 @@
 <?php ob_start();
 require_once '../../vendor/autoload.php';
 session_start();
-use App\Context;
 
-$id = Context::getInstance()->buildingController->upgradeBuilding();
+use App\core\Context;
+
+$data = json_decode(file_get_contents('php://input'), true);
+$id = Context::getInstance()->buildingController->upgradeBuilding($data);
 if ($id > 0) {
     $buildings = $_SESSION['buildings'];
     foreach ($buildings as $building) {

@@ -1,10 +1,5 @@
 <?php
-use App\Context;
-
 $user = $_SESSION['user'];
-$resources = Context::getInstance()->resourcesService->getResources($user->id);
-$observer = Context::getInstance()->resourceObserver;
-$observer->attach([$resources, 'update']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,12 +14,7 @@ $observer->attach([$resources, 'update']);
     <div>
         <span class="text-xl font-bold"><?= htmlspecialchars($user->login) ?></span>
     </div>
-    <div class="flex gap-4">
-        <span>🌲 Wood: <?= $resources->wood ?></span>
-        <span>⛏ Stone: <?= $resources->stone ?></span>
-        <span>💰 Gold: <?= $resources->gold ?></span>
-        <span>🍞 Food: <?= $resources->food ?></span>
-    </div>
+    <?php include './includes/resources.php' ?>
     <a href="./logout.php" class="text-red-400">Logout</a>
 </div>
 

@@ -6,7 +6,9 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
     header("Location: ../login.php");
 }
 $user = $_SESSION['user'];
-use App\Context;
+
+use App\core\Context;
+
 $units = Context::getInstance()->unitRepository->getUnits($user->id);
 ?>
 

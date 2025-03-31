@@ -1,6 +1,5 @@
+DROP TABLE IF EXISTS resources;
 DROP TABLE IF EXISTS user_buildings;
-DROP TABLE IF exists building_levels;
-DROP TABLE IF EXISTS buildings;
 
 
 
@@ -25,6 +24,7 @@ CREATE TABLE IF NOT EXISTS resources (
     stone INTEGER DEFAULT 5000,
     gold INTEGER DEFAULT 5000,
     food INTEGER DEFAULt 5000,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 CREATE TABLE IF NOT EXISTS buildings (

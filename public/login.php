@@ -2,7 +2,7 @@
 require_once '../vendor/autoload.php';
 session_start();
 
-use App\Context;
+use App\core\Context;
 
 include './includes/header.php';
 ?>

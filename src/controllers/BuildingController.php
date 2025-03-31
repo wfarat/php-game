@@ -5,6 +5,7 @@ namespace App\controllers;
 use App\mappers\ResourcesMapper;
 use App\models\Cost;
 use App\services\BuildingService;
+use http\Exception\InvalidArgumentException;
 
 class BuildingController
 {
@@ -21,9 +22,8 @@ class BuildingController
         $_SESSION['buildings'] = $buildings;
         }
     }
-    public function upgradeBuilding(): int
+    public function upgradeBuilding($data): int
     {
-        $data = json_decode(file_get_contents('php://input'), true);
 
         $userId = $_SESSION['user']->id;
         $buildingId = $data['building_id'] ?? null;
@@ -31,8 +31,7 @@ class BuildingController
         $cost = $data['cost'] ?? null;
         $level = $data['level'] ?? 0;
         if (!$buildingId || !$cost) {
-            echo json_encode(["error" => "Invalid request!"]);
-            exit;
+            return 0;
         }
 
         $mappedResource = ResourcesMapper::mapToResources($cost['resources']);

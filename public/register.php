@@ -1,8 +1,8 @@
 <?php
 require_once '../vendor/autoload.php';
 
+use App\core\Context;
 use Random\RandomException;
-use App\Context;
 
 include './includes/header.php';
 ?>

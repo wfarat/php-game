@@ -2,7 +2,7 @@
 
 namespace App\models;
 
-use App\Context;
+use App\core\Context;
 
 class Resources
 {

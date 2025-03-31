@@ -2,8 +2,7 @@
 require_once '../vendor/autoload.php';
 
 
-use App\Context;
-
+use App\core\Context;
 
 
 include './includes/header.php';

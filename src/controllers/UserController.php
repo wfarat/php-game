@@ -4,7 +4,9 @@ namespace App\controllers;
 
 use App\exceptions\UserNotFoundException;
 use App\services\UserService;
-use PDOException;use Random\RandomException;
+use Exception;
+use PDOException;
+use Random\RandomException;
 use SendGrid;
 use SendGrid\Mail\Mail;
 
@@ -62,7 +64,7 @@ class UserController {
                     echo "Invalid login or password!";
                 } else {
                     $_SESSION['user'] = $auth->user;
-                    $_SESSION['auth'] = true;
+                    $_SESSION['auth'] = $auth->isAuthenticated;
                     session_write_close();
                     header("Location: game/index.php");
                 }

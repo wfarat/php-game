@@ -1,6 +1,8 @@
 <?php
 $user = $_SESSION['user'];
-use App\Context;
+
+use App\core\Context;
+
 Context::getInstance()->buildingController->getBuildings($user->id);
 $buildings = $_SESSION['buildings'];
 ?>

@@ -1,8 +1,9 @@
 <?php
-namespace App;
+namespace App\core;
 use App\config\DbConfig;
 use App\controllers\BuildingController;
-use App\core\Database;
+use App\controllers\ResourcesController;
+use App\controllers\UserController;
 use App\observers\BuildingObserver;
 use App\observers\ResourceObserver;
 use App\repositories\BuildingRepository;
@@ -13,7 +14,6 @@ use App\repositories\UserRepository;
 use App\services\BuildingService;
 use App\services\ResourcesService;
 use App\services\UserService;
-use App\controllers\UserController;
 
 class Context {
 
@@ -30,6 +30,7 @@ public ResourcesService $resourcesService;
 public ResourceObserver $resourceObserver;
 public BuildingObserver $buildingObserver;
 public UserController $userController;
+public ResourcesController $resourcesController;
 public static ?Context $instance = null;
 private function __construct() {
     $this->db = Database::getInstance(new DbConfig());
@@ -42,6 +43,7 @@ private function __construct() {
     $this->resourceObserver = new ResourceObserver();
     $this->buildingObserver = new BuildingObserver();
     $this->resourcesService = new ResourcesService($this->resourcesRepository, $this->resourceObserver);
+    $this->resourcesController = new ResourcesController($this->resourcesService);
     $this->buildingRepository = new BuildingRepository($this->db);
     $this->buildingService = new BuildingService($this->buildingRepository, $this->resourcesService, $this->buildingObserver);
     $this->buildingController = new BuildingController($this->buildingService);
