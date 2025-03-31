@@ -34,32 +34,4 @@ class ResourcesController
         $_SESSION['resources']->add($this->countProduction($buildings));
     }
 
-    public function countProduction(array $buildings): Resources
-    {
-        $wood = 0;
-        $food = 0;
-        $stone = 0;
-        $gold = 0;
-        foreach ($buildings as $building) {
-            $production = $building->production;
-            if ($production->type == ProductionType::Resource) {
-                switch ($production->kind) {
-                    case ProductionKind::Food:
-                        $food += $production->amount;
-                        break;
-                    case ProductionKind::Gold:
-                        $gold += $production->amount;
-                        break;
-                    case ProductionKind::Stone:
-                        $stone += $production->amount;
-                        break;
-                    case ProductionKind::Wood:
-                        $wood += $production->wood;
-                        break;
-                    default:
-                }
-            }
-        }
-        return new Resources($wood, $stone, $food, $gold);
-    }
 }

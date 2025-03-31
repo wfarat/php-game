@@ -2,15 +2,14 @@
 
 namespace App\controllers;
 
+use App\helpers\ProductionCalculator;
 use App\mappers\ResourcesMapper;
 use App\models\Cost;
 use App\services\BuildingService;
-use http\Exception\InvalidArgumentException;
 
 class BuildingController
 {
     public BuildingService $buildingService;
-
     public function __construct(BuildingService $buildingService) {
         $this->buildingService = $buildingService;
     }
@@ -20,6 +19,7 @@ class BuildingController
         if (!isset($_SESSION['buildings'])) {
         $buildings = $this->buildingService->getBuildings($userId);
         $_SESSION['buildings'] = $buildings;
+        $_SESSION['resources'] = ProductionCalculator::countProduction($buildings);
         }
     }
     public function upgradeBuilding($data): int

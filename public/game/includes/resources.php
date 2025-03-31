@@ -1,13 +1,14 @@
 <?php
 
 use App\core\Context;
+use App\models\Resources;
+
 $resourceController = Context::getInstance()->resourcesController;
 $user = $_SESSION['user'];
 $resourceController->getResources($user->id);
 $resources = $_SESSION['resources'];
-Context::getInstance()->buildingController->getBuildings($user->id);
-$buildings = $_SESSION['buildings'];
-$production = $resourceController->countProduction($buildings);
+$_SESSION['production'] = new Resources(0, 0, 0, 0);
+$production = $_SESSION['production'];
 ?>
 <div class="flex gap-4">
     <span id="wood">🌲 Wood: <?= $resources->wood ?></span>
@@ -15,14 +16,12 @@ $production = $resourceController->countProduction($buildings);
     <span id="gold">💰 Gold: <?= $resources->gold ?></span>
     <span id="food">🍞 Food: <?= $resources->food ?></span>
 </div>
-
 <script>
-    const foodProduction = <?= $production->food ?>;
-    const woodProduction = <?= $production->wood ?>;
-    const goldProduction = <?= $production->gold ?>;
-    const stoneProduction = <?= $production->stone ?>;
-
     function updateResources() {
+        const foodProduction = <?= $production->food ?>;
+        const woodProduction = <?= $production->wood ?>;
+        const goldProduction = <?= $production->gold ?>;
+        const stoneProduction = <?= $production->stone ?>;
         const food = document.getElementById("food");
         const stone = document.getElementById("stone");
         const gold = document.getElementById("gold");
