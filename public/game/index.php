@@ -39,4 +39,10 @@ $units = Context::getInstance()->unitRepository->getUnits($user->id);
     </div>
 
 </div>
+<script>
+    function startProduction() {
+        setInterval(() => fetch("production.php"), 1000)
+    }
+    document.addEventListener("DOMContentLoaded", startProduction);
+</script>
 <?php include './includes/footer.php'; ?>

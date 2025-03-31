@@ -25,4 +25,19 @@ class Resources
         $this->gold = $gold;
     }
 
+    public function update(Resources $resources):void
+    {
+        $this->wood = $resources->wood;
+        $this->stone = $resources->stone;
+        $this->food = $resources->food;
+        $this->gold = $resources->gold;
+    }
+
+    public function add(Resources $resources):void
+    {
+        $this->wood += $resources->wood;
+        $this->stone += $resources->stone;
+        $this->food += $resources->food;
+        $this->gold += $resources->gold;
+    }
 }
