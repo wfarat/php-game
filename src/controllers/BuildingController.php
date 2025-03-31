@@ -14,13 +14,13 @@ class BuildingController
         $this->buildingService = $buildingService;
     }
 
-    public function getBuildings(int $userId): void
+    public function getBuildings(int $userId): array
     {
         if (!isset($_SESSION['buildings'])) {
         $buildings = $this->buildingService->getBuildings($userId);
         $_SESSION['buildings'] = $buildings;
-        $_SESSION['resources'] = ProductionCalculator::countProduction($buildings);
         }
+        return $_SESSION['buildings'];
     }
     public function upgradeBuilding($data): int
     {

@@ -16,11 +16,12 @@ class ResourcesController
         $this->resourcesService = $resourcesService;
     }
 
-    public function getResources(int $userId): void
+    public function getResources(int $userId): Resources
     {
         if (!isset($_SESSION['resources'])) {
             $_SESSION['resources'] = $this->resourcesService->getResources($userId);
         }
+        return $_SESSION['resources'];
     }
 
     public function updateResources(int $userId): void

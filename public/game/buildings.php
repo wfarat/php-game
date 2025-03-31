@@ -3,8 +3,7 @@ $user = $_SESSION['user'];
 
 use App\core\Context;
 
-Context::getInstance()->buildingController->getBuildings($user->id);
-$buildings = $_SESSION['buildings'];
+$buildings = Context::getInstance()->buildingController->getBuildings($user->id);
 ?>
   <!-- ✅ Buildings Section -->
     <div class="bg-gray-800 p-4 rounded-lg">

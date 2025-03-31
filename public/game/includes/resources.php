@@ -1,14 +1,12 @@
 <?php
 
 use App\core\Context;
-use App\models\Resources;
+use App\helpers\ProductionCalculator;
 
-$resourceController = Context::getInstance()->resourcesController;
 $user = $_SESSION['user'];
-$resourceController->getResources($user->id);
-$resources = $_SESSION['resources'];
-$_SESSION['production'] = new Resources(0, 0, 0, 0);
-$production = $_SESSION['production'];
+$resources = Context::getInstance()->resourcesController->getResources($user->id);
+$buildings = Context::getInstance()->buildingController->getBuildings($user->id);
+$production = ProductionCalculator::countProduction($buildings);
 ?>
 <div class="flex gap-4">
     <span id="wood">🌲 Wood: <?= $resources->wood ?></span>
