@@ -28,7 +28,7 @@ class ProductionCalculator
                         $stone += $production->amount;
                         break;
                     case ProductionKind::Wood:
-                        $wood += $production->wood;
+                        $wood += $production->amount;
                         break;
                     default:
                 }
