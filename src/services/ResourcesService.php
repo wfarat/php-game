@@ -3,17 +3,14 @@
 namespace App\services;
 
 use App\models\Resources;
-use App\observers\ResourceObserver;
 use App\repositories\ResourcesRepository;
 
 class ResourcesService
 {
-    public ResourcesRepository $resourcesRepository;
-    private ResourceObserver $observer;
+    private ResourcesRepository $resourcesRepository;
 
-    public function __construct(ResourcesRepository $resourcesRepository, ResourceObserver $observer) {
+    public function __construct(ResourcesRepository $resourcesRepository) {
         $this->resourcesRepository = $resourcesRepository;
-        $this->observer = $observer;
     }
 
     public function getResources(int $userId): Resources
@@ -24,8 +21,5 @@ class ResourcesService
     public function deductResources(int $userId, Resources $resources): void
     {
         $this->resourcesRepository->deductResources($userId, $resources);
-
-        // Notify observers (e.g., UI updates)
-        $this->observer->notify($userId);
     }
 }

@@ -16,8 +16,12 @@ class ResourcesController
     public function getResources(int $userId): void
     {
         if (!isset($_SESSION['resources'])) {
-            $resources = $this->resourcesService->getResources($userId);
-            $_SESSION['resources'] = $resources;
+            $_SESSION['resources'] = $this->resourcesService->getResources($userId);
         }
+    }
+
+    public function updateResources(int $userId): void
+    {
+        $_SESSION['resources'] = $this->resourcesService->getResources($userId);
     }
 }

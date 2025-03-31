@@ -13,11 +13,9 @@ class BuildingService
 
     public BuildingRepository $buildingRepository;
     public ResourcesService $resourcesService;
-    public BuildingObserver $observer;
-    public function __construct(BuildingRepository $buildingRepository, ResourcesService $resourcesService, BuildingObserver $buildingObserver) {
+    public function __construct(BuildingRepository $buildingRepository, ResourcesService $resourcesService) {
         $this->buildingRepository = $buildingRepository;
         $this->resourcesService = $resourcesService;
-        $this->observer = $buildingObserver;
     }
     public function getBuildings(int $userId): array
     {
