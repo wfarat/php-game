@@ -122,9 +122,9 @@ $buildings = $_SESSION['buildings'];
                     if (timeLeft <= 0) {
                         clearInterval(intervalId);
                         timer.remove(); // Remove countdown timer
-
+                        const time = parseInt(timer.getAttribute('data-time'))
                         // ✅ Ensure only one "Upgrade" button is added
-                        if (!parentDiv.querySelector('.upgrade-button')) {
+                        if (!parentDiv.querySelector('.upgrade-button') && time) {
                             const upgradeButton = document.createElement("a");
                             upgradeButton.href = "#";
                             upgradeButton.classList.add("text-green-400", "upgrade-button"); // Add a class to prevent duplicates
@@ -140,7 +140,7 @@ $buildings = $_SESSION['buildings'];
                                     parseInt(timer.getAttribute('data-stone')),
                                     parseInt(timer.getAttribute('data-food')),
                                     parseInt(timer.getAttribute('data-gold')),
-                                    parseInt(timer.getAttribute('data-time')),
+                                    time,
                                     parseInt(timer.getAttribute('data-production'))
                                 );
                             };

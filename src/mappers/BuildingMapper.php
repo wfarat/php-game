@@ -29,13 +29,13 @@ class BuildingMapper
     $production = new Production($productionType, $buildingData['production_amount'] ?? 0, $productionKind);
     $result->production = $production;
     $resources = new Resources(
-        $buildingData['wood'],
-        $buildingData['stone'],
-        $buildingData['food'],
-        $buildingData['gold']
+        $buildingData['wood'] ?? 0,
+        $buildingData['stone'] ?? 0,
+        $buildingData['food'] ?? 0,
+        $buildingData['gold'] ?? 0
     );
-    $result->nextLevelCost = new Cost($resources, $buildingData['time']);
-    $result->nextLevelProduction = $buildingData['production'];
+    $result->nextLevelCost = new Cost($resources, $buildingData['time'] ?? 0);
+    $result->nextLevelProduction = $buildingData['production'] ?? 0;
     return $result;
 }
 }
