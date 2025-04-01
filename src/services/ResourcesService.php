@@ -22,4 +22,9 @@ class ResourcesService
     {
         $this->resourcesRepository->deductResources($userId, $resources);
     }
+
+    public function updateResources(int $userId, Resources $resources): void
+    {
+        $this->resourcesRepository->updateResources($userId, $resources);
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace App\controllers;
 
+use App\helpers\ProductionCalculator;
 use App\models\ProductionKind;
 use App\models\ProductionType;
 use App\models\Resources;
 use App\services\ResourcesService;
+use DateTime;
 
 class ResourcesController
 {
@@ -32,7 +34,18 @@ class ResourcesController
     public function produceResources(): void
     {
         $buildings = $_SESSION['buildings'];
-        $_SESSION['resources']->add($this->countProduction($buildings));
+        $production = ProductionCalculator::countProduction($buildings);
+        $lastUpdated = $_SESSION['resources']->lastUpdated;
+        $currentTime = new DateTime('now');
+        $interval = $currentTime->diff($lastUpdated);
+        $secondsPassed = ($interval->days * 24 * 60 * 60) +
+            ($interval->h * 60 * 60) +
+            ($interval->i * 60) +
+            $interval->s;
+        $production->multiply($secondsPassed);
+        $_SESSION['resources']->add($production);
+        $_SESSION['resources']->lastUpdated = $currentTime;
+        $this->resourcesService->updateResources($_SESSION['userId'], $_SESSION['resources']);
     }
 
 }
