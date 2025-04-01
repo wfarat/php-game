@@ -4,6 +4,7 @@ namespace App\repositories;
 
 use App\mappers\ResourcesMapper;
 use App\models\Resources;
+use DateTime;
 
 class ResourcesRepository extends BaseRepository
 {
@@ -17,7 +18,7 @@ class ResourcesRepository extends BaseRepository
             $stmt = $this->pdo->prepare("INSERT INTO resources (user_id) VALUES (:userId)");
             $stmt->bindParam(':userId', $userId);
             $stmt->execute();
-            return new Resources($userId, 5000, 5000, 5000, 5000);
+            return new Resources(5000, 5000, 5000, 5000, new DateTime('now'));
         }
         return ResourcesMapper::mapToResources($data);
     }

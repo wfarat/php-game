@@ -18,7 +18,7 @@ class Resources
      * @param int $food
      * @param int $gold
      */
-    public function __construct(int $wood, int $stone, int $food, int $gold, ?DateTime $lastUpdated)
+    public function __construct(int $wood, int $stone, int $food, int $gold, ?DateTime $lastUpdated = null)
     {
         $this->wood = $wood;
         $this->stone = $stone;
