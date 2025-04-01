@@ -7,6 +7,7 @@ use App\mappers\ResourcesMapper;
 use App\models\Cost;
 use App\models\Resources;
 use App\services\BuildingService;
+use DateMalformedStringException;
 
 class BuildingController
 {
@@ -34,13 +35,14 @@ class BuildingController
         if (!$buildingId || !$cost) {
             return 0;
         }
-
-        $mappedResource = ResourcesMapper::mapToResources($cost['resources']);
-        $upgradeTime = $cost['time'] ?? 0;
-
-        $mappedCost = new Cost($mappedResource, $upgradeTime);
-        $result = $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost, $production, $resources);
-        error_log("Upgrade result: " . print_r($result, true));
-        return $result;
+        try {
+            $mappedResource = ResourcesMapper::mapToResources($cost['resources']);
+            $upgradeTime = $cost['time'] ?? 0;
+            $mappedCost = new Cost($mappedResource, $upgradeTime);
+            return $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost, $production, $resources);
+        } catch (DateMalformedStringException $e) {
+            error_log($e->getMessage());
+        }
+        return 0;
     }
 }

@@ -31,9 +31,15 @@ class ResourcesController
         $_SESSION['resources']->update($this->resourcesService->getResources($userId));
     }
 
-    public function produceResources(): Resources
+    public function getProduction(array $buildings)
     {
-        $buildings = $_SESSION['buildings'];
+        if (!isset($_SESSION['production'])) {
+            $_SESSION['production'] = ProductionCalculator::countProduction($buildings);
+        }
+        return $_SESSION['production'];
+    }
+    public function produceResources(array $buildings): Resources
+    {
         $production = ProductionCalculator::countProduction($buildings);
         $lastUpdated = $_SESSION['resources']->lastUpdated;
         $currentTime = new DateTime('now');
