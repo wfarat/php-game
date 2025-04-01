@@ -6,7 +6,8 @@ use App\helpers\ProductionCalculator;
 $user = $_SESSION['user'];
 $resources = Context::getInstance()->resourcesController->getResources($user->id);
 $buildings = Context::getInstance()->buildingController->getBuildings($user->id);
-$production = ProductionCalculator::countProduction($buildings);
+$_SESSION['production'] = ProductionCalculator::countProduction($buildings);
+$production = $_SESSION['production'];
 ?>
 <div class="flex gap-4">
     <span id="wood">🌲 Wood: <?= $resources->wood ?></span>

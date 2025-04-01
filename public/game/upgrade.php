@@ -3,6 +3,7 @@ require_once '../../vendor/autoload.php';
 session_start();
 
 use App\core\Context;
+use App\helpers\ProductionCalculator;
 
 $data = json_decode(file_get_contents('php://input'), true);
 $id = Context::getInstance()->buildingController->upgradeBuilding($data);
@@ -15,6 +16,7 @@ if ($id > 0) {
             $building->update();
         }
     }
+    $_SESSION['production'] = ProductionCalculator::countProduction($buildings);
 }
 
 ob_end_flush();
