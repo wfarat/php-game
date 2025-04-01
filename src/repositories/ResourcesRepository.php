@@ -4,11 +4,13 @@ namespace App\repositories;
 
 use App\mappers\ResourcesMapper;
 use App\models\Resources;
+use App\models\User;
+use App\models\UserResources;
 use DateTime;
 
 class ResourcesRepository extends BaseRepository
 {
-    public function getResources(int $userId): Resources
+    public function getResources(int $userId): UserResources
     {
         $stmt = $this->pdo->prepare("SELECT * FROM resources WHERE user_id = :userId");
         $stmt->bindParam(':userId', $userId);
@@ -18,12 +20,12 @@ class ResourcesRepository extends BaseRepository
             $stmt = $this->pdo->prepare("INSERT INTO resources (user_id) VALUES (:userId)");
             $stmt->bindParam(':userId', $userId);
             $stmt->execute();
-            return new Resources(5000, 5000, 5000, 5000, new DateTime('now'));
+            return new UserResources(5000, 5000, 5000, 5000, new DateTime('now'));
         }
         return ResourcesMapper::mapToResources($data);
     }
 
-    public function updateResources(int $userId, Resources $resources): bool
+    public function updateResources(int $userId, UserResources $resources): bool
     {
         $lastUpdatedString = $resources->lastUpdated->format('Y-m-d H:i:s');
         $stmt = $this->pdo->prepare("UPDATE resources SET wood = :wood, stone = :stone,

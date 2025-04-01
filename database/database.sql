@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS resources;
 DROP TABLE IF EXISTS user_buildings;
-
+DROP TABLE IF EXISTS user_units;
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -75,10 +75,10 @@ CREATE TABLE IF NOT EXISTS unit_costs (
     gold INT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS user_units (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
     unit_id INTEGER NOT NULL,
     count INTEGER NOT NULL,
+    PRIMARY KEY (user_id, unit_id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (unit_id) REFERENCES units(id)
 );

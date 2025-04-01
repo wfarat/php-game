@@ -2,7 +2,7 @@
 
 namespace App\services;
 
-use App\models\Resources;
+use App\models\UserResources;
 use App\repositories\ResourcesRepository;
 
 class ResourcesService
@@ -13,18 +13,18 @@ class ResourcesService
         $this->resourcesRepository = $resourcesRepository;
     }
 
-    public function getResources(int $userId): Resources
+    public function getResources(int $userId): UserResources
     {
         return $this->resourcesRepository->getResources($userId);
     }
 
-    public function deductResources(int $userId, Resources $deducted, Resources $current): void
+    public function deductResources(int $userId, UserResources $deducted, UserResources $current): void
     {
         $current->deduce($deducted);
         $this->updateResources($userId, $current);
     }
 
-    public function updateResources(int $userId, Resources $resources): void
+    public function updateResources(int $userId, UserResources $resources): void
     {
         $this->resourcesRepository->updateResources($userId, $resources);
     }

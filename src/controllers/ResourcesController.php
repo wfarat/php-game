@@ -3,9 +3,8 @@
 namespace App\controllers;
 
 use App\helpers\ProductionCalculator;
-use App\models\ProductionKind;
-use App\models\ProductionType;
 use App\models\Resources;
+use App\models\UserResources;
 use App\services\ResourcesService;
 use DateTime;
 
@@ -18,7 +17,7 @@ class ResourcesController
         $this->resourcesService = $resourcesService;
     }
 
-    public function getResources(int $userId): Resources
+    public function getResources(int $userId): UserResources
     {
         if (!isset($_SESSION['resources'])) {
             $_SESSION['resources'] = $this->resourcesService->getResources($userId);
@@ -31,14 +30,15 @@ class ResourcesController
         $_SESSION['resources']->update($this->resourcesService->getResources($userId));
     }
 
-    public function getProduction(array $buildings)
+    public function getProduction(array $buildings): ?Resources
     {
         if (!isset($_SESSION['production'])) {
             $_SESSION['production'] = ProductionCalculator::countProduction($buildings);
+            $_SESSION['resources']->update($this->produceResources($buildings));
         }
         return $_SESSION['production'];
     }
-    public function produceResources(array $buildings): Resources
+    public function produceResources(array $buildings): UserResources
     {
         $production = ProductionCalculator::countProduction($buildings);
         $lastUpdated = $_SESSION['resources']->lastUpdated;

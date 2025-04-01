@@ -2,7 +2,7 @@
 
 namespace App\mappers;
 
-use App\models\Resources;
+use App\models\UserResources;
 use DateMalformedStringException;
 
 class ResourcesMapper
@@ -10,8 +10,8 @@ class ResourcesMapper
     /**
      * @throws DateMalformedStringException
      */
-    public static function mapToResources(array $resourcesData): Resources {
-    return new Resources(
+    public static function mapToResources(array $resourcesData): UserResources {
+    return new UserResources(
         $resourcesData['wood'] ?? 0,
         $resourcesData['stone'] ?? 0,
         $resourcesData['food'] ?? 0,

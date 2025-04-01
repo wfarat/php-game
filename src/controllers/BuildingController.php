@@ -2,10 +2,9 @@
 
 namespace App\controllers;
 
-use App\helpers\ProductionCalculator;
 use App\mappers\ResourcesMapper;
 use App\models\Cost;
-use App\models\Resources;
+use App\models\UserResources;
 use App\services\BuildingService;
 use DateMalformedStringException;
 
@@ -24,7 +23,7 @@ class BuildingController
         }
         return $_SESSION['buildings'];
     }
-    public function upgradeBuilding($data, Resources $resources): int
+    public function upgradeBuilding($data, UserResources $resources): int
     {
 
         $userId = $_SESSION['user']->id;

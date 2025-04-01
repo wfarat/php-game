@@ -6,12 +6,10 @@ on:
       - main
 
 env:
-  IMAGE_REGISTRY_URL: ghcr.io  # Change to ACR if needed
+  IMAGE_REGISTRY_URL: ghcr.io
   DOCKER_IMAGE_NAME: php-game
-  CONTAINER_ENV_NAME: php-game-env
   CONTAINER_APP_NAME: php-game-container
-  RESOURCE_GROUP: php-game-group  # Your Azure Resource Group
-  ACR_NAME: phpgame.azurecr.io  # Your Azure Container Registry (if using ACR)
+  RESOURCE_GROUP: php-game-group
 
 jobs:
   Build-Docker-Image:
