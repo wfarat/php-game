@@ -31,7 +31,7 @@ class ResourcesController
         $_SESSION['resources']->update($this->resourcesService->getResources($userId));
     }
 
-    public function produceResources(): void
+    public function produceResources(): Resources
     {
         $buildings = $_SESSION['buildings'];
         $production = ProductionCalculator::countProduction($buildings);
@@ -45,7 +45,7 @@ class ResourcesController
         $production->multiply($secondsPassed);
         $_SESSION['resources']->add($production);
         $_SESSION['resources']->lastUpdated = $currentTime;
-        $this->resourcesService->updateResources($_SESSION['user']->id, $_SESSION['resources']);
+        return $_SESSION['resources'];
     }
 
 }

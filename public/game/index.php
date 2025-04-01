@@ -1,10 +1,10 @@
 <?php ob_start();
 require_once '../../vendor/autoload.php';
 session_start();
-include './includes/header.php';
 if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
     header("Location: ../login.php");
 }
+include './includes/header.php';
 $user = $_SESSION['user'];
 
 use App\core\Context;

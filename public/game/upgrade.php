@@ -6,7 +6,8 @@ use App\core\Context;
 use App\helpers\ProductionCalculator;
 
 $data = json_decode(file_get_contents('php://input'), true);
-$id = Context::getInstance()->buildingController->upgradeBuilding($data);
+$resources = Context::getInstance()->resourcesController->produceResources();
+$id = Context::getInstance()->buildingController->upgradeBuilding($data, $resources);
 if ($id > 0) {
     $user = $_SESSION['user'];
     Context::getInstance()->resourcesController->updateResources($user->id);

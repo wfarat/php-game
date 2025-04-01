@@ -50,4 +50,12 @@ class Resources
         $this->food *= $times;
         $this->gold *= $times;
     }
+
+    public function deduce(Resources $resources): void
+    {
+        $this->wood -= $resources->wood;
+        $this->stone -= $resources->stone;
+        $this->food -= $resources->food;
+        $this->gold -= $resources->gold;
+    }
 }

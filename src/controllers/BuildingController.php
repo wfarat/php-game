@@ -5,6 +5,7 @@ namespace App\controllers;
 use App\helpers\ProductionCalculator;
 use App\mappers\ResourcesMapper;
 use App\models\Cost;
+use App\models\Resources;
 use App\services\BuildingService;
 
 class BuildingController
@@ -22,7 +23,7 @@ class BuildingController
         }
         return $_SESSION['buildings'];
     }
-    public function upgradeBuilding($data): int
+    public function upgradeBuilding($data, Resources $resources): int
     {
 
         $userId = $_SESSION['user']->id;
@@ -38,7 +39,7 @@ class BuildingController
         $upgradeTime = $cost['time'] ?? 0;
 
         $mappedCost = new Cost($mappedResource, $upgradeTime);
-        $result = $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost, $production);
+        $result = $this->buildingService->upgradeBuilding($userId, $buildingId, $level, $mappedCost, $production, $resources);
         error_log("Upgrade result: " . print_r($result, true));
         return $result;
     }

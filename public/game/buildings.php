@@ -129,7 +129,6 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                             upgradeButton.classList.add("text-green-400", "upgrade-button"); // Add a class to prevent duplicates
                             upgradeButton.innerText = "Upgrade";
                             upgradeButton.onclick = function () {
-                                fetch("produce.php");
                                 openUpgradePopup(
                                     buildingId,
                                     parseInt(timer.getAttribute('data-level')),

@@ -18,9 +18,10 @@ class ResourcesService
         return $this->resourcesRepository->getResources($userId);
     }
 
-    public function deductResources(int $userId, Resources $resources): void
+    public function deductResources(int $userId, Resources $deducted, Resources $current): void
     {
-        $this->resourcesRepository->deductResources($userId, $resources);
+        $current->deduce($deducted);
+        $this->updateResources($userId, $current);
     }
 
     public function updateResources(int $userId, Resources $resources): void
