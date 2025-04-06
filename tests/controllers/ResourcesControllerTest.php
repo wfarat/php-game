@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Controllers;
+namespace Test\controllers;
 
 use App\controllers\ResourcesController;
-use App\helpers\ProductionCalculator;
 use App\models\Resources;
 use App\models\UserResources;
 use App\services\BuildingService;

@@ -25,8 +25,8 @@ class UnitMapper
     $cost = new Cost($resources, $data['time']);
     return new Unit(
         $data['unit_id'],
-        $data['user_id'],
-        $data['count'],
+        $data['user_id'] ?? $_SESSION['user']->id,
+        $data['count'] ?? 0,
         $data['name'],
         $data['description'],
         $data['img'],

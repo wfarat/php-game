@@ -16,7 +16,7 @@ class UnitController
     public function getUnits(int $userId): array
     {
         if (!isset($_SESSION['units'])) {
-            $_SESSION['units'] = $unitService->getUnits($userId);
+            $_SESSION['units'] = $this->unitService->getUnits($userId);
         }
         return $_SESSION['units'];
     }

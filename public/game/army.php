@@ -10,8 +10,8 @@ $units = Context::getInstance()->unitController->getUnits($user->id);
         <h2 class="text-lg font-bold">⚔ Army</h2>
         <?php foreach ($units as $unit): ?>
             <div class="mt-2 flex justify-between">
-                <span><?= $unit['name'] ?>: <?= $unit['count'] ?></span>
-                <a href="train.php?unit=<?= $unit['unit_id'] ?>" class="text-blue-400">Train</a>
+                <span><?= $unit->name ?>: <?= $unit->count ?></span>
+                <a href="train.php?unit=<?= $unit->unitId ?>" class="text-blue-400">Train</a>
             </div>
         <?php endforeach; ?>
 
