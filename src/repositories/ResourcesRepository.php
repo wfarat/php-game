@@ -3,13 +3,15 @@
 namespace App\repositories;
 
 use App\mappers\ResourcesMapper;
-use App\models\Resources;
-use App\models\User;
 use App\models\UserResources;
+use DateMalformedStringException;
 use DateTime;
 
 class ResourcesRepository extends BaseRepository
 {
+    /**
+     * @throws DateMalformedStringException
+     */
     public function getResources(int $userId): UserResources
     {
         $stmt = $this->pdo->prepare("SELECT * FROM resources WHERE user_id = :userId");
@@ -22,7 +24,7 @@ class ResourcesRepository extends BaseRepository
             $stmt->execute();
             return new UserResources(5000, 5000, 5000, 5000, new DateTime('now'));
         }
-        return ResourcesMapper::mapToResources($data);
+        return ResourcesMapper::mapToUserResources($data);
     }
 
     public function updateResources(int $userId, UserResources $resources): bool

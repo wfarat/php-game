@@ -43,9 +43,7 @@ class BuildingControllerTest extends TestCase
         $this->buildingServiceMock
             ->expects($this->once())
             ->method('upgradeBuilding')
-            ->with(1, 100, 2, $this->callback(function (Cost $cost) use ($mappedCost) {
-                return $mappedCost->equals($cost);
-            }), 50, $userResource)
+            ->with(1, 100, 2, $mappedCost, 50, $userResource)
             ->willReturn(1);
 
         $result = $this->controller->upgradeBuilding($data, $userResource);
