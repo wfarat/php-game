@@ -22,7 +22,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4' # or whatever version you're using
+          php-version: '8.4'
           extensions: pdo, pdo_mysql
           tools: phpunit
 
@@ -34,6 +34,7 @@ jobs:
   Build-Docker-Image:
     runs-on: ubuntu-latest
     name: Build image and push to GitHub Container Registry
+    needs: Run-Tests
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

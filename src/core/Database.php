@@ -13,9 +13,9 @@ class Database {
 
     private function __construct(DbConfig $dbConfig)
     {
-        $dsn = $dbConfig->dsn;
-        $username = $dbConfig->user;
-        $password = $dbConfig->pass;
+        $dsn = $dbConfig->getDsn();
+        $username = $dbConfig->getUser();
+        $password = $dbConfig->getPass();
         try {
             $options = array(
                 PDO::MYSQL_ATTR_SSL_CA => '/var/www/html/DigiCertGlobalRootCA.crt.pem'

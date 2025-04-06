@@ -4,10 +4,31 @@ namespace Test;
 
 use App\config\DbConfig;
 
-class TestDbConfig extends DbConfig
+class TestDbConfig implements DbConfig
 {
-    public string $dsn = 'sqlite::memory:';
+    private string $dsn;
+    private string $user;
+    private string $pass;
 
-    public string $user = '';
-    public string $pass = '';
+    public function __construct()
+    {
+        $this->dsn = 'sqlite::memory:';
+        $this->user = '';
+        $this->pass = '';
+    }
+
+    public function getDsn(): string
+    {
+        return $this->dsn;
+    }
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    public function getPass(): string
+    {
+        return $this->pass;
+    }
 }

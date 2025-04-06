@@ -1,11 +1,9 @@
 <?php
 namespace App\core;
-use App\config\DbConfig;
+use App\config\ProdDbConfig;
 use App\controllers\BuildingController;
 use App\controllers\ResourcesController;
 use App\controllers\UserController;
-use App\observers\BuildingObserver;
-use App\observers\ResourceObserver;
 use App\repositories\BuildingRepository;
 use App\repositories\ResourcesRepository;
 use App\repositories\TokenRepository;
@@ -31,7 +29,7 @@ public UserController $userController;
 public ResourcesController $resourcesController;
 public static ?Context $instance = null;
 private function __construct() {
-    $this->db = Database::getInstance(new DbConfig());
+    $this->db = Database::getInstance(new ProdDbConfig());
     $this->userRepository = new UserRepository($this->db);
     $this->tokenRepository = new TokenRepository($this->db);
     $this->userService = new UserService($this->userRepository, $this->tokenRepository);
