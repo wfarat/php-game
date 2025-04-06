@@ -28,4 +28,10 @@ class Cost
        }
        return false;
     }
+
+    public function equals(Cost $cost): bool
+    {
+        return $this->resources->equals($cost->resources) && $this->time === $cost->time;
+    }
+
 }

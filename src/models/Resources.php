@@ -46,4 +46,13 @@ class Resources
         $this->food -= $resources->food;
         $this->gold -= $resources->gold;
     }
+
+    public function equals(Resources $resources): bool
+    {
+        return $this->wood === $resources->wood &&
+            $this->stone === $resources->stone &&
+            $this->food === $resources->food &&
+            $this->gold === $resources->gold;
+    }
+
 }

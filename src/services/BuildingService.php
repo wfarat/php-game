@@ -3,7 +3,10 @@
 namespace App\services;
 
 use App\models\Cost;
+use App\models\ProductionKind;
+use App\models\ProductionType;
 use App\models\Resources;
+use App\models\UserResources;
 use App\observers\BuildingObserver;
 use App\repositories\BuildingRepository;
 use Exception;
@@ -23,7 +26,7 @@ class BuildingService
         return $this->buildingRepository->getBuildings($userId);
     }
 
-    public function upgradeBuilding(int $userId, int $buildingId, int $level, Cost $cost, int $production, Resources $resources): int
+    public function upgradeBuilding(int $userId, int $buildingId, int $level, Cost $cost, int $production, UserResources $resources): int
     {
        if ($cost->canBePaidWith($resources)) {
              $this->buildingRepository->beginTransaction();
@@ -41,5 +44,32 @@ class BuildingService
        }
        return 0;
     }
-
+    public function countProduction(array $buildings): ?Resources
+    {
+        $wood = 0;
+        $food = 0;
+        $stone = 0;
+        $gold = 0;
+        foreach ($buildings as $building) {
+            $production = $building->production;
+            if ($production->type == ProductionType::Resource) {
+                switch ($production->kind) {
+                    case ProductionKind::Food:
+                        $food += $production->amount;
+                        break;
+                    case ProductionKind::Gold:
+                        $gold += $production->amount;
+                        break;
+                    case ProductionKind::Stone:
+                        $stone += $production->amount;
+                        break;
+                    case ProductionKind::Wood:
+                        $wood += $production->amount;
+                        break;
+                    default:
+                }
+            }
+        }
+        return new Resources($wood, $stone, $food, $gold);
+    }
 }

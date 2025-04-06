@@ -6,6 +6,7 @@ use App\controllers\BuildingController;
 use App\models\Cost;
 use App\models\Resources;
 use App\models\User;
+use App\models\UserResources;
 use App\services\BuildingService;
 use PHPUnit\Framework\TestCase;
 
@@ -37,14 +38,17 @@ class BuildingControllerTest extends TestCase
         // Mock expected behavior
         $mappedResource = new Resources(100, 50, 0, 0);
         $mappedCost = new Cost($mappedResource, 300);
+        $userResource = new UserResources(500, 500, 500, 500);
 
         $this->buildingServiceMock
             ->expects($this->once())
             ->method('upgradeBuilding')
-            ->with(1, 100, 2, $mappedCost, 50)
+            ->with(1, 100, 2, $this->callback(function (Cost $cost) use ($mappedCost) {
+                return $mappedCost->equals($cost);
+            }), 50, $userResource)
             ->willReturn(1);
 
-        $result = $this->controller->upgradeBuilding($data);
+        $result = $this->controller->upgradeBuilding($data, $userResource);
 
         // Assertions
         $this->assertEquals(1, $result);
@@ -58,10 +62,12 @@ class BuildingControllerTest extends TestCase
             'level' => 2
         ];
 
-       $result = $this->controller->upgradeBuilding($data);
+        $userResource = new UserResources(500, 500, 500, 500);
+        $result = $this->controller->upgradeBuilding($data, $userResource);
 
-       $this->assertEquals(0, $result);
+        $this->assertEquals(0, $result);
     }
+
 
     public function testUpgradeBuildingFailsWithMissingCost()
     {
@@ -71,8 +77,10 @@ class BuildingControllerTest extends TestCase
             'level' => 2
         ];
 
-        $result = $this->controller->upgradeBuilding($data);
+        $userResource = new UserResources(500, 500, 500, 500);
+        $result = $this->controller->upgradeBuilding($data, $userResource);
 
         $this->assertEquals(0, $result);
     }
+
 }
