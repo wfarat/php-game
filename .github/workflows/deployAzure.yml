@@ -12,7 +12,6 @@ env:
   RESOURCE_GROUP: php-game-group
 
 jobs:
-  jobs:
     Run-Tests:
       runs-on: ubuntu-latest
       name: Run PHPUnit Tests
