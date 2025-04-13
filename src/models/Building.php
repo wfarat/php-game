@@ -14,8 +14,7 @@ class Building
     public string $description;
     public string $image;
     public Production $production;
-    public Cost $nextLevelCost;
-    public int $nextLevelProduction;
+    public NextLevel $nextLevel;
     public DateTime $endsBuildingAt;
     /**
      * @param int $user_id
@@ -38,14 +37,12 @@ class Building
 
     public function update(): void
     {
-        $end_time = time() + $this->nextLevelCost->time;
+        $end_time = time() + $this->nextLevel->cost->time;
         $this->endsBuildingAt = new DateTime("@$end_time");
         $this->level++;
-        $this->production->amount = $this->nextLevelProduction;
-        $data = Context::getInstance()->buildingRepository->getNextLevel($this->building_id, $this->level + 1);
-        $resources = new Resources($data['wood'], $data['stone'], $data['food'], $data['gold']);
-        $this->nextLevelCost = new Cost($resources, $data['time']);
-        $this->nextLevelProduction = $data['production'];
+        $this->production->amount = $this->nextLevel->production;
+        $nextLevel = Context::getInstance()->buildingRepository->getNextLevel($this->building_id, $this->level + 1);
+        $this->nextLevel = $nextLevel;
     }
 
     public function isBuildingFinished(): bool

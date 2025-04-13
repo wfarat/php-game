@@ -19,12 +19,12 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                         data-name="<?= $building->name ?>"
                         data-description="<?= $building->description ?>"
                         data-image="<?= $building->image ?>"
-                        data-wood="<?= $building->nextLevelCost->resources->wood ?>"
-                        data-stone="<?= $building->nextLevelCost->resources->stone ?>"
-                        data-food="<?= $building->nextLevelCost->resources->food ?>"
-                        data-gold="<?= $building->nextLevelCost->resources->gold ?>"
-                        data-time="<?= $building->nextLevelCost->time ?>"
-                        data-production="<?= $building->nextLevelProduction ?>"
+                        data-wood="<?= $building->nextLevel->cost->resources->wood ?>"
+                        data-stone="<?= $building->nextLevel->cost->resources->stone ?>"
+                        data-food="<?= $building->nextLevel->cost->resources->food ?>"
+                        data-gold="<?= $building->nextLevel->cost->resources->gold ?>"
+                        data-time="<?= $building->nextLevel->cost->time ?>"
+                        data-production="<?= $building->nextLevel->production ?>"
                 >
         --
     </span>

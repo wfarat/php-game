@@ -3,6 +3,10 @@
 namespace App\repositories;
 
 use App\mappers\BuildingMapper;
+use App\mappers\NextLevelMapper;
+use App\models\Cost;
+use App\models\NextLevel;
+use App\models\Resources;
 use PDO;
 
 class BuildingRepository extends BaseRepository
@@ -36,11 +40,16 @@ class BuildingRepository extends BaseRepository
         return $stmt->execute();
     }
 
-    public function getNextLevel(int $buildingId, int $level) {
+    public function getNextLevel(int $buildingId, int $level): NextLevel
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM building_levels WHERE building_id = :buildingId AND level = :level");
         $stmt->bindParam(':buildingId', $buildingId);
         $stmt->bindParam(':level', $level);
         $stmt->execute();
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        if (!$result) {
+            return new NextLevel(new Cost(new Resources(0, 0, 0, 0), 0), 0);
+        }
+        return NextLevelMapper::mapToNextLevel($result);
     }
 }

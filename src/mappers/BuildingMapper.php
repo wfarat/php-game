@@ -4,6 +4,7 @@ namespace App\mappers;
 
 use App\models\Building;
 use App\models\Cost;
+use App\models\NextLevel;
 use App\models\Production;
 use App\models\ProductionKind;
 use App\models\ProductionType;
@@ -34,8 +35,7 @@ class BuildingMapper
         $buildingData['food'] ?? 0,
         $buildingData['gold'] ?? 0
     );
-    $result->nextLevelCost = new Cost($resources, $buildingData['time'] ?? 0);
-    $result->nextLevelProduction = $buildingData['production'] ?? 0;
+    $result->nextLevel = new NextLevel(new Cost($resources, $buildingData['time'] ?? 0), $buildingData['production'] ?? 0);
     return $result;
 }
 }
