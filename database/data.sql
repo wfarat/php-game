@@ -34,7 +34,7 @@ VALUES
     (6, 150,3, 0, 1500, 1500, 300, 300);
 INSERT INTO units (id, name, description, attack, defense, speed, img)
 VALUES
-    (1, 'Swordman', 'A basic melee unit with balanced stats', 10, 5, 2, 'swordman.png'),
+    (1, 'Swordsman', 'A basic melee unit with balanced stats', 10, 5, 2, 'swordsman.png'),
     (2, 'Archer', 'Ranged unit that can attack from a distance', 8, 3, 3, 'archer.png'),
     (3, 'Cavalry', 'Fast moving unit with high attack', 15, 10, 5, 'cavalry.png'),
     (4, 'Catapult', 'Siege unit used to break walls', 25, 20, 1, 'catapult.png');
