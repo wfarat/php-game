@@ -25,6 +25,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                         data-gold="<?= $building->nextLevel->cost->resources->gold ?>"
                         data-time="<?= $building->nextLevel->cost->time ?>"
                         data-production="<?= $building->nextLevel->production ?>"
+                        data-nextLevelPossible="<?= $building->isNextLevelPossible() ?>"
                 >
         --
     </span>
@@ -123,7 +124,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
                         timer.remove(); // Remove countdown timer
                         const time = parseInt(timer.getAttribute('data-time'))
                         // ✅ Ensure only one "Upgrade" button is added
-                        if (!parentDiv.querySelector('.upgrade-button') && time) {
+                        if (!parentDiv.querySelector('.upgrade-button') && timer.getAttribute('data-nextLevelPossible')) {
                             const upgradeButton = document.createElement("a");
                             upgradeButton.href = "#";
                             upgradeButton.classList.add("text-green-400", "upgrade-button"); // Add a class to prevent duplicates

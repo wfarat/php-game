@@ -3,24 +3,8 @@ services:
     build: .
     ports:
       - "8080:80" # Expose on port 8080
-    depends_on:
-      - mysql-db
     env_file:
       - .env
-
-  mysql-db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASS}
-      MYSQL_DATABASE: ${DB_NAME}
-    ports:
-      - "3306:3306" # Expose MySQL
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-  mysql_data:
 
 networks:
   default:

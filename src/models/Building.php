@@ -45,11 +45,8 @@ class Building
         $this->nextLevel = $nextLevel;
     }
 
-    public function isBuildingFinished(): bool
+    public function isNextLevelPossible(): bool
     {
-        if (!isset($this->endsBuildingAt)) {
-            return true;
-        }
-        return $this->endsBuildingAt < new DateTime();
+        return $this->nextLevel->cost->time > 0;
     }
 }
