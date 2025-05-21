@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
     login VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULl,
+    battles_won INTEGER,
+    roles VARCHAR(50),
     verified BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE IF NOT EXISTS user_tokens (

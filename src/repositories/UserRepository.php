@@ -85,4 +85,13 @@ class UserRepository extends BaseRepository
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public function getAttackableUsers()
+    {
+        $stmt = $this->pdo->query("SELECT * FROM users");
+
+        $usersData = $stmt->fetchAll();
+
+        return array_map([UserMapper::class, 'mapToUser'], $usersData);
+    }
 }

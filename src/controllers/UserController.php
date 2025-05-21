@@ -106,5 +106,13 @@ class UserController {
             echo 'There was a problem with sending verification email';
         }
     }
+
+    public function getUsers(): array
+    {
+        if (!isset($_SESSION['users'])) {
+            $_SESSION['users'] = $this->userService->getUsers();
+        }
+        return $_SESSION['users'];
+    }
 }
 

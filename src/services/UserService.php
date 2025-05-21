@@ -86,4 +86,9 @@ class UserService
         $isAuthenticated = password_verify($password, $user->hashedPassword);
         return new Authentication($user, $isAuthenticated);
     }
+
+    public function getUsers(): array
+    {
+        return $this->userRepository->getAttackableUsers();
+    }
 }
