@@ -42,7 +42,7 @@ private function __construct() {
     $this->resourcesRepository = new ResourcesRepository($this->db);
     $this->resourcesService = new ResourcesService($this->resourcesRepository);
     $this->buildingRepository = new BuildingRepository($this->db);
-    $this->unitService = new UnitService($this->unitRepository);
+    $this->unitService = new UnitService($this->unitRepository, $this->resourcesService);
     $this->buildingService = new BuildingService($this->buildingRepository, $this->resourcesService);
     $this->resourcesController = new ResourcesController($this->resourcesService, $this->buildingService);
     $this->buildingController = new BuildingController($this->buildingService);

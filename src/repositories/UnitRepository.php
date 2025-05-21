@@ -17,4 +17,16 @@ class UnitRepository extends BaseRepository
         $unitsData = $stmt->fetchAll();
         return array_map([UnitMapper::class, 'mapToUnit'], $unitsData);
     }
+
+    public function createQueueItem($userId, int $unitId, int $count, int $time): bool
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO user_units (user_id, unit_id, count, end_time) VALUES (:userId, :unitId, :count, :end_time)");
+        $end_time = date('Y-m-d H:i:s', time() + $time);
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':unitId', $unitId);
+        $stmt->bindParam(':count', $count);
+        $stmt->bindParam(':end_time', $end_time);
+        return $stmt->execute();
+
+    }
 }

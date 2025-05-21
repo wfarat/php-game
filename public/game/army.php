@@ -81,8 +81,6 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
     </div>
 </div>
 <script>
-    let selectedUnit = null;
-    console.log(<?= json_encode($buildings) ?>))
     function openUnitPopup(id, name, description, image, production, time, wood, stone, food, gold) {
         document.getElementById('unitPopupName').innerText = `Train ${name}`;
         document.getElementById('unitPopupDescription').innerText = description;
@@ -132,16 +130,24 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
         document.getElementById('unitTimeCost').innerText = `${time}s`;
     }
 
-    function confirmTraining() {
-        const quantity = parseInt(document.getElementById('unitQuantity').value) || 0;
+    function confirmTraining(id, cost, quantity) {
         if (quantity < 1) {
             alert('Please enter a valid quantity of units to train.');
             return;
         }
+        fetch('train.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }, // Set JSON headers
+            body: JSON.stringify({
+                unitId: id,
+                cost,
+                quantity})
+        })
+            .then(() => {
+                closeUnitPopup();
+                location.reload(); // Refresh the page to update queue
+            });
 
-        alert(`Creating ${quantity} units for user.`);
-
-        closeUnitPopup();
     }
 
     document.querySelectorAll('.train-unit').forEach(element => {

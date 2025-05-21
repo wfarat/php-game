@@ -1,3 +1,4 @@
+DELETE FROM user_buildings;
 DELETE FROM building_levels;
 DELETE FROM buildings;
 DELETE FROM unit_costs;

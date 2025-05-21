@@ -10,4 +10,7 @@ enum ProductionKind: string
     case Gold = "gold";
     case Swordsman = "swordsman";
     case None = "none";
+    case Archer = "archer";
+    case Cavalry = "cavalry";
+    case Catapult = "catapult";
 }
