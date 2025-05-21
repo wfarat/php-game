@@ -91,3 +91,22 @@ CREATE TABLE IF NOT EXISTS units_queue (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (unit_id) REFERENCES units(id)
 )
+
+CREATE TABLE IF NOT EXISTS clans (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    level INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255),
+    members_count INT NOT NULL,
+    img VARCHAR(255),
+    leader_id INTEGER NOT NULL,
+    FOREIGN KEY (leader_id) REFERENCES users(id)
+)
+
+CREATE TABLE IF NOT EXISTS clan_members (
+    clan_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (clan_id, user_id),
+    FOREIGN KEY (clan_id) REFERENCES clans(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)

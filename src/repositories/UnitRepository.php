@@ -20,8 +20,16 @@ class UnitRepository extends BaseRepository
 
     public function createQueueItem($userId, int $unitId, int $count, int $time): bool
     {
-        $stmt = $this->pdo->prepare("INSERT INTO user_units (user_id, unit_id, count, end_time) VALUES (:userId, :unitId, :count, :end_time)");
-        $end_time = date('Y-m-d H:i:s', time() + $time);
+        $stmt = $this->pdo->prepare("SELECT end_time FROM units_queue WHERE user_id = :userId AND unit_id = :unitId");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':unitId', $unitId);
+        $stmt->execute();
+        if ($start_time = $stmt->fetchColumn()) {
+            $end_time = date('Y-m-d H:i:s', strtotime($start_time) + $time);
+        } else {
+            $end_time = date('Y-m-d H:i:s', time() + $time);
+        }
+        $stmt = $this->pdo->prepare("INSERT INTO units_queue (user_id, unit_id, count, end_time) VALUES (:userId, :unitId, :count, :end_time)");
         $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':unitId', $unitId);
         $stmt->bindParam(':count', $count);
