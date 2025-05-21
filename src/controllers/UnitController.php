@@ -23,6 +23,13 @@ class UnitController
         }
         return $_SESSION['units'];
     }
+    public function getQueue(int $userId): array
+    {
+        if (!isset($_SESSION['queue'])) {
+            $_SESSION['queue'] = $this->unitService->getQueue($userId);
+        }
+        return $_SESSION['queue'];
+    }
 
     public function trainUnits(mixed $data, UserResources $resources): int
     {
@@ -34,5 +41,10 @@ class UnitController
         $upgradeTime = $cost['time'] ?? 0;
         $mappedCost = new Cost($mappedResource, $upgradeTime);
         return $this->unitService->addUnitsToQueue($userId, $unitId, $count, $mappedCost, $resources);
+    }
+
+    public function completeUnit($userId, int $unitId): bool
+    {
+        return $this->unitService->completeUnit($userId, $unitId);
     }
 }

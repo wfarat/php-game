@@ -3,9 +3,11 @@
 namespace App\mappers;
 
 use App\models\Cost;
+use App\models\QueueItem;
 use App\models\Resources;
 use App\models\Stats;
 use App\models\Unit;
+use DateMalformedStringException;
 
 class UnitMapper
 {
@@ -34,4 +36,19 @@ class UnitMapper
         $stats
     );
 }
+
+    /**
+     * @throws DateMalformedStringException
+     */
+    public static function mapToQueueItem(array $data): QueueItem
+    {
+        return new QueueItem(
+            $data['id'],
+            $data['unit_id'],
+            $data['user_id'],
+            $data['count'],
+            $data['name'],
+            DateTimeMapper::map($data['ends_at'])
+        );
+    }
 }

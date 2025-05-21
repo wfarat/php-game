@@ -31,6 +31,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
         </div>
     <?php endforeach; ?>
     <h2 class="text-lg font-bold mt-4">🌍 Actions</h2>
+    <a href="queue.php" class="block text-green-400 mt-2">Units Queue</a>
     <a href="attack.php" class="block text-red-400 mt-2">Attack Enemies</a>
 </div>
 <div id="unitPopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">

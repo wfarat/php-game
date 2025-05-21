@@ -39,4 +39,23 @@ class UnitService
         }
         return 0;
     }
+
+    public function getQueue(int $userId): array
+    {
+        return $this->unitRepository->getQueue($userId);
+    }
+
+    public function completeUnit($userId, int $unitId): bool
+    {
+        $this->unitRepository->beginTransaction();
+        $count = $this->unitRepository->getCount($userId, $unitId);
+        if ($this->unitRepository->addUnits($userId, $unitId, $count)) {
+            $this->unitRepository->removeFromQueue($userId, $unitId);
+            $this->unitRepository->commit();
+            return true;
+        } else {
+            $this->unitRepository->rollback();
+            return false;
+        }
+    }
 }
