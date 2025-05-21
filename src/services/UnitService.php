@@ -5,6 +5,7 @@ namespace App\services;
 use App\models\Cost;
 use App\models\UserResources;
 use App\repositories\UnitRepository;
+use PDOException;
 
 class UnitService
 {
@@ -30,6 +31,8 @@ class UnitService
                 if ($this->unitRepository->createQueueItem($userId, $unitId, $count, $cost->time)) {
                     $this->unitRepository->commit();
                     return $unitId;
+                } else {
+                    $this->unitRepository->rollback();
                 }
             }
             catch (PDOException $e) {
@@ -48,12 +51,22 @@ class UnitService
     public function completeUnit($userId, int $unitId): bool
     {
         $this->unitRepository->beginTransaction();
-        $count = $this->unitRepository->getCount($userId, $unitId);
-        if ($this->unitRepository->addUnits($userId, $unitId, $count)) {
-            $this->unitRepository->removeFromQueue($userId, $unitId);
-            $this->unitRepository->commit();
-            return true;
-        } else {
+        try {
+            $count = $this->unitRepository->getCount($userId, $unitId);
+            if ($this->unitRepository->addUnits($userId, $unitId, $count)) {
+                if ($this->unitRepository->removeFromQueue($userId, $unitId)) {
+                    $this->unitRepository->commit();
+                    return true;
+                } else {
+                    $this->unitRepository->rollback();
+                    return false;
+                }
+            } else {
+                $this->unitRepository->rollback();
+                return false;
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
             $this->unitRepository->rollback();
             return false;
         }

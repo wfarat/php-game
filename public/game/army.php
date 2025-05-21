@@ -5,7 +5,7 @@ use App\core\Context;
 
 $units = Context::getInstance()->unitController->getUnits($user->id);
 $buildings = Context::getInstance()->buildingController->getBuildings($user->id);
-
+$queue = Context::getInstance()->unitController->getQueue($user->id);
 ?>
 <!-- 📌 Middle Panel: Army & Actions -->
 <div class="bg-gray-800 p-4 rounded-lg">
@@ -13,6 +13,10 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
     <?php foreach ($units as $unit): ?>
         <div class="mt-2 flex justify-between">
             <span><?= $unit->name ?>: <?= $unit->count ?></span>
+            <?php if (array_any($queue, fn($item) => $item->unitId === $unit->unitId)): ?>
+                <span class="text-green-400">In Queue</span>
+            <?php else: ?>
+            <span class="text-red-400">Ends at <?= $unit->endsAt->format('d/m/Y H:i') ?></span>>
             <span
                    data-unit-id="<?= $unit->unitId ?>"
                    data-name="<?= $unit->name ?>"
@@ -28,6 +32,7 @@ $buildings = Context::getInstance()->buildingController->getBuildings($user->id)
             >
                 Train
             </span>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
     <h2 class="text-lg font-bold mt-4">🌍 Actions</h2>

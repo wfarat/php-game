@@ -20,16 +20,8 @@ class UnitRepository extends BaseRepository
 
     public function createQueueItem($userId, int $unitId, int $count, int $time): bool
     {
-        $stmt = $this->pdo->prepare("SELECT end_time FROM units_queue WHERE user_id = :userId AND unit_id = :unitId");
-        $stmt->bindParam(':userId', $userId);
-        $stmt->bindParam(':unitId', $unitId);
-        $stmt->execute();
-        if ($start_time = $stmt->fetchColumn()) {
-            $end_time = date('Y-m-d H:i:s', strtotime($start_time) + $time);
-        } else {
-            $end_time = date('Y-m-d H:i:s', time() + $time);
-        }
         $stmt = $this->pdo->prepare("INSERT INTO units_queue (user_id, unit_id, count, end_time) VALUES (:userId, :unitId, :count, :end_time)");
+        $end_time = date('Y-m-d H:i:s', time() + $time);
         $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':unitId', $unitId);
         $stmt->bindParam(':count', $count);
@@ -47,7 +39,7 @@ class UnitRepository extends BaseRepository
         return array_map([UnitMapper::class, 'mapToQueueItem'], $data);
     }
 
-    public function addUnits($userId, int $unitId, int $amount)
+    public function addUnits($userId, int $unitId, int $amount): bool
     {
         $stmt = $this->pdo->prepare("SELECT count FROM user_units WHERE user_id = :userId AND unit_id = :unitId");
         $stmt->bindParam(':userId', $userId);
@@ -63,11 +55,15 @@ class UnitRepository extends BaseRepository
         $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':unitId', $unitId);
         $stmt->bindParam(':count', $count);
-        $stmt->execute();
+        return $stmt->execute();
     }
 
-    public function removeFromQueue($userId, int $unitId)
+    public function removeFromQueue($userId, int $unitId): bool
     {
+        $stmt = $this->pdo->prepare("DELETE FROM units_queue WHERE user_id = :userId AND unit_id = :unitId");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':unitId', $unitId);
+        return $stmt->execute();
     }
 
     public function getCount($userId, int $unitId)

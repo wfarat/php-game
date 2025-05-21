@@ -43,7 +43,6 @@ class UnitMapper
     public static function mapToQueueItem(array $data): QueueItem
     {
         return new QueueItem(
-            $data['id'],
             $data['unit_id'],
             $data['user_id'],
             $data['count'],
