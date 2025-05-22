@@ -151,7 +151,7 @@ class UserController {
             $token = bin2hex(random_bytes(32)); // Generate a secure token
             try {
                 $user = $this->userService->findUserByEmail($email);
-                $this->userService->saveRecoveryToken($user->id, $token);
+                $this->userService->saveRecoveryToken($token, $user->id);
                 $this->sendRecoveryEmail($email, $user->login, $token);
             } catch (PDOException|UserNotFoundException $e) {
                 echo $e->getMessage();

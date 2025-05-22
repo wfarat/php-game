@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS resources;
 DROP TABLE IF EXISTS user_buildings;
 DROP TABLE IF EXISTS user_units;
 
-
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     login VARCHAR(255) UNIQUE NOT NULL,
@@ -93,7 +92,7 @@ CREATE TABLE IF NOT EXISTS units_queue (
     PRIMARY KEY (user_id, unit_id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (unit_id) REFERENCES units(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS clans (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -104,7 +103,7 @@ CREATE TABLE IF NOT EXISTS clans (
     img VARCHAR(255),
     leader_id INTEGER NOT NULL,
     FOREIGN KEY (leader_id) REFERENCES users(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS clan_members (
     clan_id INTEGER NOT NULL,
@@ -112,7 +111,7 @@ CREATE TABLE IF NOT EXISTS clan_members (
     PRIMARY KEY (clan_id, user_id),
     FOREIGN KEY (clan_id) REFERENCES clans(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS battles (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -126,4 +125,4 @@ CREATE TABLE IF NOT EXISTS battles (
     FOREIGN KEY (attacker_id) REFERENCES users(id),
     FOREIGN KEY (defender_id) REFERENCES users(id),
     FOREIGN KEY (winner_id) REFERENCES users(id)
-)
+);
