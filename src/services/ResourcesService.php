@@ -25,6 +25,12 @@ class ResourcesService
         $this->updateResources($userId, $current);
     }
 
+    public function addResources(int $userId, Resources $added, UserResources $current): void
+    {
+        $current->add($added);
+        $this->updateResources($userId, $current);
+    }
+
     public function updateResources(int $userId, UserResources $resources): void
     {
         $this->resourcesRepository->updateResources($userId, $resources);

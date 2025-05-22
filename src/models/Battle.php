@@ -11,13 +11,10 @@ class Battle
     public Stats $defenderStats;
     public Resources $resourcesTaken;
 
-    public function __construct(int $attackerId, int $defenderId, Stats $attackerStats, Stats $defenderStats)
+    public function __construct(int $attackerId, int $defenderId)
     {
         $this->attackerId = $attackerId;
         $this->defenderId = $defenderId;
-        $this->attackerStats = $attackerStats;
-        $this->defenderStats = $defenderStats;
-        $this->winnerId = $this->determineWinner();
     }
 
     public function determineWinner(): int
