@@ -3,6 +3,7 @@
 namespace App\repositories;
 
 use App\mappers\UnitMapper;
+use DateMalformedStringException;
 use DateTime;
 
 class UnitRepository extends BaseRepository
@@ -20,7 +21,7 @@ class UnitRepository extends BaseRepository
     }
 
     /**
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      */
     public function createQueueItem($userId, int $unitId, int $count, int $time): DateTime
     {

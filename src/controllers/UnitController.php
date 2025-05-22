@@ -35,7 +35,7 @@ class UnitController
     public function trainUnits(mixed $data, UserResources $resources): bool
     {
         $userId = $_SESSION['user']->id;
-        $unitId = $data['unitId'] ?? null;
+        $unitId = $data['unitId'] ?? 0;
         $count = $data['count'] ?? 0;
         $cost = $data['cost'] ?? null;
         $name = $data['name'] ?? null;
