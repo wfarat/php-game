@@ -20,6 +20,13 @@ class UserService
         $this->tokenRepository = $tokenRepository;
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
+    public function findUserByEmail($email): User
+    {
+       return $this->userRepository->getUserByEmail($email);
+    }
     public function createUser(string $login, string $email, string $password, string $token): bool
     {
         $user = new User($login, $password, $email);
@@ -49,6 +56,14 @@ class UserService
     private function saveTokenForUser(string $token, int $userId): void
     {
         $isTokenSaved = $this->tokenRepository->saveToken("verify", $token, $userId);
+        if (!$isTokenSaved) {
+            throw new PDOException("Failed to save token!");
+        }
+    }
+
+    public function saveRecoveryToken(string $token, int $userId): void
+    {
+        $isTokenSaved = $this->tokenRepository->saveToken("recovery", $token, $userId);
         if (!$isTokenSaved) {
             throw new PDOException("Failed to save token!");
         }

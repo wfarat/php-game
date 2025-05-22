@@ -107,12 +107,57 @@ class UserController {
         }
     }
 
+    public function sendRecoveryEmail($target, $login, $token): void
+    {
+        $verifyLink = "https://php-game-container.icygrass-03b1dca3.polandcentral.azurecontainerapps.io/public/recovery.php?token=" . $token;
+        $email = new Mail();
+        $email->setFrom("wfarat@gmail.com", "Admin");
+        $email->setSubject("Password Recovery");
+        $email->addTo($target, $login);
+        $email->addContent(
+            "text/html", "Click this link to recover your password: <a href='$verifyLink'>$verifyLink</a>"
+        );
+        $sendgrid = new SendGrid(getenv('SENDGRID_API_KEY'));
+        try {
+            $response = $sendgrid->send($email);
+            if ($response->statusCode() === 202) {
+                echo 'Password recovery email sent to: ' . $target;
+            }
+        } catch (Exception $e) {
+            echo 'There was a problem with sending password recovery email';
+        }
+    }
     public function getUsers(): array
     {
         if (!isset($_SESSION['users'])) {
             $_SESSION['users'] = $this->userService->getUsers();
         }
         return $_SESSION['users'];
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function recover(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $email = $_POST['email'] ?? '';
+        if (!empty($email)) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo "Invalid email format!";
+                return;
+            }
+            $token = bin2hex(random_bytes(32)); // Generate a secure token
+            try {
+                $user = $this->userService->findUserByEmail($email);
+                $this->userService->saveRecoveryToken($user->id, $token);
+                $this->sendRecoveryEmail($email, $user->login, $token);
+            } catch (PDOException|UserNotFoundException $e) {
+                echo $e->getMessage();
+                return;
+            }
+        }
+        }
     }
 }
 

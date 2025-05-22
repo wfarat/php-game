@@ -94,4 +94,21 @@ class UserRepository extends BaseRepository
 
         return array_map([UserMapper::class, 'mapToAttackableUser'], $usersData);
     }
+
+    /**
+     * @throws UserNotFoundException
+     */
+    public function getUserByEmail($email): User
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $userData = $stmt->fetch();
+
+        if (!$userData) {
+            throw new UserNotFoundException();
+        }
+
+        return UserMapper::mapToUser($userData);
+    }
 }

@@ -17,7 +17,7 @@ include './includes/header.php';
         <input type="password" id="password" name="password" class="border p-2 w-full mb-4" required>
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2">Login</button>
-
+        <a href="recover.php" class="text-blue-500">Forgot password?</a>
 <?php echo "<p class=" . "text-lg mt-4" . ">";
     Context::getInstance()->userController->login();
 
