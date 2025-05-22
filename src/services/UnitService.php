@@ -35,12 +35,7 @@ class UnitService
                 return $endsAt;
             }
             catch (PDOException|DateMalformedStringException $e) {
-                echo '<pre>';
-                echo 'Error: ' . $e->getMessage() . "\n";
-                echo 'File: ' . $e->getFile() . "\n";
-                echo 'Line: ' . $e->getLine() . "\n";
-                echo 'Trace: ' . $e->getTraceAsString();
-                echo '</pre>';
+                error_log($e->getMessage());
                 $this->unitRepository->rollback();
             }
         }

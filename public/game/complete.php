@@ -1,22 +1,17 @@
 <?php
+ob_start();
+require_once '../../vendor/autoload.php';
 session_start();
 
-if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
-    http_response_code(403); // Forbidden
-    exit('Unauthorized');
-}
+use App\core\Context;
 
-if (!isset($_GET['id'])) {
-    http_response_code(400);
-    exit('Missing unit ID');
+if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit;
 }
 
 $unitId = (int)$_GET['id'];
 $userId = $_SESSION['user']->id;
-
-require_once '../../vendor/autoload.php';
-
-use App\core\Context;
 
 $result = Context::getInstance()->unitController->completeUnit($userId, $unitId);
 if ($result) {

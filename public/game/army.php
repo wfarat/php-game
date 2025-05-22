@@ -99,17 +99,7 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
         // Set default values
         document.getElementById('unitQuantity').value = 1;
         calculateUnitCost();
-        const quantity = parseInt(document.getElementById('unitQuantity').value) || 0;
-        const cost = {
-            resources: {
-                wood: parseInt(document.getElementById('unitWoodCost').innerText),
-                stone: parseInt(document.getElementById('unitStoneCost').innerText),
-                food: parseInt(document.getElementById('unitFoodCost').innerText),
-                gold: parseInt(document.getElementById('unitGoldCost').innerText)
-            },
-            time: parseInt(document.getElementById('unitTimeCost').innerText.replace('s', ''))
-        }
-        document.getElementById('confirmTraining').onclick = () => confirmTraining(id, name, cost, quantity);
+        document.getElementById('confirmTraining').onclick = () => confirmTraining(id, name);
         document.getElementById('unitPopup').classList.remove('hidden');
     }
 
@@ -135,7 +125,17 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
         document.getElementById('unitTimeCost').innerText = `${time}s`;
     }
 
-    function confirmTraining(id, name, cost, count) {
+    function confirmTraining(id, name) {
+        const count = parseInt(document.getElementById('unitQuantity').value) || 0;
+        const cost = {
+            resources: {
+                wood: parseInt(document.getElementById('unitWoodCost').innerText),
+                stone: parseInt(document.getElementById('unitStoneCost').innerText),
+                food: parseInt(document.getElementById('unitFoodCost').innerText),
+                gold: parseInt(document.getElementById('unitGoldCost').innerText)
+            },
+            time: parseInt(document.getElementById('unitTimeCost').innerText.replace('s', ''))
+        }
         if (count < 1) {
             alert('Please enter a valid quantity of units to train.');
             return;
