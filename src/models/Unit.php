@@ -35,5 +35,9 @@ class Unit
         $this->stats = $stats;
     }
 
+    public function totalStats(): Stats
+    {
+        return $this->stats->multiply($this->count);
+    }
 
 }

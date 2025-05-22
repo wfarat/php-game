@@ -50,4 +50,11 @@ class UnitMapper
             DateTimeMapper::map($data['ends_at'])
         );
     }
+
+    public static function mapToStats(array $data): Stats
+    {
+        return array_reduce($data, function($acc, $value){
+            return $acc->add($value->totalStats());
+        }, new Stats(0, 0, 0));
+    }
 }

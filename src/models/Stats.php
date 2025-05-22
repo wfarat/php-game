@@ -20,5 +20,19 @@ class Stats
         $this->speed = $speed;
     }
 
+    public function multiply(int $count): Stats
+    {
+        return new Stats($this->attack*$count, $this->defense*$count, $this->speed*$count);
+    }
+
+    public function add(Stats $other): Stats
+    {
+        return new Stats(
+            $this->attack + $other->attack,
+            $this->defense + $other->defense,
+            $this->speed + $other->speed
+        );
+    }
+
 
 }

@@ -55,4 +55,9 @@ class Resources
             $this->gold === $resources->gold;
     }
 
+    public function multipliedBy(float $multiplier): Resources
+    {
+        return new Resources($this->wood * $multiplier, $this->stone * $multiplier, $this->food * $multiplier, $this->gold * $multiplier);
+    }
+
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\core;
 use App\config\ProdDbConfig;
+use App\controllers\AttackController;
 use App\controllers\BuildingController;
 use App\controllers\ResourcesController;
 use App\controllers\UnitController;
@@ -10,6 +11,7 @@ use App\repositories\ResourcesRepository;
 use App\repositories\TokenRepository;
 use App\repositories\UnitRepository;
 use App\repositories\UserRepository;
+use App\services\AttackService;
 use App\services\BuildingService;
 use App\services\ResourcesService;
 use App\services\UnitService;
@@ -31,6 +33,8 @@ public UserController $userController;
 public ResourcesController $resourcesController;
 public UnitController $unitController;
 public UnitService $unitService;
+public AttackService $attackService;
+public AttackController $attackController;
 public static ?Context $instance = null;
 private function __construct() {
     $this->db = Database::getInstance(new ProdDbConfig());
@@ -47,6 +51,8 @@ private function __construct() {
     $this->resourcesController = new ResourcesController($this->resourcesService, $this->buildingService);
     $this->buildingController = new BuildingController($this->buildingService);
     $this->unitController = new UnitController($this->unitService);
+    $this->attackService = new AttackService($this->resourcesService);
+    $this->attackController = new AttackController($this->attackService, $this->resourcesService, $this->unitService);
 }
 
 public static function getInstance(): Context

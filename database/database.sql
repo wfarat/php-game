@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULl,
     battles_won INTEGER,
-    roles VARCHAR(50),
+    role VARCHAR(50),
     verified BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE IF NOT EXISTS user_tokens (

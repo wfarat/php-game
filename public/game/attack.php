@@ -15,7 +15,7 @@ $users = Context::getInstance()->userController->getUsers();
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><?= $user->login ?></h5>
-                <p class="card-text"><?= $user->battlesWon ?></p>
+                <p class="card-text">Battles won: <?= $user->battlesWon ?></p>
                 <button onclick="attack(<?= $user->id ?>)" class="btn btn-success">Attack</button>
             </div>
         </div>

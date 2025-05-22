@@ -2,6 +2,7 @@
 
 namespace App\mappers;
 
+use App\models\AttackableUser;
 use App\models\User;
 
 class UserMapper
@@ -18,5 +19,14 @@ class UserMapper
         $user->id = $userData['id'];  // Set the user ID
         $user->verified = $userData['verified'];
         return $user;
+    }
+
+    public static function mapToAttackableUser(array $userData): AttackableUser
+    {
+        return new AttackableUser(
+            $userData['name'],
+            $userData['id'],
+            $userData['battles_won']
+        );
     }
 }

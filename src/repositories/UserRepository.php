@@ -86,12 +86,12 @@ class UserRepository extends BaseRepository
         return $stmt->fetchColumn();
     }
 
-    public function getAttackableUsers()
+    public function getAttackableUsers(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM users");
+        $stmt = $this->pdo->query("SELECT login, battles_won FROM users WHERE verified = 1 AND role != 'admin'");
 
         $usersData = $stmt->fetchAll();
 
-        return array_map([UserMapper::class, 'mapToUser'], $usersData);
+        return array_map([UserMapper::class, 'mapToAttackableUser'], $usersData);
     }
 }
