@@ -8,7 +8,7 @@ use App\models\UserResources;
 use App\repositories\BattleRepository;
 use PDOException;
 
-class AttackService
+class BattleService
 {
 
     private ResourcesService $resourcesService;

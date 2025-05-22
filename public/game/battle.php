@@ -18,4 +18,9 @@ require_once '../../vendor/autoload.php';
 
 use App\core\Context;
 
-$result = Context::getInstance()->attackController->createBattle($attackerId, $defenderId);
+$result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
+if (!isset($_SESSION['battles'])) {
+    $_SESSION['battles'] = [];
+}
+
+$_SESSION['battles'][] = $result;
