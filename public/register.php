@@ -3,6 +3,9 @@ require_once '../vendor/autoload.php';
 
 use App\core\Context;
 use Random\RandomException;
+if(defined('E_DEPRECATED')) {
+    error_reporting(E_ALL &~ E_DEPRECATED);
+}
 
 include './includes/header.php';
 ?>

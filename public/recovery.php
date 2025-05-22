@@ -3,8 +3,8 @@ require_once '../vendor/autoload.php';
 
 use App\core\Context;
 use Random\RandomException;
-if (!isset($_GET['token'])) {
-    header("Location: ../recover.php");
+if (!isset($_GET['token']) && !isset($_POST['token'])) {
+    header("Location: ./recover.php");
     exit;
 }
 $token = $_GET['token'];

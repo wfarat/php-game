@@ -1,6 +1,9 @@
 <?php
 require_once '../vendor/autoload.php';
 session_start();
+if(defined('E_DEPRECATED')) {
+    error_reporting(E_ALL &~ E_DEPRECATED);
+}
 
 use App\core\Context;
 use Random\RandomException;

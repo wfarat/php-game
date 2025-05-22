@@ -16,7 +16,6 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
             <?php if (array_any($queue, fn($item) => $item->unitId === $unit->unitId)): ?>
                 <span class="text-green-400">In Queue</span>
             <?php else: ?>
-            <span class="text-red-400">Ends at <?= $unit->endsAt->format('d/m/Y H:i') ?></span>>
             <span
                    data-unit-id="<?= $unit->unitId ?>"
                    data-name="<?= $unit->name ?>"
