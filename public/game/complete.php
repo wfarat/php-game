@@ -16,6 +16,6 @@ $userId = $_SESSION['user']->id;
 $result = Context::getInstance()->unitController->completeUnit($userId, $unitId);
 if ($result) {
     $_SESSION['queue'] = array_filter($_SESSION['queue'], function ($item) use ($unitId) {
-        return $item->id != $unitId;
+        return $item->unitId != $unitId;
     });
 }

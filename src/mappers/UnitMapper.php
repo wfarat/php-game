@@ -47,7 +47,7 @@ class UnitMapper
             $data['user_id'],
             $data['count'],
             $data['name'],
-            DateTimeMapper::map($data['ends_at'])
+            DateTimeMapper::map($data['end_time'])
         );
     }
 
