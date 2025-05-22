@@ -109,7 +109,7 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
             },
             time: document.getElementById('unitTimeCost').innerText
         }
-        document.getElementById('confirmTraining').onclick = () => confirmTraining(id, cost, quantity);
+        document.getElementById('confirmTraining').onclick = () => confirmTraining(id, name, cost, quantity);
         document.getElementById('unitPopup').classList.remove('hidden');
     }
 
@@ -135,7 +135,7 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
         document.getElementById('unitTimeCost').innerText = `${time}s`;
     }
 
-    function confirmTraining(id, cost, quantity) {
+    function confirmTraining(id, name, cost, quantity) {
         if (quantity < 1) {
             alert('Please enter a valid quantity of units to train.');
             return;
@@ -145,6 +145,7 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
             headers: { 'Content-Type': 'application/json' }, // Set JSON headers
             body: JSON.stringify({
                 unitId: id,
+                name,
                 cost,
                 quantity})
         })

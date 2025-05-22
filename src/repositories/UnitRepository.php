@@ -3,6 +3,7 @@
 namespace App\repositories;
 
 use App\mappers\UnitMapper;
+use DateTime;
 
 class UnitRepository extends BaseRepository
 {
@@ -18,7 +19,10 @@ class UnitRepository extends BaseRepository
         return array_map([UnitMapper::class, 'mapToUnit'], $unitsData);
     }
 
-    public function createQueueItem($userId, int $unitId, int $count, int $time): bool
+    /**
+     * @throws \DateMalformedStringException
+     */
+    public function createQueueItem($userId, int $unitId, int $count, int $time): DateTime
     {
         $stmt = $this->pdo->prepare("INSERT INTO units_queue (user_id, unit_id, count, end_time) VALUES (:userId, :unitId, :count, :end_time)");
         $end_time = date('Y-m-d H:i:s', time() + $time);
@@ -26,8 +30,8 @@ class UnitRepository extends BaseRepository
         $stmt->bindParam(':unitId', $unitId);
         $stmt->bindParam(':count', $count);
         $stmt->bindParam(':end_time', $end_time);
-        return $stmt->execute();
-
+        $stmt->execute();
+        return new DateTime($end_time);
     }
 
     public function getQueue(int $userId): array

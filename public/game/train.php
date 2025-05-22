@@ -8,8 +8,8 @@ $data = json_decode(file_get_contents('php://input'), true);
 $buildings = $_SESSION['buildings'];
 $context = Context::getInstance();
 $resources = $context->resourcesController->produceResources($buildings);
-$id = $context->unitController->trainUnits($data, $resources);
-if ($id > 0) {
+$result = $context->unitController->trainUnits($data, $resources);
+if ($result) {
     $user = $_SESSION['user'];
     $context->resourcesController->updateResources($user->id);
 }

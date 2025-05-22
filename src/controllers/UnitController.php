@@ -4,6 +4,7 @@ namespace App\controllers;
 
 use App\mappers\ResourcesMapper;
 use App\models\Cost;
+use App\models\QueueItem;
 use App\models\UserResources;
 use App\services\UnitService;
 
@@ -31,16 +32,19 @@ class UnitController
         return $_SESSION['queue'];
     }
 
-    public function trainUnits(mixed $data, UserResources $resources): int
+    public function trainUnits(mixed $data, UserResources $resources): bool
     {
         $userId = $_SESSION['user']->id;
         $unitId = $data['unitId'] ?? null;
         $count = $data['count'] ?? 0;
         $cost = $data['cost'] ?? null;
+        $name = $data['name'] ?? null;
         $mappedResource = ResourcesMapper::mapToResources($cost['resources']);
         $upgradeTime = $cost['time'] ?? 0;
         $mappedCost = new Cost($mappedResource, $upgradeTime);
-        return $this->unitService->addUnitsToQueue($userId, $unitId, $count, $mappedCost, $resources);
+        $endsAt = $this->unitService->addUnitsToQueue($userId, $unitId, $count, $mappedCost, $resources);
+        $_SESSION['queue'][] = new QueueItem($unitId, $userId, $count, $name, $endsAt);
+        return true;
     }
 
     public function completeUnit($userId, int $unitId): bool
