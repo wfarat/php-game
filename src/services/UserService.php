@@ -7,6 +7,7 @@ use App\models\Authentication;
 use App\models\User;
 use App\repositories\TokenRepository;
 use App\repositories\UserRepository;
+use DateMalformedStringException;
 use PDOException;
 
 class UserService
@@ -92,6 +93,26 @@ class UserService
         return false;
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
+    public function recoverPassword(string $token, string $newPassword): bool
+    {
+        $tokenInDb = $this->tokenRepository->getToken($token);
+        if ($tokenInDb) {
+            if ($tokenInDb->type !== "recovery") {
+                return false;
+            }
+            $updated = $this->userRepository->changePassword($tokenInDb->userId, $newPassword);
+            if ($updated) {
+                $this->tokenRepository->deleteToken($token);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
     /**
      * @throws UserNotFoundException
      */

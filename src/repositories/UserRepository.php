@@ -111,4 +111,13 @@ class UserRepository extends BaseRepository
 
         return UserMapper::mapToUser($userData);
     }
+
+    public function changePassword(int $userId, string $newPassword): bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $password = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':id', $userId);
+        return $stmt->execute();
+    }
 }

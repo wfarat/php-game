@@ -30,6 +30,5 @@ try {
 } catch (RandomException $e) {
     echo $e->getMessage();
 }
-echo "</p>";
 echo "</form>";
 include './includes/footer.php';

@@ -21,6 +21,5 @@ include './includes/header.php';
 <?php echo "<p class=" . "text-lg mt-4" . ">";
     Context::getInstance()->userController->login();
 
-echo "</p>";
 echo "</form>";
 include './includes/footer.php';

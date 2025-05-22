@@ -4,6 +4,7 @@ namespace App\controllers;
 
 use App\exceptions\UserNotFoundException;
 use App\services\UserService;
+use DateMalformedStringException;
 use Exception;
 use PDOException;
 use Random\RandomException;
@@ -157,6 +158,27 @@ class UserController {
                 return;
             }
         }
+        }
+    }
+
+    public function recoverPassword(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $token = $_POST['token'] ?? '';
+            $newPassword = $_POST['newPassword'] ?? '';
+            if (!empty($token) && !empty($newPassword)) {
+                try {
+                    $success = $this->userService->recoverPassword($token, $newPassword);
+                    if ($success) {
+                        echo "Password changed successfully!";
+                    } else {
+                        echo "Invalid token!";
+                    }
+                } catch (PDOException|DateMalformedStringException $e) {
+                    echo $e->getMessage();
+                    return;
+                }
+            }
         }
     }
 }
