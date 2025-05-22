@@ -102,12 +102,12 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
         const quantity = parseInt(document.getElementById('unitQuantity').value) || 0;
         const cost = {
             resources: {
-                wood: document.getElementById('unitWoodCost').innerText,
-                stone: document.getElementById('unitStoneCost').innerText,
-                food: document.getElementById('unitFoodCost').innerText,
-                gold: document.getElementById('unitGoldCost').innerText
+                wood: parseInt(document.getElementById('unitWoodCost').innerText),
+                stone: parseInt(document.getElementById('unitStoneCost').innerText),
+                food: parseInt(document.getElementById('unitFoodCost').innerText),
+                gold: parseInt(document.getElementById('unitGoldCost').innerText)
             },
-            time: document.getElementById('unitTimeCost').innerText
+            time: parseInt(document.getElementById('unitTimeCost').innerText.replace('s', ''))
         }
         document.getElementById('confirmTraining').onclick = () => confirmTraining(id, name, cost, quantity);
         document.getElementById('unitPopup').classList.remove('hidden');
@@ -140,7 +140,6 @@ $queue = Context::getInstance()->unitController->getQueue($user->id);
             alert('Please enter a valid quantity of units to train.');
             return;
         }
-        console.log(cost);
         fetch('train.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }, // Set JSON headers
