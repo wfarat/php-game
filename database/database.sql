@@ -113,3 +113,17 @@ CREATE TABLE IF NOT EXISTS clan_members (
     FOREIGN KEY (clan_id) REFERENCES clans(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 )
+
+CREATE TABLE IF NOT EXISTS battles (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    attacker_id INT NOT NULL,
+    defender_id INT NOT NULL,
+    winner_id INT NOT NULL,
+    wood INT,
+    food INT,
+    stone INT,
+    gold INT,
+    FOREIGN KEY (attacker_id) REFERENCES users(id),
+    FOREIGN KEY (defender_id) REFERENCES users(id),
+    FOREIGN KEY (winner_id) REFERENCES users(id)
+)

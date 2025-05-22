@@ -26,21 +26,20 @@ class BattleService
         if ($battle->attackerId === $battle->winnerId) {
             $resourcesTaken = $defenderResources->multipliedBy(0.2);
             $battle->resourcesTaken = $resourcesTaken;
-            try {
-                $this->battleRepository->beginTransaction();
-                if ($this->battleRepository->save($battle)) {
-                    $this->resourcesService->deductResources($battle->defenderId, $resourcesTaken, $defenderResources);
-                    $this->resourcesService->addResources($battle->attackerId, $resourcesTaken, $defenderResources);
-                    $this->battleRepository->commit();
-                } else {
-                    $this->battleRepository->rollback();
-                }
-            } catch (PDOException $exception) {
-                error_log($exception->getMessage());
+        }
+        try {
+            $this->battleRepository->beginTransaction();
+            if ($this->battleRepository->save($battle)) {
+                $this->resourcesService->deductResources($battle->defenderId, $resourcesTaken, $defenderResources);
+                $this->resourcesService->addResources($battle->attackerId, $resourcesTaken, $defenderResources);
+                $this->battleRepository->commit();
+            } else {
                 $this->battleRepository->rollback();
             }
+        } catch (PDOException $exception) {
+            error_log($exception->getMessage());
+            $this->battleRepository->rollback();
         }
-
         return $battle;
     }
 }
