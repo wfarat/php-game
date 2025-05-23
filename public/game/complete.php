@@ -1,5 +1,4 @@
 <?php
-ob_start();
 require_once '../../vendor/autoload.php';
 session_start();
 
@@ -24,7 +23,5 @@ if ($result > 0) {
             break;
         }
     }
-    header("Location: ./index.php");
 }
-ob_end_flush();
 session_write_close();

@@ -35,6 +35,7 @@ $queue = Context::getInstance()->unitController->getQueue($_SESSION['user']->id)
 
 <script>
     function complete(id) {
-        fetch('complete.php?id=' + id);
+        fetch('complete.php?id=' + id)
+            .then(() => window.location.reload());
     }
 </script>
