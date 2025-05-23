@@ -5,6 +5,7 @@ namespace App\services;
 use App\models\Resources;
 use App\models\UserResources;
 use App\repositories\ResourcesRepository;
+use DateMalformedStringException;
 
 class ResourcesService
 {
@@ -14,6 +15,9 @@ class ResourcesService
         $this->resourcesRepository = $resourcesRepository;
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     public function getResources(int $userId): UserResources
     {
         return $this->resourcesRepository->getResources($userId);

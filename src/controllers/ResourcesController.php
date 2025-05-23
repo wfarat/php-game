@@ -55,6 +55,7 @@ class ResourcesController
             $_SESSION['resources']->add($production);
         }
         $_SESSION['resources']->lastUpdated = $currentTime;
+        $this->resourcesService->updateResources($_SESSION['user']->id, $_SESSION['resources']);
         return $_SESSION['resources'];
     }
 

@@ -36,7 +36,7 @@ class BattleRepository extends BaseRepository
 
     public function getLatestBattleForUser(int $userId): ?Battle
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM battles WHERE user_id = :userId ORDER BY id DESC LIMIT 1");
+        $stmt = $this->pdo->prepare("SELECT * FROM battles WHERE attacker_id = :userId OR defender_id = :userId ORDER BY id DESC LIMIT 1");
         $stmt->execute(['userId' => $userId]);
         $data = $stmt->fetch();
 

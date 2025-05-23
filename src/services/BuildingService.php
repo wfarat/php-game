@@ -7,7 +7,6 @@ use App\models\ProductionKind;
 use App\models\ProductionType;
 use App\models\Resources;
 use App\models\UserResources;
-use App\observers\BuildingObserver;
 use App\repositories\BuildingRepository;
 use Exception;
 use PDOException;

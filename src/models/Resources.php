@@ -2,6 +2,8 @@
 
 namespace App\models;
 
+use App\services\ResourcesService;
+
 class Resources
 {
     public int $wood;
@@ -23,12 +25,13 @@ class Resources
         $this->gold = $gold;
     }
 
-    public function add(Resources $resources):void
+    public function add(Resources $resources): Resources
     {
         $this->wood += $resources->wood;
         $this->stone += $resources->stone;
         $this->food += $resources->food;
         $this->gold += $resources->gold;
+        return $this;
     }
 
     public function multiply(int $times): void

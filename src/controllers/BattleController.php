@@ -7,6 +7,7 @@ use App\models\Battle;
 use App\services\BattleService;
 use App\services\ResourcesService;
 use App\services\UnitService;
+use DateMalformedStringException;
 
 class BattleController
 {
@@ -21,12 +22,16 @@ class BattleController
         $this->unitService = $unitService;
     }
 
-    public function createBattle(int $attackerId, $defenderId): void
+    /**
+     * @throws DateMalformedStringException
+     */
+    public function createBattle(int $attackerId, $defenderId): bool
     {
         $attackerStats = UnitMapper::mapToStats($this->unitService->getUnits($attackerId));
         $defenderStats = UnitMapper::mapToStats($this->unitService->getUnits($defenderId));
+        $attackerResources = $this->resourcesService->getResources($attackerId);
         $defenderResources = $this->resourcesService->getResources($defenderId);
-        $this->battleService->createBattle($attackerId, $defenderId, $defenderResources, $attackerStats, $defenderStats);
+        return $this->battleService->createBattle($attackerId, $defenderId, $attackerResources, $defenderResources, $attackerStats, $defenderStats);
     }
 
     public function getBattles(int $userId)

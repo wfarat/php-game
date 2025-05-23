@@ -8,9 +8,16 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
     exit;
 }
 
-$attackerId = (int)$_GET['id'];
-$defenderId = $_SESSION['user']->id;
+$defenderId = (int)$_GET['id'];
+$attackerId = $_SESSION['user']->id;
 
-Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
+try {
+    $result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
+    if ($result) {
+        Context::getInstance()->resourcesController->updateResources($attackerId);
+    }
+} catch (DateMalformedStringException $e) {
+    error_log($e->getMessage());
+}
 
 session_write_close();
