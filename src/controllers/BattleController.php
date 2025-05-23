@@ -21,12 +21,12 @@ class BattleController
         $this->unitService = $unitService;
     }
 
-    public function createBattle(int $attackerId, $defenderId): Battle
+    public function createBattle(int $attackerId, $defenderId): void
     {
         $attackerStats = UnitMapper::mapToStats($this->unitService->getUnits($attackerId));
         $defenderStats = UnitMapper::mapToStats($this->unitService->getUnits($defenderId));
         $defenderResources = $this->resourcesService->getResources($defenderId);
-        return $this->battleService->createBattle($attackerId, $defenderId, $defenderResources, $attackerStats, $defenderStats);
+        $this->battleService->createBattle($attackerId, $defenderId, $defenderResources, $attackerStats, $defenderStats);
     }
 
     public function getBattles(int $userId)

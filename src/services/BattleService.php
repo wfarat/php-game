@@ -14,11 +14,15 @@ class BattleService
     private ResourcesService $resourcesService;
     private BattleRepository $battleRepository;
     private UserService $userService;
-    public function __construct(ResourcesService $resourcesService, BattleRepository $battleRepository) {
+
+    public function __construct(ResourcesService $resourcesService, BattleRepository $battleRepository, UserService $userService)
+    {
         $this->resourcesService = $resourcesService;
         $this->battleRepository = $battleRepository;
-}
-    public function createBattle(int $attackerId, $defenderId, UserResources $defenderResources, Stats $attackerStats, Stats $defenderStats): Battle
+        $this->userService = $userService;
+    }
+
+    public function createBattle(int $attackerId, $defenderId, UserResources $defenderResources, Stats $attackerStats, Stats $defenderStats): void
     {
         $battle = new Battle($attackerId, $defenderId);
         $battle->attackerStats = $attackerStats;
@@ -27,16 +31,16 @@ class BattleService
 
         try {
             $this->battleRepository->beginTransaction();
+            if ($battle->attackerId === $battle->winnerId) {
+                $resourcesTaken = $defenderResources->multipliedBy(0.2);
+                $battle->resourcesTaken = $resourcesTaken;
+                $this->resourcesService->deductResources($battle->defenderId, $resourcesTaken, $defenderResources);
+                $this->resourcesService->addResources($battle->attackerId, $resourcesTaken, $defenderResources);
+                $this->userService->updateBattlesWon($battle->attackerId);
+            } else {
+                $this->userService->updateBattlesWon($battle->defenderId);
+            }
             if ($this->battleRepository->save($battle)) {
-                if ($battle->attackerId === $battle->winnerId) {
-                    $resourcesTaken = $defenderResources->multipliedBy(0.2);
-                    $battle->resourcesTaken = $resourcesTaken;
-                    $this->resourcesService->deductResources($battle->defenderId, $resourcesTaken, $defenderResources);
-                    $this->resourcesService->addResources($battle->attackerId, $resourcesTaken, $defenderResources);
-                    $this->userService->updateBattlesWon($battle->attackerId);
-                } else {
-                    $this->userService->updateBattlesWon($battle->defenderId);
-                }
                 $this->battleRepository->commit();
             } else {
                 $this->battleRepository->rollback();
@@ -45,7 +49,6 @@ class BattleService
             error_log($exception->getMessage());
             $this->battleRepository->rollback();
         }
-        return $battle;
     }
 
     public function getBattles(int $userId)

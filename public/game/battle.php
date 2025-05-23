@@ -11,9 +11,6 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
 $attackerId = (int)$_GET['id'];
 $defenderId = $_SESSION['user']->id;
 
-$result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
-if (!isset($_SESSION['battles'])) {
-    $_SESSION['battles'] = [];
-}
+Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
 
-$_SESSION['battles'][] = $result;
+session_write_close();

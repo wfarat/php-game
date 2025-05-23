@@ -19,7 +19,7 @@ $battles = Context::getInstance()->battleController->getBattles($_SESSION['user'
         });
         ?>
         <p><strong>Opponent:</strong> <?= htmlspecialchars($defender->name ?? 'Unknown') ?></p>
-        <p><strong>Result:</strong> <?= htmlspecialchars($latestBattle->winnerId == $_SESSION['userId'] ? 'Won' : 'Lost') ?></p>
+        <p><strong>Result:</strong> <?= htmlspecialchars($latestBattle->winnerId == $_SESSION['user']->id ? 'Won' : 'Lost') ?></p>
         <a href="./battles.php" class="mt-3 inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-medium transition">
             View All Battles
         </a>
@@ -46,6 +46,6 @@ $battles = Context::getInstance()->battleController->getBattles($_SESSION['user'
 
 <script>
     function attack(id) {
-        fetch('battle.php?id=' + id);
+        fetch('battle.php?id=' + id).then(() => window.location.reload());
     }
 </script>

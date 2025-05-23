@@ -60,7 +60,7 @@ private function __construct() {
     $this->buildingController = new BuildingController($this->buildingService);
     $this->unitController = new UnitController($this->unitService);
     $this->battleRepository = new BattleRepository($this->db);
-    $this->battleService = new BattleService($this->resourcesService, $this->battleRepository);
+    $this->battleService = new BattleService($this->resourcesService, $this->battleRepository, $this->userService);
     $this->battleController = new BattleController($this->battleService, $this->resourcesService, $this->unitService);
     $this->clanRepository = new ClanRepository($this->db);
     $this->clanService = new ClanService($this->clanRepository);

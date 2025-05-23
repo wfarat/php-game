@@ -10,7 +10,7 @@ class BattleRepository extends BaseRepository
 
     function getBattles(int $userId): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM battles WHERE user_id = :userId");
+        $stmt = $this->pdo->prepare("SELECT * FROM battles WHERE attacker_id = :userId OR defender_id = :userId");
         $stmt->bindParam(":userId", $userId);
         $stmt->execute();
         $data = $stmt->fetchAll();
