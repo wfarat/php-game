@@ -88,7 +88,7 @@ class UserRepository extends BaseRepository
 
     public function getAttackableUsers(): array
     {
-        $stmt = $this->pdo->query("SELECT login, battles_won FROM users WHERE verified = 1 AND role != 'admin'");
+        $stmt = $this->pdo->query("SELECT id, login, battles_won FROM users WHERE verified = 1 AND role != 'admin'");
 
         $usersData = $stmt->fetchAll();
 

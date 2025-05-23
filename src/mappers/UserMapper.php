@@ -24,7 +24,7 @@ class UserMapper
     public static function mapToAttackableUser(array $userData): AttackableUser
     {
         return new AttackableUser(
-            $userData['name'],
+            $userData['login'],
             $userData['id'],
             $userData['battles_won']
         );
