@@ -14,8 +14,16 @@ $unitId = (int)$_GET['id'];
 $userId = $_SESSION['user']->id;
 
 $result = Context::getInstance()->unitController->completeUnit($userId, $unitId);
-if ($result) {
+if ($result > 0) {
     $_SESSION['queue'] = array_filter($_SESSION['queue'], function ($item) use ($unitId) {
         return $item->unitId != $unitId;
     });
+    foreach ($_SESSION['units'] as $key => $unit) {
+        if ($unit->id == $unitId) {
+            $unit->count += $result;
+            break;
+        }
+    }
 }
+ob_end_flush();
+session_write_close();

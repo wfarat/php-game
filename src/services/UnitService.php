@@ -47,7 +47,7 @@ class UnitService
         return $this->unitRepository->getQueue($userId);
     }
 
-    public function completeUnit($userId, int $unitId): bool
+    public function completeUnit($userId, int $unitId): int
     {
         $this->unitRepository->beginTransaction();
         try {
@@ -55,19 +55,19 @@ class UnitService
             if ($this->unitRepository->addUnits($userId, $unitId, $count)) {
                 if ($this->unitRepository->removeFromQueue($userId, $unitId)) {
                     $this->unitRepository->commit();
-                    return true;
+                    return $count;
                 } else {
                     $this->unitRepository->rollback();
-                    return false;
+                    return 0;
                 }
             } else {
                 $this->unitRepository->rollback();
-                return false;
+                return 0;
             }
         } catch (PDOException $e) {
             error_log($e->getMessage());
             $this->unitRepository->rollback();
-            return false;
+            return 0;
         }
     }
 }

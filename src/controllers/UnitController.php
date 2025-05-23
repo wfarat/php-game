@@ -47,7 +47,7 @@ class UnitController
         return true;
     }
 
-    public function completeUnit($userId, int $unitId): bool
+    public function completeUnit($userId, int $unitId): int
     {
         return $this->unitService->completeUnit($userId, $unitId);
     }
