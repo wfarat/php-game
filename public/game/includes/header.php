@@ -17,4 +17,13 @@ $user = $_SESSION['user'];
     <?php include './includes/resources.php' ?>
     <a href="./logout.php" class="text-red-400">Logout</a>
 </div>
-
+<!-- Navigation Menu -->
+<nav class="bg-gray-700 text-white p-3 shadow-md">
+    <ul class="flex space-x-6 text-lg font-medium">
+        <li><a href="./index.php" class="hover:text-blue-400 transition">Home</a></li>
+        <li><a href="./attack.php" class="hover:text-blue-400 transition">Attack</a></li>
+        <li><a href="./queue.php" class="hover:text-blue-400 transition">Queue</a></li>
+        <li><a href="./clan.php" class="hover:text-blue-400 transition">Clan</a></li>
+        <li><a href="./messages.php" class="hover:text-blue-400 transition">Messages</a></li>
+    </ul>
+</nav>
