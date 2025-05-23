@@ -19,11 +19,11 @@ $user = $_SESSION['user'];
 </div>
 <!-- Navigation Menu -->
 <nav class="bg-gray-700 text-white p-3 shadow-md">
-    <ul class="flex space-x-6 text-lg font-medium">
-        <li><a href="./index.php" class="hover:text-blue-400 transition">Home</a></li>
-        <li><a href="./attack.php" class="hover:text-blue-400 transition">Attack</a></li>
-        <li><a href="./queue.php" class="hover:text-blue-400 transition">Queue</a></li>
-        <li><a href="./clan.php" class="hover:text-blue-400 transition">Clan</a></li>
-        <li><a href="./messages.php" class="hover:text-blue-400 transition">Messages</a></li>
-    </ul>
+    <div class="flex justify-between p-4 text-lg font-medium">
+        <span><a href="./index.php" class="hover:text-blue-400 transition">Home</a></span>
+        <span><a href="./attack.php" class="hover:text-blue-400 transition">Attack</a></span>
+        <span><a href="./queue.php" class="hover:text-blue-400 transition">Queue</a></span>
+        <span><a href="./clan.php" class="hover:text-blue-400 transition">Clan</a></span>
+        <span><a href="./messages.php" class="hover:text-blue-400 transition">Messages</a></span>
+    </div>
 </nav>

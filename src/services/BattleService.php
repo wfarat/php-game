@@ -21,9 +21,9 @@ class BattleService
     public function createBattle(int $attackerId, $defenderId, UserResources $defenderResources, Stats $attackerStats, Stats $defenderStats): Battle
     {
         $battle = new Battle($attackerId, $defenderId);
-        $battle->winnerId = $battle->determineWinner();
         $battle->attackerStats = $attackerStats;
         $battle->defenderStats = $defenderStats;
+        $battle->winnerId = $battle->determineWinner();
 
         try {
             $this->battleRepository->beginTransaction();
@@ -46,5 +46,10 @@ class BattleService
             $this->battleRepository->rollback();
         }
         return $battle;
+    }
+
+    public function getBattles(int $userId)
+    {
+        return $this->battleRepository->getBattles($userId);
     }
 }

@@ -1,22 +1,15 @@
 <?php
+require_once '../../vendor/autoload.php';
 session_start();
+use App\core\Context;
 
 if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
-    http_response_code(403); // Forbidden
-    exit('Unauthorized');
-}
-
-if (!isset($_GET['id'])) {
-    http_response_code(400);
-    exit('Missing user ID');
+    header("Location: ../login.php");
+    exit;
 }
 
 $attackerId = (int)$_GET['id'];
 $defenderId = $_SESSION['user']->id;
-
-require_once '../../vendor/autoload.php';
-
-use App\core\Context;
 
 $result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
 if (!isset($_SESSION['battles'])) {

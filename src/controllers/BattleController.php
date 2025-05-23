@@ -28,4 +28,13 @@ class BattleController
         $defenderResources = $this->resourcesService->getResources($defenderId);
         return $this->battleService->createBattle($attackerId, $defenderId, $defenderResources, $attackerStats, $defenderStats);
     }
+
+    public function getBattles(int $userId)
+    {
+        if (!isset($_SESSION['battles'])) {
+            $buildings = $this->battleService->getBattles($userId);
+            $_SESSION['battles'] = $buildings;
+        }
+        return $_SESSION['battles'];
+    }
 }
