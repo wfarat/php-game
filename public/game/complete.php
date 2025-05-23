@@ -19,11 +19,12 @@ if ($result > 0) {
         return $item->unitId != $unitId;
     });
     foreach ($_SESSION['units'] as $key => $unit) {
-        if ($unit->id == $unitId) {
+        if ($unit->unitId == $unitId) {
             $unit->count += $result;
             break;
         }
     }
+    header("Location: ./index.php");
 }
 ob_end_flush();
 session_write_close();
