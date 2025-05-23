@@ -34,7 +34,6 @@ class UserRepository extends BaseRepository
         // Execute the query to fetch all users
         $stmt = $this->pdo->query("SELECT * FROM users");
 
-        $stmt->execute();
         $usersData = $stmt->fetchAll();
 
         // Map each row of data to a User object using the UserMapper
@@ -90,8 +89,7 @@ class UserRepository extends BaseRepository
     {
         $stmt = $this->pdo->query("SELECT id, login, battles_won FROM users WHERE verified = 1 AND role != 'admin'");
 
-        $stmt->execute();
-        $usersData = $stmt->fetchAll();
+        $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return array_map([UserMapper::class, 'mapToAttackableUser'], $usersData);
     }
@@ -120,5 +118,12 @@ class UserRepository extends BaseRepository
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':id', $userId);
         return $stmt->execute();
+    }
+
+    public function updateBattlesWon(int $userId): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET battles_won = battles_won + 1 WHERE id = :id");
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
     }
 }

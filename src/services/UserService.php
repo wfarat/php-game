@@ -127,4 +127,9 @@ class UserService
     {
         return $this->userRepository->getAttackableUsers();
     }
+
+    public function updateBattlesWon(int $userId)
+    {
+        $this->userRepository->updateBattlesWon($userId);
+    }
 }
