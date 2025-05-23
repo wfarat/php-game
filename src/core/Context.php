@@ -1,20 +1,22 @@
 <?php
 namespace App\core;
 use App\config\ProdDbConfig;
-use App\controllers\AttackController;
 use App\controllers\BattleController;
 use App\controllers\BuildingController;
+use App\controllers\ClanController;
 use App\controllers\ResourcesController;
 use App\controllers\UnitController;
 use App\controllers\UserController;
 use App\repositories\BattleRepository;
 use App\repositories\BuildingRepository;
+use App\repositories\ClanRepository;
 use App\repositories\ResourcesRepository;
 use App\repositories\TokenRepository;
 use App\repositories\UnitRepository;
 use App\repositories\UserRepository;
 use App\services\BattleService;
 use App\services\BuildingService;
+use App\services\ClanService;
 use App\services\ResourcesService;
 use App\services\UnitService;
 use App\services\UserService;
@@ -38,6 +40,9 @@ public UnitService $unitService;
 public BattleRepository $battleRepository;
 public BattleService $battleService;
 public BattleController $battleController;
+public ClanRepository $clanRepository;
+public ClanService $clanService;
+public ClanController $clanController;
 public static ?Context $instance = null;
 private function __construct() {
     $this->db = Database::getInstance(new ProdDbConfig());
@@ -57,6 +62,9 @@ private function __construct() {
     $this->battleRepository = new BattleRepository($this->db);
     $this->battleService = new BattleService($this->resourcesService, $this->battleRepository);
     $this->battleController = new BattleController($this->battleService, $this->resourcesService, $this->unitService);
+    $this->clanRepository = new ClanRepository($this->db);
+    $this->clanService = new ClanService($this->clanRepository);
+    $this->clanController = new ClanController($this->clanService);
 }
 
 public static function getInstance(): Context
