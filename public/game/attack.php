@@ -9,14 +9,14 @@ use App\core\Context;
 $users = Context::getInstance()->userController->getUsers();
 ?>
 
-<div class="container mx-auto p-6 grid grid-cols-3 gap-6">
-
+<div class="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <?php foreach ($users as $user) : ?>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title"><?= $user->login ?></h5>
-                <p class="card-text">Battles won: <?= $user->battlesWon ?></p>
-                <button onclick="attack(<?= $user->id ?>)" class="btn btn-success">Attack</button>
+        <div class="bg-gray-700 text-white rounded-lg shadow-md p-4 flex flex-col justify-between">
+            <div>
+                <h5 class="text-xl font-semibold mb-2"><?= $user->login ?></h5>
+                <p class="mb-2">Battles won: <?= $user->battlesWon ?></p>
+                <button onclick="attack(<?= $user->id ?>)"
+                        class="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition">Attack</button>
             </div>
         </div>
     <?php endforeach; ?>
