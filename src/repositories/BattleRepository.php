@@ -33,4 +33,17 @@ class BattleRepository extends BaseRepository
         $stmt->bindParam(':winner_id', $battle->winnerId);
         return $stmt->execute();
     }
+
+    public function getLatestBattleForUser(int $userId): ?Battle
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM battles WHERE user_id = :userId ORDER BY id DESC LIMIT 1");
+        $stmt->execute(['userId' => $userId]);
+        $data = $stmt->fetch();
+
+        if ($data === false) {
+            return null; // No battle found
+        }
+
+        return BattleMapper::mapToBattle($data);
+    }
 }

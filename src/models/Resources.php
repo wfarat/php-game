@@ -60,4 +60,8 @@ class Resources
         return new Resources($this->wood * $multiplier, $this->stone * $multiplier, $this->food * $multiplier, $this->gold * $multiplier);
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->wood === 0 && $this->stone === 0 && $this->food === 0 && $this->gold === 0;
+    }
 }

@@ -37,4 +37,9 @@ class BattleController
         }
         return $_SESSION['battles'];
     }
+
+    public function getLatestBattle($id): ?Battle
+    {
+        return $this->battleService->getLatestBattle($id);
+    }
 }

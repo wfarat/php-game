@@ -7,10 +7,9 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
 include './includes/header.php';
 use App\core\Context;
 $users = Context::getInstance()->userController->getUsers();
-$battles = Context::getInstance()->battleController->getBattles($_SESSION['user']->id);
+$latestBattle = Context::getInstance()->battleController->getLatestBattle($_SESSION['user']->id);
 ?>
-<?php if (!empty($battles)): ?>
-    <?php $latestBattle = $battles[0]; // get most recent battle ?>
+<?php if (!empty($latestBattle)): ?>
     <div class="bg-gray-800 p-4 rounded shadow-md mb-6 max-w-md mx-auto">
         <h2 class="text-xl font-semibold mb-2">Most Recent Battle</h2>
         <?php
@@ -20,6 +19,13 @@ $battles = Context::getInstance()->battleController->getBattles($_SESSION['user'
         ?>
         <p><strong>Opponent:</strong> <?= htmlspecialchars($defender->name ?? 'Unknown') ?></p>
         <p><strong>Result:</strong> <?= htmlspecialchars($latestBattle->winnerId == $_SESSION['user']->id ? 'Won' : 'Lost') ?></p>
+        <?php $resources = $latestBattle->resourcesTaken;
+        if (!$resources->isEmpty()):?><p><strong>Resources taken:</strong>
+            <span id="wood">🌲 Wood: <?= $resources->wood ?></span>
+            <span id="stone">⛏ Stone: <?= $resources->stone ?></span>
+            <span id="gold">💰 Gold: <?= $resources->gold ?></span>
+            <span id="food">🍞 Food: <?= $resources->food ?></span></p>
+        <?php endif; ?>
         <a href="./battles.php" class="mt-3 inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-medium transition">
             View All Battles
         </a>

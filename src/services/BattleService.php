@@ -51,8 +51,13 @@ class BattleService
         }
     }
 
-    public function getBattles(int $userId)
+    public function getBattles(int $userId): array
     {
         return $this->battleRepository->getBattles($userId);
+    }
+
+    public function getLatestBattle($id): ?Battle
+    {
+        return $this->battleRepository->getLatestBattleForUser($id);
     }
 }

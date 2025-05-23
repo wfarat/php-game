@@ -4,6 +4,7 @@ namespace App\models;
 
 class Battle
 {
+    public int $id;
     public int $attackerId;
     public int $defenderId;
     public int $winnerId;
