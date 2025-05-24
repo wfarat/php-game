@@ -4,6 +4,7 @@ namespace App\mappers;
 
 use App\models\Clan;
 use App\models\ClanMember;
+use App\models\ClanRequest;
 
 class ClanMapper
 {
@@ -24,6 +25,15 @@ class ClanMapper
     public static function mapToClanMember(array $data): ClanMember
     {
         return new ClanMember(
+            $data['user_id'],
+            $data['clan_id'],
+            $data['login']
+        );
+    }
+
+    public static function mapToClanRequest(array $data): ClanRequest
+    {
+        return new ClanRequest(
             $data['user_id'],
             $data['clan_id'],
             $data['login']

@@ -39,6 +39,7 @@ class ClanService
 
     public function getRequests(int $clanId)
     {
+        return $this->clanRepository->getRequests($clanId);
     }
 
     public function getMembers(int $clanId)
