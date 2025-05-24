@@ -5,7 +5,7 @@ session_start();
 use App\core\Context;
 
 if (isset($_POST['submit'])) {
-    $targetDir = "uploads/";
+    $targetDir = "upload/";
     $fileName = basename($_FILES["image"]["name"]);
     $targetFile = $targetDir . $fileName;
     $uploadOk = 1;

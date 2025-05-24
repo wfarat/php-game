@@ -132,4 +132,9 @@ class UserService
     {
         $this->userRepository->updateBattlesWon($userId);
     }
+
+    public function getAllUsers(): array
+    {
+        return $this->userRepository->getAllUsers();
+    }
 }

@@ -16,7 +16,7 @@ class ClanMapper
             $data['description'] ?? '',
             $data['level'],
             $data['members_count'],
-            $data['img'] ?? '',
+            $data['img'] ?? null,
             $data['leader_id']
         );
     }
@@ -26,7 +26,7 @@ class ClanMapper
         return new ClanMember(
             $data['user_id'],
             $data['clan_id'],
-            $data['name']
+            $data['login']
         );
     }
 }

@@ -4,6 +4,7 @@ namespace App\services;
 
 use App\models\Clan;
 use App\repositories\ClanRepository;
+use PDOException;
 
 class ClanService
 {
@@ -52,6 +53,7 @@ class ClanService
 
     public function getClans()
     {
+        return $this->clanRepository->findAll();
     }
 
     public function saveImage(string $name, int $clanId)
@@ -59,8 +61,20 @@ class ClanService
         $this->clanRepository->saveImage($name, $clanId);
     }
 
-    public function createClan(string $name, string $description, int $leaderId): false|string
+    public function createClan(string $name, string $description, int $leaderId): void
     {
-        return $this->clanRepository->create($name, $description, $leaderId);
+        try {
+            $this->clanRepository->beginTransaction();
+            $id = $this->clanRepository->create($name, $description, $leaderId);
+            $this->clanRepository->addMember($id, $leaderId);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            $this->clanRepository->rollback();
+        }
+    }
+
+    public function addMember(false|string $id, $userId)
+    {
+        return $this->clanRepository->addMember($id, $userId);
     }
 }

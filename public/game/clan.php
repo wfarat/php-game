@@ -21,7 +21,7 @@ $members = Context::getInstance()->clanController->getMembers($clan->id);
 <div class="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Clan Info Column -->
     <div class="bg-gray-800 text-white rounded-lg shadow-lg p-6">
-        <img src="<?= htmlspecialchars('./upload/'.$clan->img ?? 'default-clan.jpg') ?>" alt="Clan Image" class="w-full h-48 object-cover rounded-lg mb-4">
+        <img src="<?= htmlspecialchars('./upload/' . (empty($clan->img) ? 'default_clan.jpg' : $clan->img)) ?>" alt="Clan Image" class="w-full h-48 object-cover rounded-lg mb-4">
         <?php if ($user->id === $clan->leader_id): ?>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <label>Select an image:</label>

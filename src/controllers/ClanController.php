@@ -59,9 +59,9 @@ class ClanController
         $this->clanService->saveImage($name, $clanId);
     }
 
-    public function createClan(string $name, string $description, int $leaderId)
+    public function createClan(string $name, string $description, int $leaderId): void
     {
-        return $this->clanService->createClan($name, $description, $leaderId);;
+        $this->clanService->createClan($name, $description, $leaderId);
     }
 
 }

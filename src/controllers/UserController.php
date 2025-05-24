@@ -181,5 +181,10 @@ class UserController {
             }
         }
     }
+
+    public function getAllUsers()
+    {
+        return $this->userService->getAllUsers();
+    }
 }
 

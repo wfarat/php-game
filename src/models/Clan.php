@@ -10,7 +10,7 @@ class Clan
     public string $description;
     public int $level;
     public int $members_count;
-    public string $img;
+    public ?string $img;
     public int $leader_id;
 
     /**
@@ -19,10 +19,10 @@ class Clan
      * @param string $description
      * @param int $level
      * @param int $members_count
-     * @param string $img
+     * @param ?string $img
      * @param int $leader_id
      */
-    public function __construct(int $id, string $name, string $description, int $level, int $members_count, string $img, int $leader_id)
+    public function __construct(int $id, string $name, string $description, int $level, int $members_count, ?string $img, int $leader_id)
     {
         $this->id = $id;
         $this->name = $name;

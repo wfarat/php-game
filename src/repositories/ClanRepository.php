@@ -24,7 +24,12 @@ class ClanRepository extends BaseRepository
 
     public function getById($id): ?Clan
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM clans WHERE id = :id");
+        $stmt = $this->pdo->prepare("
+            SELECT clans.*
+            FROM clan_members
+            LEFT JOIN clans ON clan_members.clan_id = clans.id
+            WHERE clan_members.user_id = :id
+        ");
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$data) {
@@ -76,7 +81,7 @@ class ClanRepository extends BaseRepository
 
     public function getMembers($clan_id): array
     {
-        $stmt = $this->pdo->prepare("SELECT user_id, clan_id, users.name FROM clan_members LEFT JOIN users ON users.id = clan_members.user_id WHERE clan_id = :clan_id");
+        $stmt = $this->pdo->prepare("SELECT user_id, clan_id, users.login FROM clan_members LEFT JOIN users ON users.id = clan_members.user_id WHERE clan_id = :clan_id");
         $stmt->execute([':clan_id' => $clan_id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map([ClanMapper::class, 'mapToClanMember'], $data);
@@ -92,5 +97,13 @@ class ClanRepository extends BaseRepository
     {
         $stmt = $this->pdo->prepare("INSERT INTO clan_requests (user_id, clan_id) VALUES (:user_id, :clan_id)");
         $stmt->execute([':user_id' => $userId, ':clan_id' => $clanId]);
+    }
+
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM clans");
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([ClanMapper::class, 'mapToClan'], $data);
     }
 }
