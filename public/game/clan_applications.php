@@ -23,11 +23,21 @@ $applications = Context::getInstance()->clanController->getRequests($clan->id);
         <div>
             <h5 class="text-xl font-semibold mb-2"><?= htmlspecialchars($application->name) ?></h5>
                 <button
-                    onclick="complete(<?= $application->clanId ?>, <?= $application->userId ?>)"
+                    onclick="accept(<?= $application->clanId ?>, <?= $application->userId ?>)"
                     class="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition">
-                    Complete
+                    Accept
                 </button>
         </div>
     </div>
 
 <?php endforeach; ?>
+
+
+<?php include './includes/footer.php'; ?>
+
+<script>
+    function accept(clanId, userId) {
+        fetch('complete.php?clanId=' + clanId + '&userId=' + userId)
+            .then(() => window.location.reload());
+    }
+</script>
