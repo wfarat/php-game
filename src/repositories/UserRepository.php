@@ -126,4 +126,18 @@ class UserRepository extends BaseRepository
         $stmt->bindParam(':id', $userId);
         $stmt->execute();
     }
+
+    public function banUser(int $targetId)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET banned = 1 WHERE id = :id");
+        $stmt->bindParam(':id', $targetId);
+        $stmt->execute();
+    }
+
+    public function unbanUser(int $targetId)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET banned = 0 WHERE id = :id");
+        $stmt->bindParam(':id', $targetId);
+        $stmt->execute();
+    }
 }

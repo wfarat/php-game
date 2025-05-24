@@ -41,6 +41,7 @@ class User
     public string $hashedPassword;
     public string $role;
     public bool $verified;
+    public bool $banned;
     function __construct($login, $password, $email)
     {
         $this->login = $login;

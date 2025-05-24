@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULl,
     battles_won INTEGER,
     role VARCHAR(50),
+    banned BOOLEAN DEFAULT FALSE,
     verified BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE IF NOT EXISTS user_tokens (

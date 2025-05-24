@@ -137,4 +137,14 @@ class UserService
     {
         return $this->userRepository->getAllUsers();
     }
+
+    public function banUser(int $targetId)
+    {
+        $this->userRepository->banUser($targetId);
+    }
+
+    public function unbanUser(int $targetId)
+    {
+        $this->userRepository->unbanUser($targetId);
+    }
 }

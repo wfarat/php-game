@@ -64,6 +64,14 @@ class UserController {
                 if (!$auth->isAuthenticated) {
                     echo "Invalid login or password!";
                 } else {
+                    if ($auth->user->banned) {
+                        echo "You are banned!";
+                        return;
+                    }
+                    if (!$auth->user->verified) {
+                        echo "Please verify your email!";
+                        return;
+                    }
                     $_SESSION['user'] = $auth->user;
                     $_SESSION['auth'] = $auth->isAuthenticated;
                     session_write_close();
@@ -185,6 +193,16 @@ class UserController {
     public function getAllUsers()
     {
         return $this->userService->getAllUsers();
+    }
+
+    public function banUser(int $targetId)
+    {
+        $this->userService->banUser($targetId);
+    }
+
+    public function unbanUser(int $targetId)
+    {
+        $this->userService->unbanUser($targetId);
     }
 }
 
