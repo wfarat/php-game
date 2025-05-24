@@ -37,6 +37,7 @@ class ResourcesController
         if (!isset($_SESSION['production'])) {
             $_SESSION['production'] = $this->buildingService->countProduction($buildings);
             $_SESSION['resources']->update($this->produceResources($buildings));
+            $this->resourcesService->updateResources($_SESSION['user']->id, $_SESSION['resources']);
         }
         return $_SESSION['production'];
     }
@@ -55,7 +56,6 @@ class ResourcesController
             $_SESSION['resources']->add($production);
         }
         $_SESSION['resources']->lastUpdated = $currentTime;
-        $this->resourcesService->updateResources($_SESSION['user']->id, $_SESSION['resources']);
         return $_SESSION['resources'];
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\repositories;
 
+use App\mappers\ClanMapper;
+use App\models\Clan;
 use PDO;
 
 class ClanRepository extends BaseRepository
@@ -23,11 +25,12 @@ class ClanRepository extends BaseRepository
         return $this->pdo->lastInsertId();
     }
 
-    public function getById($id)
+    public function getById($id): Clan
     {
         $stmt = $this->pdo->prepare("SELECT * FROM clans WHERE id = :id");
         $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return ClanMapper::mapToClan($data);
     }
 
     public function update($id, $level, $name, $description, $members_count, $img, $leader_id): bool
@@ -73,8 +76,15 @@ class ClanRepository extends BaseRepository
 
     public function getMembers($clan_id): array
     {
-        $stmt = $this->pdo->prepare("SELECT user_id FROM clan_members WHERE clan_id = :clan_id");
+        $stmt = $this->pdo->prepare("SELECT user_id, clan_id, users.name FROM clan_members LEFT JOIN users ON users.id = clan_members.user_id WHERE clan_id = :clan_id");
         $stmt->execute([':clan_id' => $clan_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([ClanMapper::class, 'mapToClanMember'], $data);
+    }
+
+    public function saveImage(string $name, int $clanId)
+    {
+        $stmt = $this->pdo->prepare("UPDATE clans SET img = :img WHERE clan_id = :clan_id");
+        $stmt->execute([':clan_id' => $clanId, ':img' => $name]);
     }
 }

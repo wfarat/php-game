@@ -40,13 +40,20 @@ class ClanService
 
     public function getMembers(int $clanId)
     {
+        return $this->clanRepository->getMembers($clanId);
     }
 
     public function getClan(int $clanId)
     {
+        return $this->clanRepository->getById($clanId);
     }
 
     public function getClans()
     {
+    }
+
+    public function saveImage(string $name, int $clanId)
+    {
+        $this->clanRepository->saveImage($name, $clanId);
     }
 }

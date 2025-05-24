@@ -18,6 +18,7 @@ class UserMapper
 
         $user->id = $userData['id'];  // Set the user ID
         $user->verified = $userData['verified'];
+        $user->role = $userData['role'] ?? '';
         return $user;
     }
 

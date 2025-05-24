@@ -53,4 +53,9 @@ class ClanController
         return $this->clanService->getClans();
     }
 
+    public function saveImage(string $name, int $clanId)
+    {
+        $this->clanService->saveImage($name, $clanId);
+    }
+
 }

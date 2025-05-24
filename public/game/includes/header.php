@@ -25,5 +25,8 @@ $user = $_SESSION['user'];
         <span><a href="./queue.php" class="hover:text-blue-400 transition">Queue</a></span>
         <span><a href="./clan.php" class="hover:text-blue-400 transition">Clan</a></span>
         <span><a href="./messages.php" class="hover:text-blue-400 transition">Messages</a></span>
+        <?php if ($user->role === 'admin'): ?>
+        <span><a href="./admin.php" class="hover:text-blue-400 transition">Admin</a></span>
+        <?php endif; ?>
     </div>
 </nav>
