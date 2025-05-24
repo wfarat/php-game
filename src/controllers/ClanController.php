@@ -2,6 +2,7 @@
 
 namespace App\controllers;
 
+use App\models\Clan;
 use App\services\ClanService;
 
 class ClanController
@@ -45,7 +46,7 @@ class ClanController
         return $this->clanService->getMembers($clanId);
     }
 
-    public function getClan(int $clanId) {
+    public function getClan(int $clanId): ?Clan {
         return $this->clanService->getClan($clanId);
     }
 
@@ -56,6 +57,11 @@ class ClanController
     public function saveImage(string $name, int $clanId)
     {
         $this->clanService->saveImage($name, $clanId);
+    }
+
+    public function createClan(string $name, string $description, int $leaderId)
+    {
+        return $this->clanService->createClan($name, $description, $leaderId);;
     }
 
 }

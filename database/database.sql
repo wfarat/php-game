@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS resources;
 DROP TABLE IF EXISTS user_buildings;
 DROP TABLE IF EXISTS user_units;
-
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     login VARCHAR(255) UNIQUE NOT NULL,
@@ -96,10 +95,10 @@ CREATE TABLE IF NOT EXISTS units_queue (
 
 CREATE TABLE IF NOT EXISTS clans (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    level INT NOT NULL,
+    level INT DEFAULT 1,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255),
-    members_count INT NOT NULL,
+    members_count INT DEFAULT 1,
     img VARCHAR(255),
     leader_id INTEGER NOT NULL,
     FOREIGN KEY (leader_id) REFERENCES users(id)
@@ -125,4 +124,12 @@ CREATE TABLE IF NOT EXISTS battles (
     FOREIGN KEY (attacker_id) REFERENCES users(id),
     FOREIGN KEY (defender_id) REFERENCES users(id),
     FOREIGN KEY (winner_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS clan_requests (
+    clan_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    PRIMARY KEY (clan_id, user_id),
+    FOREIGN KEY (clan_id) REFERENCES clans(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

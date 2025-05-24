@@ -10,9 +10,10 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
 
 $defenderId = (int)$_GET['id'];
 $attackerId = $_SESSION['user']->id;
-
+$buildings = $_SESSION['buildings'];
+$resources = Context::getInstance()->resourcesController->produceResources($buildings);
 try {
-    $result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId);
+    $result = Context::getInstance()->battleController->createBattle($attackerId, $defenderId, $resources);
     if ($result) {
         Context::getInstance()->resourcesController->updateResources($attackerId);
     }

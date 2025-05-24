@@ -9,27 +9,27 @@ use PDO;
 class ClanRepository extends BaseRepository
 {
 
-    public function create($level, $name, $description, $members_count, $img, $leader_id): false|string
+    public function create($name, $description, $leader_id): false|string
     {
-        $sql = "INSERT INTO clans (level, name, description, members_count, img, leader_id)
-                VALUES (:level, :name, :description, :members_count, :img, :leader_id)";
+        $sql = "INSERT INTO clans (name, description, leader_id)
+                VALUES (:name, :description, :leader_id)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':level' => $level,
             ':name' => $name,
             ':description' => $description,
-            ':members_count' => $members_count,
-            ':img' => $img,
             ':leader_id' => $leader_id
         ]);
         return $this->pdo->lastInsertId();
     }
 
-    public function getById($id): Clan
+    public function getById($id): ?Clan
     {
         $stmt = $this->pdo->prepare("SELECT * FROM clans WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$data) {
+            return null;
+        }
         return ClanMapper::mapToClan($data);
     }
 
@@ -86,5 +86,11 @@ class ClanRepository extends BaseRepository
     {
         $stmt = $this->pdo->prepare("UPDATE clans SET img = :img WHERE clan_id = :clan_id");
         $stmt->execute([':clan_id' => $clanId, ':img' => $name]);
+    }
+
+    public function createRequest($userId, int $clanId)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO clan_requests (user_id, clan_id) VALUES (:user_id, :clan_id)");
+        $stmt->execute([':user_id' => $userId, ':clan_id' => $clanId]);
     }
 }

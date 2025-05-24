@@ -25,13 +25,12 @@ class BattleController
     /**
      * @throws DateMalformedStringException
      */
-    public function createBattle(int $attackerId, $defenderId): bool
+    public function createBattle(int $attackerId, $defenderId, $resources): bool
     {
         $attackerStats = UnitMapper::mapToStats($this->unitService->getUnits($attackerId));
         $defenderStats = UnitMapper::mapToStats($this->unitService->getUnits($defenderId));
-        $attackerResources = $this->resourcesService->getResources($attackerId);
         $defenderResources = $this->resourcesService->getResources($defenderId);
-        return $this->battleService->createBattle($attackerId, $defenderId, $attackerResources, $defenderResources, $attackerStats, $defenderStats);
+        return $this->battleService->createBattle($attackerId, $defenderId, $resources, $defenderResources, $attackerStats, $defenderStats);
     }
 
     public function getBattles(int $userId)

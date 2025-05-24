@@ -11,6 +11,10 @@ if (!isset($_SESSION['auth']) || !isset($_SESSION['user'])) {
 include './includes/header.php';
 $user = $_SESSION['user'];
 $clan = Context::getInstance()->clanController->getClan($user->id);
+if (!$clan) {
+    header("Location: ./clan_list.php");
+    exit;
+}
 $members = Context::getInstance()->clanController->getMembers($clan->id);
 ?>
 
