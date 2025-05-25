@@ -69,14 +69,8 @@ class ClanService
 
     public function createClan(string $name, string $description, int $leaderId): void
     {
-        try {
-            $this->clanRepository->beginTransaction();
-            $id = $this->clanRepository->create($name, $description, $leaderId);
-            $this->clanRepository->addMember($id, $leaderId);
-        } catch (PDOException $e) {
-            error_log($e->getMessage());
-            $this->clanRepository->rollback();
-        }
+        $id = $this->clanRepository->create($name, $description, $leaderId);
+        $this->clanRepository->addMember($id, $leaderId);
     }
 
     public function kickMember($userId, int $clanId)
