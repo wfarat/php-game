@@ -57,6 +57,7 @@ class ClanRepository extends BaseRepository
     public function delete($id): bool
     {
         $this->removeAllMembers($id);
+        $this->removeAllRequests($id);
         $stmt = $this->pdo->prepare("DELETE FROM clans WHERE id = :id");
         return $stmt->execute([':id' => $id]);
     }
@@ -64,6 +65,11 @@ class ClanRepository extends BaseRepository
     public function removeAllMembers($clan_id): bool
     {
         $stmt = $this->pdo->prepare("DELETE FROM clan_members WHERE clan_id = :clan_id");
+        return $stmt->execute([':clan_id' => $clan_id]);
+    }
+    public function removeAllRequests($clan_id): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM clan_requests WHERE clan_id = :clan_id");
         return $stmt->execute([':clan_id' => $clan_id]);
     }
     public function addMember($clan_id, $user_id): bool
