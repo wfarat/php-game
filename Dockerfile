@@ -16,6 +16,6 @@ WORKDIR /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 COPY . .
-RUN chmod a+w /public/game/upload
+RUN chmod a+w public/game/upload
 CMD apache2-foreground
 
