@@ -7,7 +7,7 @@ if (!isset($_GET['token']) && !isset($_POST['token'])) {
     header("Location: ./recover.php");
     exit;
 }
-$token = $_GET['token'];
+$token = $_GET['token'] ?? "";
 include './includes/header.php';
 ?>
     <h2 class="text-3xl font-bold">Create new password</h2>
