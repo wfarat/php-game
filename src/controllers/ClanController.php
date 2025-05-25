@@ -20,22 +20,27 @@ class ClanController
         $this->clanService->createRequest($userId, $clanId);
     }
 
+    public function kick($userId, int $clanId)
+    {
+        $this->clanService->kickMember($userId, $clanId);
+    }
+
     public function accept($userId, int $clanId)
     {
-        return $this->clanService->acceptRequest($userId, $clanId);
+        $this->clanService->acceptRequest($userId, $clanId);
     }
 
     public function reject($userId, int $clanId)
     {
-        return $this->clanService->rejectRequest($userId, $clanId);
+        $this->clanService->rejectRequest($userId, $clanId);
     }
 
     public function leave($userId, int $clanId) {
-        return $this->clanService->leaveClan($userId, $clanId);
+        $this->clanService->leaveClan($userId, $clanId);
     }
 
     public function delete(int $clanId) {
-        return $this->clanService->deleteClan($clanId);
+        $this->clanService->deleteClan($clanId);
     }
 
     public function getRequests(int $clanId) {

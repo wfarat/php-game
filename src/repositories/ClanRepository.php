@@ -114,4 +114,10 @@ class ClanRepository extends BaseRepository
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map([ClanMapper::class, 'mapToClanRequest'], $data);
     }
+
+    public function removeRequest($userId, int $clanId)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM clan_requests WHERE user_id = :user_id AND clan_id = :clan_id");
+        $stmt->execute([':user_id' => $userId, ':clan_id' => $clanId]);
+    }
 }

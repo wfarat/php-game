@@ -16,6 +16,4 @@ if ($clan->leader_id !== $user->id) {
     header("Location: ./clan.php");
 }
 
-$userId = (int)$_POST['user_id'];
-
-Context::getInstance()->clanController->kick($userId, $clan->id);
+Context::getInstance()->clanController->leave($user->id, $clan->id);

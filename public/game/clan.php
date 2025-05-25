@@ -49,7 +49,6 @@ $members = Context::getInstance()->clanController->getMembers($clan->id);
                              if ($member->userId !== $clan->leader_id): ?>
                             <form method="POST" action="kick_member.php" onsubmit="return confirm('Kick this member?');">
                                 <input type="hidden" name="user_id" value="<?= $member->userId ?>">
-                                <input type="hidden" name="clan_id" value="<?= $clan->id ?>">
                                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Kick</button>
                             </form>
                         <?php else : ?>
@@ -60,12 +59,35 @@ $members = Context::getInstance()->clanController->getMembers($clan->id);
             </ul>
         </div>
 
-        <!-- Applications Link -->
         <div class="mt-6">
-            <a href="clan_applications.php?clan_id=<?= (int)$clan->id ?>"
+            <?php if ($user->id === $clan->leader_id): ?>
+            <a href="clan_applications.php"
                class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded transition">
                 View Applications
             </a>
+            <button onclick="deleteClan()"
+               class="inline-block bg-red-600 hover:bg-red-700 text-white text-center px-4 py-2 rounded transition">
+                Delete Clan
+            </button>
+            <?php else : ?>
+            <button onclick="leave()"
+               class="inline-block bg-red-600 hover:bg-red-700 text-white text-center px-4 py-2 rounded transition">
+                Leave clan
+            </button>
+            <?php endif; ?>
         </div>
     </div>
 </div>
+<script>
+    function deleteClan() {
+        if (confirm('Are you sure you want to delete this clan?')) {
+            fetch('delete_clan.php')
+                .then(() => window.location.reload());
+        }
+    }
+    function leave() {
+        if (confirm('Are you sure you want to leave this clan?')) {
+            fetch('leave_clan.php')
+                .then(() => window.location.reload());        }
+    }
+</script>

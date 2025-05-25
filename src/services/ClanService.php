@@ -23,18 +23,23 @@ class ClanService
 
     public function acceptRequest($userId, int $clanId)
     {
+        $this->clanRepository->removeRequest($userId, $clanId);
+        $this->clanRepository->addMember($clanId, $userId);
     }
 
     public function rejectRequest($userId, int $clanId)
     {
+        $this->clanRepository->removeRequest($userId, $clanId);
     }
 
     public function leaveClan($userId, int $clanId)
     {
+        $this->clanRepository->removeMember($userId, $clanId);
     }
 
     public function deleteClan(int $clanId)
     {
+        $this->clanRepository->delete($clanId);
     }
 
     public function getRequests(int $clanId)
@@ -74,8 +79,8 @@ class ClanService
         }
     }
 
-    public function addMember(false|string $id, $userId)
+    public function kickMember($userId, int $clanId)
     {
-        return $this->clanRepository->addMember($id, $userId);
+        $this->clanRepository->removeMember($userId, $clanId);
     }
 }
