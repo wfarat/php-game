@@ -89,7 +89,7 @@ class ClanRepository extends BaseRepository
 
     public function saveImage(string $name, int $clanId)
     {
-        $stmt = $this->pdo->prepare("UPDATE clans SET img = :img WHERE clan_id = :clan_id");
+        $stmt = $this->pdo->prepare("UPDATE clans SET img = :img WHERE id = :clan_id");
         $stmt->execute([':clan_id' => $clanId, ':img' => $name]);
     }
 
@@ -109,7 +109,7 @@ class ClanRepository extends BaseRepository
 
     public function getRequests(int $clanId): array
     {
-        $stmt = $this->pdo->prepare("SELECT clan_requests.*, users.login FROM clan_requests LEFT JOIN users ON users.id = clan_request.user_id WHERE clan_id = :clan_id");
+        $stmt = $this->pdo->prepare("SELECT clan_requests.*, users.login FROM clan_requests LEFT JOIN users ON users.id = clan_requests.user_id WHERE clan_id = :clan_id");
         $stmt->execute([':clan_id' => $clanId]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map([ClanMapper::class, 'mapToClanRequest'], $data);

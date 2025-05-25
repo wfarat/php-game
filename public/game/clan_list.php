@@ -39,7 +39,7 @@ $clans = Context::getInstance()->clanController->getClans();
                         <button
                             onclick="apply(<?= $clan->id ?>)"
                             class="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition">
-                            Complete
+                            Apply
                         </button>
                 </div>
             </div>
