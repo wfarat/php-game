@@ -56,10 +56,16 @@ class ClanRepository extends BaseRepository
 
     public function delete($id): bool
     {
+        $this->removeAllMembers($id);
         $stmt = $this->pdo->prepare("DELETE FROM clans WHERE id = :id");
         return $stmt->execute([':id' => $id]);
     }
 
+    public function removeAllMembers($clan_id): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM clan_members WHERE clan_id = :clan_id");
+        return $stmt->execute([':clan_id' => $clan_id]);
+    }
     public function addMember($clan_id, $user_id): bool
     {
         $sql = "INSERT INTO clan_members (clan_id, user_id) VALUES (:clan_id, :user_id)";
