@@ -45,12 +45,12 @@ $applications = Context::getInstance()->clanController->getRequests($clan->id);
 
 <script>
     function accept(id) {
-        fetch('accept.php?id' + id)
+        fetch('accept.php?id=' + id)
             .then(() => window.location.reload());
     }
 
     function reject(id) {
-        fetch('reject.php?id' + id)
+        fetch('reject.php?id=' + id)
             .then(() => window.location.reload());
     }
 </script>
