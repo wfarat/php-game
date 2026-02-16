@@ -10,7 +10,7 @@ env:
   DOCKER_IMAGE_NAME: php-game
   CONTAINER_APP_NAME: php-game-container
   RESOURCE_GROUP: php-game-group
-  WORKING_DIR: qa_devops/ci-cd
+  WORKING_DIR: .
 
 jobs:
   # ============ PARALLEL TEST JOBS (run concurrently) ============
