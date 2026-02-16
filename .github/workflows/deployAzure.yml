@@ -10,14 +10,22 @@ env:
   DOCKER_IMAGE_NAME: php-game
   CONTAINER_APP_NAME: php-game-container
   RESOURCE_GROUP: php-game-group
+  WORKING_DIR: qa_devops/ci-cd
 
 jobs:
-  Run-Tests:
+  # ============ PARALLEL TEST JOBS (run concurrently) ============
+  Test-Unit-Controllers:
     runs-on: ubuntu-latest
-    name: Run PHPUnit Tests
+    name: PHPUnit - Controllers
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles(format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: composer-${{ runner.os }}-
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -27,17 +35,185 @@ jobs:
           tools: phpunit
 
       - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIR }}
         run: composer install --no-progress --prefer-dist
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit tests
+      - name: Run Controller Tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: vendor/bin/phpunit tests/controllers --no-coverage
+
+  Test-Unit-Repositories:
+    runs-on: ubuntu-latest
+    name: PHPUnit - Repositories
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles(format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo, pdo_mysql
+          tools: phpunit
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: composer install --no-progress --prefer-dist
+
+      - name: Run Repository Tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: vendor/bin/phpunit tests/repositories --no-coverage
+
+  Test-Unit-Services:
+    runs-on: ubuntu-latest
+    name: PHPUnit - Services
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles(format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo, pdo_mysql
+          tools: phpunit
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: composer install --no-progress --prefer-dist
+
+      - name: Run Service Tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: vendor/bin/phpunit tests/services --no-coverage
+
+  Test-Unit-Other:
+    runs-on: ubuntu-latest
+    name: PHPUnit - Other Tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles(format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo, pdo_mysql
+          tools: phpunit
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: composer install --no-progress --prefer-dist
+
+      - name: Run Other Tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: vendor/bin/phpunit tests/FindUnitProductionTest.php
+
+  Security-Composer-Audit:
+    runs-on: ubuntu-latest
+    name: Composer Audit
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles(format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Install Dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: composer install --no-progress --prefer-dist
+
+      - name: Composer Audit
+        working-directory: ${{ env.WORKING_DIR }}
+        run: composer audit --no-update
+
+  Security-NPM-Audit:
+    runs-on: ubuntu-latest
+    name: NPM Audit
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.WORKING_DIR }}/node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles(format('{0}/package-lock.json', env.WORKING_DIR)) }}
+          restore-keys: npm-${{ runner.os }}-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIR }}/package-lock.json
+
+      - name: Install NPM dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm ci
+
+      - name: NPM Audit
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  Security-Snyk:
+    runs-on: ubuntu-latest
+    name: Snyk Security Scan
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          command: test
+
+  # ============ BUILD (after all tests pass) ============
   Build-Docker-Image:
     runs-on: ubuntu-latest
     name: Build image and push to GitHub Container Registry
-    needs: Run-Tests
+    needs:
+      - Test-Unit-Controllers
+      - Test-Unit-Repositories
+      - Test-Unit-Services
+      - Test-Unit-Other
+      - Security-Composer-Audit
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -46,14 +222,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
 
+      - name: Docker layer cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-${{ runner.os }}-${{ hashFiles(format('{0}/Dockerfile', env.WORKING_DIR), format('{0}/composer.lock', env.WORKING_DIR)) }}
+          restore-keys: |
+            buildx-${{ runner.os }}-
+
       - name: Build and push PHP Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .  # Uses your PHP Dockerfile in the root directory
-          file: ./Dockerfile
+          context: ${{ env.WORKING_DIR }}
+          file: ${{ env.WORKING_DIR }}/Dockerfile
           push: true
           tags: ${{ env.IMAGE_REGISTRY_URL }}/${{ github.repository }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
+      - name: Move cache
+        if: success()
+        run: |
+          rm -rf /tmp/.buildx-cache
+          [ -d /tmp/.buildx-cache-new ] && mv /tmp/.buildx-cache-new /tmp/.buildx-cache || true
+
+  # ============ DEPLOY ============
   Deploy-to-Azure-Container-Apps:
     runs-on: ubuntu-latest
     needs: Build-Docker-Image
@@ -65,6 +258,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Container Apps
+        id: deploy
         uses: azure/container-apps-deploy-action@v1
         with:
           resourceGroup: ${{ env.RESOURCE_GROUP }}
@@ -75,5 +269,59 @@ jobs:
           registryUsername: wfarat
           environmentVariables: DB_HOST=php-game-mysql.mysql.database.azure.com DB_USER=wfarat DB_PASS=${{ secrets.DB_PASSWORD }} DB_NAME=game DB_PORT=3306 SENDGRID_API_KEY=${{ secrets.EMAIL_API_KEY }}
 
+      - name: Get Container App URL
+        id: get-url
+        run: |
+          FQDN=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)
+          echo "url=https://${FQDN}" >> $GITHUB_OUTPUT
+          echo "fqdn=${FQDN}" >> $GITHUB_OUTPUT
+
+      - name: Deployment Health Check
+        run: |
+          FQDN="${{ steps.get-url.outputs.fqdn }}"
+          echo "Checking health at https://${FQDN}..."
+          for i in {1..12}; do
+            if curl -sf -o /dev/null -w "%{http_code}" --connect-timeout 10 "https://${FQDN}/" | grep -qE "^(200|301|302)$"; then
+              echo "✓ Health check passed (attempt $i)"
+              exit 0
+            fi
+            echo "Attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+          echo "✗ Health check failed after 12 attempts"
+          exit 1
+
       - name: Logout from Azure
+        if: always()
         run: az logout
+
+  # ============ SLACK NOTIFICATIONS (on failure) ============
+  Notify-Slack-Failure:
+    runs-on: ubuntu-latest
+    needs:
+      - Test-Unit-Controllers
+      - Test-Unit-Repositories
+      - Test-Unit-Services
+      - Security-Composer-Audit
+      - Build-Docker-Image
+      - Deploy-to-Azure-Container-Apps
+    if: failure() && github.event_name == 'issues'
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Deploy Pipeline Failed*",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Repository:* ${{ github.repository }}\n*Workflow:* ${{ github.workflow }}\n*Branch:* ${{ github.ref_name }}\n*Actor:* ${{ github.actor }}\n*Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
